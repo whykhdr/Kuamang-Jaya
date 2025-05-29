@@ -3,7 +3,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   Aplikasi Surat Menyurat Desa
+   Layanan Desa - Portal Resmi
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
@@ -15,898 +15,300 @@
     }
   </style>
  </head>
- <body class="bg-gray-50 min-h-screen flex flex-col">
-  <header class="bg-green-700 text-white shadow-md">
-   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-     <img alt="Logo desa dengan gambar rumah tradisional dan pepohonan hijau" class="w-12 h-12 rounded-full" height="48" src="https://storage.googleapis.com/a1aa/image/6d6fc59e-cda4-46a9-295e-db4652734aa2.jpg" width="48"/>
-     <h1 class="text-2xl font-semibold">
-      Aplikasi Surat Menyurat Desa
-     </h1>
+ <body class="bg-gray-50 text-gray-800">
+  <!-- Header / Navbar -->
+  <header class="bg-white shadow-md fixed w-full z-30">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+     <a class="flex items-center space-x-2" href="#">
+      <img alt="Logo Layanan Desa, ikon rumah tradisional berwarna hijau dan biru" class="h-10 w-10" height="40" src="https://storage.googleapis.com/a1aa/image/fbee9d5d-dfae-4e42-8583-3f966e38e9ab.jpg" width="40"/>
+      <span class="font-semibold text-xl text-green-700">
+       Layanan Desa
+      </span>
+     </a>
+     <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
+      <a class="hover:text-green-700 transition" href="#layanan">
+       Layanan
+      </a>
+      <a class="hover:text-green-700 transition" href="#berita">
+       Berita
+      </a>
+      <a class="hover:text-green-700 transition" href="#profil">
+       Profil Desa
+      </a>
+      <a class="hover:text-green-700 transition" href="#kontak">
+       Kontak
+      </a>
+     </nav>
+     <div class="md:hidden">
+      <button aria-label="Toggle menu" class="focus:outline-none" id="menu-btn">
+       <i class="fas fa-bars text-2xl text-green-700">
+       </i>
+      </button>
+     </div>
     </div>
-    <nav class="hidden md:flex space-x-6 font-semibold">
-     <a class="hover:text-green-300 transition" href="#dashboard">
-      Dashboard
+   </div>
+   <!-- Mobile menu -->
+   <div class="hidden md:hidden bg-white shadow-md" id="mobile-menu">
+    <nav class="flex flex-col space-y-2 px-4 py-4 font-medium text-gray-700">
+     <a class="hover:text-green-700 transition" href="#layanan">
+      Layanan
      </a>
-     <a class="hover:text-green-300 transition" href="#surat-masuk">
-      Surat Masuk
+     <a class="hover:text-green-700 transition" href="#berita">
+      Berita
      </a>
-     <a class="hover:text-green-300 transition" href="#surat-keluar">
-      Surat Keluar
+     <a class="hover:text-green-700 transition" href="#profil">
+      Profil Desa
      </a>
-     <a class="hover:text-green-300 transition" href="#buat-surat">
-      Buat Surat
-     </a>
-     <a class="hover:text-green-300 transition" href="#buat-surat-standar">
-      Surat Standar
-     </a>
-     <a class="hover:text-green-300 transition" href="#laporan">
-      Laporan
+     <a class="hover:text-green-700 transition" href="#kontak">
+      Kontak
      </a>
     </nav>
-    <button aria-label="Toggle menu" class="md:hidden focus:outline-none focus:ring-2 focus:ring-green-300" id="menu-btn">
-     <i class="fas fa-bars text-2xl">
-     </i>
-    </button>
    </div>
-   <nav class="hidden md:hidden bg-green-600 text-white px-4 py-3 space-y-2 font-semibold" id="mobile-menu">
-    <a class="block hover:text-green-200 transition" href="#dashboard">
-     Dashboard
-    </a>
-    <a class="block hover:text-green-200 transition" href="#surat-masuk">
-     Surat Masuk
-    </a>
-    <a class="block hover:text-green-200 transition" href="#surat-keluar">
-     Surat Keluar
-    </a>
-    <a class="block hover:text-green-200 transition" href="#buat-surat">
-     Buat Surat
-    </a>
-    <a class="block hover:text-green-200 transition" href="#buat-surat-standar">
-     Surat Standar
-    </a>
-    <a class="block hover:text-green-200 transition" href="#laporan">
-     Laporan
-    </a>
-   </nav>
   </header>
-  <main class="flex-grow container mx-auto px-4 py-6">
-   <section class="mb-10" id="dashboard">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Dashboard
+  <main class="pt-20">
+   <!-- Hero Section -->
+   <section aria-label="Hero section with welcome message and illustration" class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 flex flex-col-reverse lg:flex-row items-center max-w-7xl mx-auto">
+    <div class="lg:w-1/2 text-center lg:text-left">
+     <h1 class="text-4xl sm:text-5xl font-extrabold text-green-800 leading-tight">
+      Selamat Datang di Portal Layanan Desa
+     </h1>
+     <p class="mt-6 text-lg text-green-700 max-w-xl mx-auto lg:mx-0">
+      Memudahkan akses layanan administrasi dan informasi desa secara online untuk masyarakat.
+     </p>
+     <a class="inline-block mt-8 px-8 py-3 bg-green-700 text-white rounded-md font-semibold shadow-md hover:bg-green-800 transition" href="#layanan">
+      Lihat Layanan
+     </a>
+    </div>
+    <div class="lg:w-1/2 mb-10 lg:mb-0">
+     <img alt="Ilustrasi warga desa sedang menggunakan layanan online di perangkat komputer dan smartphone, latar belakang pemandangan desa hijau dan rumah tradisional" class="mx-auto max-w-full rounded-lg shadow-lg" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/a3723a6b-c10c-4da6-5c79-f5e8122aa87b.jpg" width="600"/>
+    </div>
+   </section>
+   <!-- Layanan Section -->
+   <section aria-label="Daftar layanan administrasi desa" class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16" id="layanan">
+    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+     Layanan Administrasi Desa
     </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-     <div class="bg-white rounded-lg shadow p-6 flex items-center space-x-4">
-      <div class="bg-green-100 text-green-700 p-3 rounded-full">
-       <i class="fas fa-envelope-open-text fa-2x">
-       </i>
-      </div>
-      <div>
-       <p class="text-2xl font-semibold" id="count-surat-masuk">
-        0
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+     <a aria-label="Layanan Surat Keterangan Domisili" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat keterangan domisili berupa dokumen dengan stempel hijau" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/8251253f-6a94-4a44-bc91-64525b15b9bd.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Keterangan Domisili
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat keterangan domisili untuk keperluan administrasi dan legalitas.
+      </p>
+     </a>
+     <a aria-label="Layanan Surat Keterangan Tidak Mampu" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat keterangan tidak mampu berupa dokumen dengan tanda tangan dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/ecf142fc-78fd-40ae-37c2-bdb5f6ee5ca6.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Keterangan Tidak Mampu
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat keterangan tidak mampu untuk bantuan sosial dan keperluan lain.
+      </p>
+     </a>
+     <a aria-label="Layanan Surat Keterangan Usaha" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat keterangan usaha berupa dokumen dengan grafik pertumbuhan usaha" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/38630a74-ecd0-470d-f0fe-596b45546b8a.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Keterangan Usaha
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat keterangan usaha untuk legalitas dan pengajuan modal usaha.
+      </p>
+     </a>
+     <a aria-label="Layanan Surat Keterangan Kelahiran" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat keterangan kelahiran berupa dokumen dengan gambar bayi dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/16b6c3d1-04fb-456d-84dc-da5edef00805.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Keterangan Kelahiran
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat keterangan kelahiran untuk pencatatan administrasi kependudukan.
+      </p>
+     </a>
+     <a aria-label="Layanan Surat Keterangan Kematian" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat keterangan kematian berupa dokumen dengan pita hitam dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b4197dc6-ba69-4a1b-bc07-691b40d6a610.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Keterangan Kematian
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat keterangan kematian untuk keperluan administrasi dan asuransi.
+      </p>
+     </a>
+     <a aria-label="Layanan Surat Pengantar Nikah" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
+      <img alt="Ikon surat pengantar nikah berupa dokumen dengan cincin dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/e4618f66-8510-41de-3ba1-e3bb73ecb9af.jpg" width="100"/>
+      <h3 class="font-semibold text-lg text-green-700 mb-2">
+       Surat Pengantar Nikah
+      </h3>
+      <p class="text-gray-600 text-sm">
+       Pengajuan surat pengantar nikah untuk keperluan administrasi pernikahan.
+      </p>
+     </a>
+    </div>
+   </section>
+   <!-- Berita Section -->
+   <section aria-label="Berita dan informasi terbaru desa" class="bg-white py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto" id="berita">
+    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+     Berita Terbaru Desa
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
+      <img alt="Foto warga desa sedang melakukan gotong royong membersihkan lingkungan desa dengan alat kebersihan" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/71225336-0a64-497a-b61c-1dd582c4c900.jpg" width="600"/>
+      <div class="p-6 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-green-700 mb-2">
+        Gotong Royong Bersihkan Lingkungan Desa
+       </h3>
+       <p class="text-gray-700 flex-grow">
+        Warga desa bersama-sama melakukan gotong royong membersihkan lingkungan untuk menjaga
+              kebersihan dan kesehatan.
        </p>
-       <p class="text-gray-600">
-        Surat Masuk
-       </p>
+       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-10">
+        10 Juni 2024
+       </time>
       </div>
+     </article>
+     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
+      <img alt="Foto petani desa sedang mengikuti pelatihan pertanian organik di aula desa dengan instruktur" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/01a968f5-64d3-48aa-df68-9cef28806544.jpg" width="600"/>
+      <div class="p-6 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-green-700 mb-2">
+        Pelatihan Pertanian Organik untuk Petani Muda
+       </h3>
+       <p class="text-gray-700 flex-grow">
+        Pemerintah desa mengadakan pelatihan pertanian organik untuk meningkatkan kualitas hasil
+              panen dan kesehatan tanah.
+       </p>
+       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-05">
+        5 Juni 2024
+       </time>
+      </div>
+     </article>
+     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
+      <img alt="Foto festival budaya desa dengan warga mengenakan pakaian adat dan pertunjukan seni tradisional" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/db0e8529-52c1-4f1f-4c76-65c1e4090cf6.jpg" width="600"/>
+      <div class="p-6 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-green-700 mb-2">
+        Festival Budaya Desa Meriahkan Akhir Pekan
+       </h3>
+       <p class="text-gray-700 flex-grow">
+        Festival budaya desa menampilkan berbagai kesenian tradisional dan kuliner khas desa.
+       </p>
+       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-05-28">
+        28 Mei 2024
+       </time>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- Profil Desa Section -->
+   <section aria-label="Profil desa dan informasi umum" class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16" id="profil">
+    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+     Profil Desa
+    </h2>
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+     <img alt="Foto panorama desa dengan pemandangan sawah hijau, rumah tradisional, dan pegunungan di latar belakang" class="rounded-lg shadow-lg w-full max-w-md" height="350" loading="lazy" src="https://storage.googleapis.com/a1aa/image/7d847909-4268-4662-bc0c-4041705cf625.jpg" width="500"/>
+     <div class="max-w-xl text-gray-700">
+      <p class="mb-4">
+       Desa Sukamaju adalah sebuah desa yang terletak di kaki pegunungan dengan pemandangan alam yang
+            indah dan masyarakat yang ramah. Desa ini memiliki potensi pertanian yang besar dan budaya
+            tradisional yang masih terjaga dengan baik.
+      </p>
+      <p class="mb-4">
+       Pemerintah desa berkomitmen untuk meningkatkan kesejahteraan warga melalui berbagai program
+            layanan administrasi dan pembangunan infrastruktur.
+      </p>
+      <p>
+       Desa Sukamaju juga aktif mengadakan kegiatan sosial dan budaya untuk mempererat tali
+            persaudaraan antarwarga.
+      </p>
      </div>
-     <div class="bg-white rounded-lg shadow p-6 flex items-center space-x-4">
-      <div class="bg-green-100 text-green-700 p-3 rounded-full">
-       <i class="fas fa-envelope fa-2x">
+    </div>
+   </section>
+   <!-- Kontak Section -->
+   <section aria-label="Formulir kontak dan informasi alamat desa" class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto" id="kontak">
+    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+     Kontak Kami
+    </h2>
+    <div class="flex flex-col lg:flex-row gap-12">
+     <form action="#" aria-label="Formulir pengiriman pesan ke pemerintah desa" class="bg-white rounded-lg shadow-md p-8 flex-1 max-w-lg mx-auto" method="POST">
+      <div class="mb-6">
+       <label class="block text-green-700 font-semibold mb-2" for="nama">
+        Nama Lengkap
+       </label>
+       <input class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" required="" type="text"/>
+      </div>
+      <div class="mb-6">
+       <label class="block text-green-700 font-semibold mb-2" for="email">
+        Email
+       </label>
+       <input class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="email" name="email" placeholder="contoh@email.com" required="" type="email"/>
+      </div>
+      <div class="mb-6">
+       <label class="block text-green-700 font-semibold mb-2" for="pesan">
+        Pesan
+       </label>
+       <textarea class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="pesan" name="pesan" placeholder="Tulis pesan atau pertanyaan Anda" required="" rows="5"></textarea>
+      </div>
+      <button class="w-full bg-green-700 text-white font-semibold py-3 rounded-md hover:bg-green-800 transition" type="submit">
+       Kirim Pesan
+      </button>
+     </form>
+     <div class="flex-1 max-w-md mx-auto text-green-800">
+      <h3 class="text-xl font-semibold mb-4">
+       Alamat Kantor Desa
+      </h3>
+      <p class="mb-2">
+       <i class="fas fa-map-marker-alt mr-2">
        </i>
-      </div>
-      <div>
-       <p class="text-2xl font-semibold" id="count-surat-keluar">
-        0
-       </p>
-       <p class="text-gray-600">
-        Surat Keluar
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow p-6 flex items-center space-x-4">
-      <div class="bg-green-100 text-green-700 p-3 rounded-full">
-       <i class="fas fa-file-alt fa-2x">
+       Jl. Merdeka No. 123, Desa Sukamaju, Kecamatan
+            Sukamaju, Kabupaten Sukamaju
+      </p>
+      <p class="mb-2">
+       <i class="fas fa-phone-alt mr-2">
        </i>
-      </div>
-      <div>
-       <p class="text-2xl font-semibold" id="count-total-surat">
-        0
-       </p>
-       <p class="text-gray-600">
-        Total Surat
-       </p>
-      </div>
-     </div>
-    </div>
-   </section>
-   <section class="mb-10" id="surat-masuk">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Surat Masuk
-    </h2>
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-     <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-green-100">
-       <tr>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         No
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Nomor Surat
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Tanggal Terima
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Pengirim
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Perihal
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Aksi
-        </th>
-       </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100" id="table-surat-masuk">
-      </tbody>
-     </table>
-    </div>
-   </section>
-   <section class="mb-10" id="surat-keluar">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Surat Keluar
-    </h2>
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-     <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-green-100">
-       <tr>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         No
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Nomor Surat
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Tanggal Kirim
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Penerima
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Perihal
-        </th>
-        <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-         Aksi
-        </th>
-       </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100" id="table-surat-keluar">
-      </tbody>
-     </table>
-    </div>
-   </section>
-   <section class="mb-10" id="buat-surat">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Buat Surat Manual
-    </h2>
-    <div class="bg-white rounded-lg shadow p-6 max-w-3xl mx-auto">
-     <form class="space-y-6" id="form-surat">
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="jenis-surat">
-        Jenis Surat
-       </label>
-       <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="jenis-surat" name="jenisSurat" required="">
-        <option disabled="" selected="" value="">
-         Pilih jenis surat
-        </option>
-        <option value="masuk">
-         Surat Masuk
-        </option>
-        <option value="keluar">
-         Surat Keluar
-        </option>
-       </select>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="nomor-surat">
-        Nomor Surat
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="nomor-surat" name="nomorSurat" placeholder="Contoh: 001/SM/2024" required="" type="text"/>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="tanggal">
-        Tanggal
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="tanggal" name="tanggal" required="" type="date"/>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="pengirim-penerima" id="label-pengirim-penerima">
-        Pengirim
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="pengirim-penerima" name="pengirimPenerima" placeholder="Nama pengirim atau penerima" required="" type="text"/>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="perihal">
-        Perihal
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="perihal" name="perihal" placeholder="Judul atau ringkasan surat" required="" type="text"/>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="isi-surat">
-        Isi Surat
-       </label>
-       <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-y" id="isi-surat" name="isiSurat" placeholder="Tulis isi surat di sini..." required="" rows="5"></textarea>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="file-surat">
-        Upload File Surat (opsional)
-       </label>
-       <input accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="w-full text-gray-700" id="file-surat" name="fileSurat" type="file"/>
-      </div>
-      <div class="flex justify-end space-x-3">
-       <button class="px-5 py-2 rounded-md border border-green-600 text-green-600 font-semibold hover:bg-green-50 transition" type="reset">
-        Reset
-       </button>
-       <button class="px-5 py-2 rounded-md bg-green-700 text-white font-semibold hover:bg-green-800 transition" type="submit">
-        Simpan Surat
-       </button>
-      </div>
-     </form>
-    </div>
-   </section>
-   <section class="mb-10" id="buat-surat-standar">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Buat Surat Standar Desa
-    </h2>
-    <div class="bg-white rounded-lg shadow p-6 max-w-4xl mx-auto">
-     <form class="space-y-6" id="form-surat-standar">
-      <div>
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="jenis-surat-standar">
-        Pilih Jenis Surat Standar
-       </label>
-       <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="jenis-surat-standar" required="">
-        <option disabled="" selected="" value="">
-         Pilih jenis surat standar
-        </option>
-        <option value="sktm">
-         Surat Keterangan Tidak Mampu (SKTM)
-        </option>
-        <option value="skhu">
-         Surat Keterangan Hasil Ujian (SKHU)
-        </option>
-        <option value="perjalanan-dinas">
-         Surat Perjalanan Dinas
-        </option>
-        <option value="surat-domisili">
-         Surat Keterangan Domisili
-        </option>
-        <option value="surat-usaha">
-         Surat Keterangan Usaha
-        </option>
-       </select>
-      </div>
-      <div id="form-standar-fields" class="space-y-4 mt-4">
-       <!-- Dynamic form fields will appear here -->
-      </div>
-      <div class="flex justify-end space-x-3">
-       <button class="px-5 py-2 rounded-md border border-green-600 text-green-600 font-semibold hover:bg-green-50 transition" type="reset" id="reset-standar">
-        Reset
-       </button>
-       <button class="px-5 py-2 rounded-md bg-green-700 text-white font-semibold hover:bg-green-800 transition" type="submit">
-        Buat Surat Standar
-       </button>
-      </div>
-     </form>
-    </div>
-   </section>
-   <section class="mb-10" id="laporan">
-    <h2 class="text-3xl font-bold text-green-800 mb-6">
-     Laporan Surat
-    </h2>
-    <div class="bg-white rounded-lg shadow p-6 max-w-4xl mx-auto">
-     <form class="space-y-4 flex flex-col sm:flex-row sm:items-end sm:space-x-4 sm:space-y-0" id="form-laporan">
-      <div class="flex-1">
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="filter-jenis">
-        Jenis Surat
-       </label>
-       <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="filter-jenis">
-        <option value="all">
-         Semua
-        </option>
-        <option value="masuk">
-         Surat Masuk
-        </option>
-        <option value="keluar">
-         Surat Keluar
-        </option>
-       </select>
-      </div>
-      <div class="flex-1">
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="filter-tanggal-awal">
-        Tanggal Awal
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="filter-tanggal-awal" type="date"/>
-      </div>
-      <div class="flex-1">
-       <label class="block text-sm font-semibold text-gray-700 mb-1" for="filter-tanggal-akhir">
-        Tanggal Akhir
-       </label>
-       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="filter-tanggal-akhir" type="date"/>
-      </div>
-      <div>
-       <button class="px-5 py-2 rounded-md bg-green-700 text-white font-semibold hover:bg-green-800 transition w-full sm:w-auto" type="submit">
-        Tampilkan
-       </button>
-      </div>
-     </form>
-     <div class="mt-6 overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-       <thead class="bg-green-100">
-        <tr>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          No
-         </th>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          Jenis Surat
-         </th>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          Nomor Surat
-         </th>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          Tanggal
-         </th>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          Pengirim/Penerima
-         </th>
-         <th class="px-4 py-3 text-left text-sm font-semibold text-green-800">
-          Perihal
-         </th>
-        </tr>
-       </thead>
-       <tbody class="divide-y divide-gray-100" id="table-laporan">
-       </tbody>
-      </table>
+       +62 812-3456-7890
+      </p>
+      <p class="mb-2">
+       <i class="fas fa-envelope mr-2">
+       </i>
+       kontak@desasukamaju.id
+      </p>
+      <p class="mb-6">
+       <i class="fas fa-clock mr-2">
+       </i>
+       Senin - Jumat, 08.00 - 16.00 WIB
+      </p>
+      <img alt="Peta lokasi kantor desa Sukamaju dengan penanda lokasi berwarna merah" class="rounded-lg shadow-md" height="300" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b384db2c-7e82-4530-e9d2-34a3544ab780.jpg" width="400"/>
      </div>
     </div>
    </section>
   </main>
-  <footer class="bg-green-700 text-white py-4 text-center text-sm">
-   © 2024 Desa Maju. Semua hak cipta dilindungi.
+  <!-- Footer -->
+  <footer class="bg-green-700 text-green-100 py-8 mt-16">
+   <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 flex flex-col md:flex-row justify-between items-center">
+    <p class="text-sm">
+     © 2024 Desa Sukamaju. Semua hak cipta dilindungi.
+    </p>
+    <div class="flex space-x-6 mt-4 md:mt-0">
+     <a aria-label="Facebook Desa Sukamaju" class="hover:text-green-300 transition" href="#">
+      <i class="fab fa-facebook-f">
+      </i>
+     </a>
+     <a aria-label="Twitter Desa Sukamaju" class="hover:text-green-300 transition" href="#">
+      <i class="fab fa-twitter">
+      </i>
+     </a>
+     <a aria-label="Instagram Desa Sukamaju" class="hover:text-green-300 transition" href="#">
+      <i class="fab fa-instagram">
+      </i>
+     </a>
+    </div>
+   </div>
   </footer>
   <script>
-   // Mobile menu toggle
-    const menuBtn = document.getElementById('menu-btn');
+   const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
+
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
-    });
-
-    // Data storage keys
-    const STORAGE_KEY = 'desaSuratMenyuratData';
-
-    // Load data from localStorage or initialize empty arrays
-    let suratMasuk = [];
-    let suratKeluar = [];
-
-    function loadData() {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (data) {
-        suratMasuk = data.suratMasuk || [];
-        suratKeluar = data.suratKeluar || [];
-      }
-    }
-
-    function saveData() {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ suratMasuk, suratKeluar })
-      );
-    }
-
-    // Render counts on dashboard
-    function renderCounts() {
-      const countMasuk = suratMasuk.length;
-      const countKeluar = suratKeluar.length;
-      const countTotal = countMasuk + countKeluar;
-      document.getElementById('count-surat-masuk').textContent = countMasuk;
-      document.getElementById('count-surat-keluar').textContent = countKeluar;
-      document.getElementById('count-total-surat').textContent = countTotal;
-    }
-
-    // Render surat masuk table
-    function renderSuratMasuk() {
-      const tbody = document.getElementById('table-surat-masuk');
-      tbody.innerHTML = '';
-      suratMasuk.forEach((surat, i) => {
-        const tr = document.createElement('tr');
-        tr.className = i % 2 === 0 ? 'bg-white' : 'bg-green-50';
-        tr.innerHTML = `
-          <td class="px-4 py-3 text-sm text-gray-700">${i + 1}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.nomorSurat}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.tanggal}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.pengirimPenerima}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.perihal}</td>
-          <td class="px-4 py-3 text-sm text-green-700 space-x-2">
-            <button data-index="${i}" data-jenis="masuk" class="btn-detail hover:text-green-900" aria-label="Lihat detail surat masuk nomor ${surat.nomorSurat}">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button data-index="${i}" data-jenis="masuk" class="btn-delete hover:text-red-600" aria-label="Hapus surat masuk nomor ${surat.nomorSurat}">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Render surat keluar table
-    function renderSuratKeluar() {
-      const tbody = document.getElementById('table-surat-keluar');
-      tbody.innerHTML = '';
-      suratKeluar.forEach((surat, i) => {
-        const tr = document.createElement('tr');
-        tr.className = i % 2 === 0 ? 'bg-white' : 'bg-green-50';
-        tr.innerHTML = `
-          <td class="px-4 py-3 text-sm text-gray-700">${i + 1}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.nomorSurat}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.tanggal}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.pengirimPenerima}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.perihal}</td>
-          <td class="px-4 py-3 text-sm text-green-700 space-x-2">
-            <button data-index="${i}" data-jenis="keluar" class="btn-detail hover:text-green-900" aria-label="Lihat detail surat keluar nomor ${surat.nomorSurat}">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button data-index="${i}" data-jenis="keluar" class="btn-delete hover:text-red-600" aria-label="Hapus surat keluar nomor ${surat.nomorSurat}">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Render laporan table
-    function renderLaporan(filterJenis = 'all', tanggalAwal = '', tanggalAkhir = '') {
-      const tbody = document.getElementById('table-laporan');
-      tbody.innerHTML = '';
-      let allSurat = [];
-      if (filterJenis === 'masuk') {
-        allSurat = suratMasuk.map(s => ({ ...s, jenis: 'Surat Masuk' }));
-      } else if (filterJenis === 'keluar') {
-        allSurat = suratKeluar.map(s => ({ ...s, jenis: 'Surat Keluar' }));
-      } else {
-        allSurat = [
-          ...suratMasuk.map(s => ({ ...s, jenis: 'Surat Masuk' })),
-          ...suratKeluar.map(s => ({ ...s, jenis: 'Surat Keluar' })),
-        ];
-      }
-
-      // Filter by date range if provided
-      if (tanggalAwal) {
-        allSurat = allSurat.filter(s => s.tanggal >= tanggalAwal);
-      }
-      if (tanggalAkhir) {
-        allSurat = allSurat.filter(s => s.tanggal <= tanggalAkhir);
-      }
-
-      allSurat.sort((a, b) => (a.tanggal > b.tanggal ? 1 : -1));
-
-      allSurat.forEach((surat, i) => {
-        const tr = document.createElement('tr');
-        tr.className = i % 2 === 0 ? 'bg-white' : 'bg-green-50';
-        tr.innerHTML = `
-          <td class="px-4 py-3 text-sm text-gray-700">${i + 1}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.jenis}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.nomorSurat}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.tanggal}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.pengirimPenerima}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">${surat.perihal}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Update label pengirim/penerima based on jenis surat manual
-    const jenisSuratSelect = document.getElementById('jenis-surat');
-    const labelPengirimPenerima = document.getElementById('label-pengirim-penerima');
-    jenisSuratSelect.addEventListener('change', () => {
-      if (jenisSuratSelect.value === 'masuk') {
-        labelPengirimPenerima.textContent = 'Pengirim';
-      } else if (jenisSuratSelect.value === 'keluar') {
-        labelPengirimPenerima.textContent = 'Penerima';
-      } else {
-        labelPengirimPenerima.textContent = 'Pengirim/Penerima';
-      }
-    });
-
-    // Handle form submit to add surat manual
-    const formSurat = document.getElementById('form-surat');
-    formSurat.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(formSurat);
-      const jenisSurat = formData.get('jenisSurat');
-      const nomorSurat = formData.get('nomorSurat').trim();
-      const tanggal = formData.get('tanggal');
-      const pengirimPenerima = formData.get('pengirimPenerima').trim();
-      const perihal = formData.get('perihal').trim();
-      const isiSurat = formData.get('isiSurat').trim();
-      const fileSurat = formData.get('fileSurat');
-
-      if (!jenisSurat || !nomorSurat || !tanggal || !pengirimPenerima || !perihal || !isiSurat) {
-        alert('Mohon lengkapi semua data yang diperlukan.');
-        return;
-      }
-
-      // Handle file upload as base64 string (optional)
-      if (fileSurat && fileSurat.size > 0) {
-        const reader = new FileReader();
-        reader.onload = function () {
-          const fileData = reader.result;
-          addSurat(jenisSurat, nomorSurat, tanggal, pengirimPenerima, perihal, isiSurat, fileData);
-          formSurat.reset();
-          jenisSuratSelect.dispatchEvent(new Event('change'));
-        };
-        reader.readAsDataURL(fileSurat);
-      } else {
-        addSurat(jenisSurat, nomorSurat, tanggal, pengirimPenerima, perihal, isiSurat, null);
-        formSurat.reset();
-        jenisSuratSelect.dispatchEvent(new Event('change'));
-      }
-    });
-
-    function addSurat(jenis, nomor, tanggal, pengirimPenerima, perihal, isi, fileData) {
-      const suratBaru = {
-        nomorSurat: nomor,
-        tanggal,
-        pengirimPenerima,
-        perihal,
-        isiSurat: isi,
-        fileSurat: fileData,
-      };
-      if (jenis === 'masuk') {
-        suratMasuk.push(suratBaru);
-      } else if (jenis === 'keluar') {
-        suratKeluar.push(suratBaru);
-      }
-      saveData();
-      renderAll();
-      alert('Surat berhasil disimpan.');
-    }
-
-    // Handle delete surat
-    document.body.addEventListener('click', (e) => {
-      if (e.target.closest('.btn-delete')) {
-        const btn = e.target.closest('.btn-delete');
-        const index = parseInt(btn.getAttribute('data-index'));
-        const jenis = btn.getAttribute('data-jenis');
-        if (confirm('Apakah Anda yakin ingin menghapus surat ini?')) {
-          if (jenis === 'masuk') {
-            suratMasuk.splice(index, 1);
-          } else if (jenis === 'keluar') {
-            suratKeluar.splice(index, 1);
-          }
-          saveData();
-          renderAll();
-        }
-      }
-      if (e.target.closest('.btn-detail')) {
-        const btn = e.target.closest('.btn-detail');
-        const index = parseInt(btn.getAttribute('data-index'));
-        const jenis = btn.getAttribute('data-jenis');
-        let surat;
-        if (jenis === 'masuk') {
-          surat = suratMasuk[index];
-        } else if (jenis === 'keluar') {
-          surat = suratKeluar[index];
-        }
-        if (surat) {
-          showDetailModal(jenis, surat);
-        }
-      }
-    });
-
-    // Detail modal creation and handling
-    function showDetailModal(jenis, surat) {
-      // Create modal container
-      const modal = document.createElement('div');
-      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
-      modal.setAttribute('role', 'dialog');
-      modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-labelledby', 'modal-title');
-
-      modal.innerHTML = `
-        <div class="bg-white rounded-lg shadow-lg max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
-          <h3 id="modal-title" class="text-xl font-bold text-green-800 mb-4">Detail Surat (${jenis === 'masuk' ? 'Surat Masuk' : 'Surat Keluar'})</h3>
-          <button aria-label="Tutup detail surat" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 rounded">
-            <i class="fas fa-times fa-lg"></i>
-          </button>
-          <div class="space-y-3 text-gray-700">
-            <p><span class="font-semibold">Nomor Surat:</span> ${surat.nomorSurat}</p>
-            <p><span class="font-semibold">Tanggal:</span> ${surat.tanggal}</p>
-            <p><span class="font-semibold">${jenis === 'masuk' ? 'Pengirim' : 'Penerima'}:</span> ${surat.pengirimPenerima}</p>
-            <p><span class="font-semibold">Perihal:</span> ${surat.perihal}</p>
-            <p><span class="font-semibold">Isi Surat:</span></p>
-            <p class="whitespace-pre-wrap border border-gray-300 rounded-md p-3 bg-green-50">${surat.isiSurat}</p>
-            ${
-              surat.fileSurat
-                ? `<p><span class="font-semibold">File Surat:</span></p>
-                   <a href="${surat.fileSurat}" target="_blank" rel="noopener noreferrer" class="text-green-700 hover:underline inline-flex items-center space-x-2">
-                     <i class="fas fa-file-download"></i><span>Download / Lihat File</span>
-                   </a>`
-                : ''
-            }
-          </div>
-        </div>
-      `;
-
-      // Close modal on button click or outside click
-      modal.querySelector('button').addEventListener('click', () => {
-        document.body.removeChild(modal);
-      });
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          document.body.removeChild(modal);
-        }
-      });
-
-      document.body.appendChild(modal);
-    }
-
-    // Handle laporan filter form submit
-    const formLaporan = document.getElementById('form-laporan');
-    formLaporan.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const jenis = document.getElementById('filter-jenis').value;
-      const tanggalAwal = document.getElementById('filter-tanggal-awal').value;
-      const tanggalAkhir = document.getElementById('filter-tanggal-akhir').value;
-      renderLaporan(jenis, tanggalAwal, tanggalAkhir);
-    });
-
-    // Initial render
-    function renderAll() {
-      renderCounts();
-      renderSuratMasuk();
-      renderSuratKeluar();
-      renderLaporan();
-    }
-
-    loadData();
-    renderAll();
-
-    // Surat Standar Desa - Dynamic Form Fields and Submission
-    const jenisSuratStandarSelect = document.getElementById('jenis-surat-standar');
-    const formStandarFields = document.getElementById('form-standar-fields');
-    const formSuratStandar = document.getElementById('form-surat-standar');
-    const resetStandarBtn = document.getElementById('reset-standar');
-
-    // Templates for surat standar fields
-    const suratStandarTemplates = {
-      sktm: [
-        { label: 'Nama Lengkap', id: 'nama', type: 'text', required: true, placeholder: 'Nama lengkap pemohon' },
-        { label: 'Tempat, Tanggal Lahir', id: 'ttl', type: 'text', required: true, placeholder: 'Contoh: Bandung, 1 Januari 1990' },
-        { label: 'Jenis Kelamin', id: 'jenisKelamin', type: 'select', required: true, options: ['Laki-laki', 'Perempuan'] },
-        { label: 'Alamat', id: 'alamat', type: 'textarea', required: true, placeholder: 'Alamat lengkap' },
-        { label: 'Keperluan', id: 'keperluan', type: 'textarea', required: true, placeholder: 'Keperluan surat' },
-      ],
-      skhu: [
-        { label: 'Nama Lengkap', id: 'nama', type: 'text', required: true, placeholder: 'Nama lengkap siswa' },
-        { label: 'Tempat, Tanggal Lahir', id: 'ttl', type: 'text', required: true, placeholder: 'Contoh: Bandung, 1 Januari 2008' },
-        { label: 'Sekolah', id: 'sekolah', type: 'text', required: true, placeholder: 'Nama sekolah' },
-        { label: 'Nomor Induk Siswa', id: 'nis', type: 'text', required: true, placeholder: 'Nomor induk siswa' },
-        { label: 'Tahun Pelajaran', id: 'tahunPelajaran', type: 'text', required: true, placeholder: 'Contoh: 2023/2024' },
-      ],
-      'perjalanan-dinas': [
-        { label: 'Nama Pegawai', id: 'nama', type: 'text', required: true, placeholder: 'Nama pegawai' },
-        { label: 'NIP', id: 'nip', type: 'text', required: true, placeholder: 'Nomor Induk Pegawai' },
-        { label: 'Jabatan', id: 'jabatan', type: 'text', required: true, placeholder: 'Jabatan pegawai' },
-        { label: 'Tujuan Perjalanan', id: 'tujuan', type: 'text', required: true, placeholder: 'Tujuan perjalanan dinas' },
-        { label: 'Tanggal Berangkat', id: 'tanggalBerangkat', type: 'date', required: true },
-        { label: 'Tanggal Kembali', id: 'tanggalKembali', type: 'date', required: true },
-        { label: 'Keperluan', id: 'keperluan', type: 'textarea', required: true, placeholder: 'Keperluan perjalanan dinas' },
-      ],
-      'surat-domisili': [
-        { label: 'Nama Lengkap', id: 'nama', type: 'text', required: true, placeholder: 'Nama lengkap pemohon' },
-        { label: 'Tempat, Tanggal Lahir', id: 'ttl', type: 'text', required: true, placeholder: 'Contoh: Bandung, 1 Januari 1990' },
-        { label: 'Alamat Sekarang', id: 'alamatSekarang', type: 'textarea', required: true, placeholder: 'Alamat domisili saat ini' },
-        { label: 'Keperluan', id: 'keperluan', type: 'textarea', required: true, placeholder: 'Keperluan surat domisili' },
-      ],
-      'surat-usaha': [
-        { label: 'Nama Pemilik Usaha', id: 'nama', type: 'text', required: true, placeholder: 'Nama pemilik usaha' },
-        { label: 'Nama Usaha', id: 'namaUsaha', type: 'text', required: true, placeholder: 'Nama usaha' },
-        { label: 'Alamat Usaha', id: 'alamatUsaha', type: 'textarea', required: true, placeholder: 'Alamat usaha' },
-        { label: 'Jenis Usaha', id: 'jenisUsaha', type: 'text', required: true, placeholder: 'Jenis usaha' },
-        { label: 'Keperluan', id: 'keperluan', type: 'textarea', required: true, placeholder: 'Keperluan surat usaha' },
-      ],
-    };
-
-    // Clear form fields container
-    function clearStandarFields() {
-      formStandarFields.innerHTML = '';
-    }
-
-    // Create input element based on type
-    function createInputField(field) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'flex flex-col';
-
-      const label = document.createElement('label');
-      label.className = 'block text-sm font-semibold text-gray-700 mb-1';
-      label.setAttribute('for', field.id);
-      label.textContent = field.label + (field.required ? ' *' : '');
-      wrapper.appendChild(label);
-
-      let input;
-      if (field.type === 'textarea') {
-        input = document.createElement('textarea');
-        input.rows = 3;
-        input.className = 'w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-y';
-        if (field.placeholder) input.placeholder = field.placeholder;
-      } else if (field.type === 'select') {
-        input = document.createElement('select');
-        input.className = 'w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500';
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Pilih ' + field.label.toLowerCase();
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        input.appendChild(defaultOption);
-        field.options.forEach(opt => {
-          const option = document.createElement('option');
-          option.value = opt;
-          option.textContent = opt;
-          input.appendChild(option);
-        });
-      } else {
-        input = document.createElement('input');
-        input.type = field.type;
-        input.className = 'w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500';
-        if (field.placeholder) input.placeholder = field.placeholder;
-      }
-      input.id = field.id;
-      input.name = field.id;
-      if (field.required) input.required = true;
-
-      wrapper.appendChild(input);
-      return wrapper;
-    }
-
-    // Render form fields based on selected surat standar
-    jenisSuratStandarSelect.addEventListener('change', () => {
-      clearStandarFields();
-      const jenis = jenisSuratStandarSelect.value;
-      if (!jenis || !suratStandarTemplates[jenis]) return;
-      suratStandarTemplates[jenis].forEach(field => {
-        const inputField = createInputField(field);
-        formStandarFields.appendChild(inputField);
-      });
-    });
-
-    // Reset form standar fields on reset button click
-    resetStandarBtn.addEventListener('click', () => {
-      clearStandarFields();
-      jenisSuratStandarSelect.value = '';
-    });
-
-    // Handle submit surat standar
-    formSuratStandar.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const jenis = jenisSuratStandarSelect.value;
-      if (!jenis || !suratStandarTemplates[jenis]) {
-        alert('Pilih jenis surat standar terlebih dahulu.');
-        return;
-      }
-
-      // Collect form data
-      const formData = new FormData(formSuratStandar);
-      let missingField = false;
-      suratStandarTemplates[jenis].forEach(field => {
-        if (field.required && !formData.get(field.id)) {
-          missingField = true;
-        }
-      });
-      if (missingField) {
-        alert('Mohon lengkapi semua data yang diperlukan.');
-        return;
-      }
-
-      // Generate nomor surat otomatis: format "XXX/JS/YYYYMMDD/NNN"
-      // JS = jenis surat singkatan, NNN = nomor urut hari ini
-      const jenisSingkatanMap = {
-        sktm: 'SKTM',
-        skhu: 'SKHU',
-        'perjalanan-dinas': 'SPD',
-        'surat-domisili': 'DOM',
-        'surat-usaha': 'SUS',
-      };
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const tanggalSurat = `${yyyy}-${mm}-${dd}`;
-
-      // Hitung nomor urut surat standar hari ini
-      let nomorUrut = 1;
-      const allSuratStandar = [...suratMasuk, ...suratKeluar].filter(s => s.isSuratStandar && s.jenisSuratStandar === jenis && s.tanggal === tanggalSurat);
-      nomorUrut += allSuratStandar.length;
-
-      const nomorSurat = `${String(nomorUrut).padStart(3, '0')}/${jenisSingkatanMap[jenis]}/${yyyy}${mm}${dd}`;
-
-      // Buat isi surat otomatis berdasarkan template dan data
-      let isiSurat = '';
-      switch (jenis) {
-        case 'sktm':
-          isiSurat = `Yang bertanda tangan di bawah ini, Kepala Desa Maju, menerangkan bahwa:\n\n` +
-            `Nama: ${formData.get('nama')}\n` +
-            `Tempat, Tanggal Lahir: ${formData.get('ttl')}\n` +
-            `Jenis Kelamin: ${formData.get('jenisKelamin')}\n` +
-            `Alamat: ${formData.get('alamat')}\n\n` +
-            `Adalah benar warga Desa Maju yang tidak mampu secara ekonomi.\n` +
-            `Surat keterangan ini dibuat untuk keperluan:\n${formData.get('keperluan')}\n\n` +
-            `Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.`;
-          break;
-        case 'skhu':
-          isiSurat = `Surat Keterangan Hasil Ujian\n\n` +
-            `Nama: ${formData.get('nama')}\n` +
-            `Tempat, Tanggal Lahir: ${formData.get('ttl')}\n` +
-            `Sekolah: ${formData.get('sekolah')}\n` +
-            `Nomor Induk Siswa: ${formData.get('nis')}\n` +
-            `Tahun Pelajaran: ${formData.get('tahunPelajaran')}\n\n` +
-            `Surat ini menerangkan bahwa yang bersangkutan telah mengikuti ujian dan mendapatkan hasil sebagaimana tercantum.\n\n` +
-            `Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.`;
-          break;
-        case 'perjalanan-dinas':
-          isiSurat = `Surat Perjalanan Dinas\n\n` +
-            `Nama Pegawai: ${formData.get('nama')}\n` +
-            `NIP: ${formData.get('nip')}\n` +
-            `Jabatan: ${formData.get('jabatan')}\n` +
-            `Tujuan Perjalanan: ${formData.get('tujuan')}\n` +
-            `Tanggal Berangkat: ${formData.get('tanggalBerangkat')}\n` +
-            `Tanggal Kembali: ${formData.get('tanggalKembali')}\n` +
-            `Keperluan: ${formData.get('keperluan')}\n\n` +
-            `Surat ini dibuat sebagai bukti perjalanan dinas yang sah.\n\n` +
-            `Demikian surat ini dibuat untuk dapat dipergunakan sebagaimana mestinya.`;
-          break;
-        case 'surat-domisili':
-          isiSurat = `Surat Keterangan Domisili\n\n` +
-            `Nama: ${formData.get('nama')}\n` +
-            `Tempat, Tanggal Lahir: ${formData.get('ttl')}\n` +
-            `Alamat Sekarang: ${formData.get('alamatSekarang')}\n\n` +
-            `Surat keterangan ini dibuat untuk keperluan:\n${formData.get('keperluan')}\n\n` +
-            `Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.`;
-          break;
-        case 'surat-usaha':
-          isiSurat = `Surat Keterangan Usaha\n\n` +
-            `Nama Pemilik Usaha: ${formData.get('nama')}\n` +
-            `Nama Usaha: ${formData.get('namaUsaha')}\n` +
-            `Alamat Usaha: ${formData.get('alamatUsaha')}\n` +
-            `Jenis Usaha: ${formData.get('jenisUsaha')}\n\n` +
-            `Surat keterangan ini dibuat untuk keperluan:\n${formData.get('keperluan')}\n\n` +
-            `Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.`;
-          break;
-        default:
-          isiSurat = '';
-      }
-
-      // Buat objek surat standar baru
-      const suratBaru = {
-        nomorSurat,
-        tanggal: tanggalSurat,
-        pengirimPenerima: 'Kepala Desa Maju',
-        perihal: `Surat Standar: ${jenisSuratStandarSelect.options[jenisSuratStandarSelect.selectedIndex].text}`,
-        isiSurat,
-        fileSurat: null,
-        isSuratStandar: true,
-        jenisSuratStandar: jenis,
-      };
-
-      // Surat standar otomatis masuk ke surat keluar
-      suratKeluar.push(suratBaru);
-      saveData();
-      renderAll();
-      alert(`Surat standar "${jenisSuratStandarSelect.options[jenisSuratStandarSelect.selectedIndex].text}" berhasil dibuat dengan nomor surat ${nomorSurat}.`);
-      formSuratStandar.reset();
-      clearStandarFields();
     });
   </script>
  </body>
