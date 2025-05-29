@@ -1,315 +1,736 @@
-<html class="scroll-smooth" lang="id">
+<html lang="id" class="scroll-smooth">
  <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Layanan Desa - Portal Resmi
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Layanan Desa - Portal Pribadi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+   rel="stylesheet"
+  />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+   rel="stylesheet"
+  />
   <style>
    body {
-      font-family: 'Inter', sans-serif;
-    }
+    font-family: "Inter", sans-serif;
+   }
   </style>
  </head>
- <body class="bg-gray-50 text-gray-800">
-  <!-- Header / Navbar -->
-  <header class="bg-white shadow-md fixed w-full z-30">
-   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-     <a class="flex items-center space-x-2" href="#">
-      <img alt="Logo Layanan Desa, ikon rumah tradisional berwarna hijau dan biru" class="h-10 w-10" height="40" src="https://storage.googleapis.com/a1aa/image/fbee9d5d-dfae-4e42-8583-3f966e38e9ab.jpg" width="40"/>
-      <span class="font-semibold text-xl text-green-700">
-       Layanan Desa
-      </span>
-     </a>
-     <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
-      <a class="hover:text-green-700 transition" href="#layanan">
-       Layanan
+ <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+  <!-- Login Modal -->
+  <div
+   id="login-modal"
+   class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+   <div
+    class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 mx-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="login-title"
+   >
+    <h2
+     id="login-title"
+     class="text-2xl font-bold text-green-800 mb-6 text-center"
+    >
+     Masuk ke Portal Layanan Desa
+    </h2>
+    <form id="login-form" class="space-y-6" novalidate>
+     <div>
+      <label
+       for="username"
+       class="block text-green-700 font-semibold mb-2"
+       >Nama Pengguna</label
+      >
+      <input
+       type="text"
+       id="username"
+       name="username"
+       required
+       autocomplete="username"
+       class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       placeholder="Masukkan nama pengguna"
+      />
+      <p
+       id="username-error"
+       class="text-red-600 text-sm mt-1 hidden"
+       role="alert"
+      >
+       Nama pengguna wajib diisi.
+      </p>
+     </div>
+     <div>
+      <label
+       for="password"
+       class="block text-green-700 font-semibold mb-2"
+       >Kata Sandi</label
+      >
+      <input
+       type="password"
+       id="password"
+       name="password"
+       required
+       autocomplete="current-password"
+       class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       placeholder="Masukkan kata sandi"
+      />
+      <p
+       id="password-error"
+       class="text-red-600 text-sm mt-1 hidden"
+       role="alert"
+      >
+       Kata sandi wajib diisi.
+      </p>
+     </div>
+     <button
+      type="submit"
+      class="w-full bg-green-700 text-white font-semibold py-3 rounded-md hover:bg-green-800 transition"
+     >
+      Masuk
+     </button>
+    </form>
+   </div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="app-content" class="hidden flex-grow flex flex-col">
+   <!-- Header / Navbar -->
+   <header class="bg-white shadow-md fixed w-full z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16">
+      <a class="flex items-center space-x-2" href="#">
+       <img
+        alt="Logo Layanan Desa, ikon rumah tradisional berwarna hijau dan biru"
+        class="h-10 w-10"
+        height="40"
+        src="https://storage.googleapis.com/a1aa/image/fbee9d5d-dfae-4e42-8583-3f966e38e9ab.jpg"
+        width="40"
+       />
+       <span class="font-semibold text-xl text-green-700">Layanan Desa</span>
       </a>
-      <a class="hover:text-green-700 transition" href="#berita">
-       Berita
-      </a>
-      <a class="hover:text-green-700 transition" href="#profil">
-       Profil Desa
-      </a>
-      <a class="hover:text-green-700 transition" href="#kontak">
-       Kontak
-      </a>
+      <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
+       <a class="hover:text-green-700 transition" href="#layanan">Layanan</a>
+       <a class="hover:text-green-700 transition" href="#berita">Berita</a>
+       <a class="hover:text-green-700 transition" href="#profil">Profil Desa</a>
+       <a class="hover:text-green-700 transition" href="#kontak">Kontak</a>
+      </nav>
+      <div class="md:hidden">
+       <button aria-label="Toggle menu" class="focus:outline-none" id="menu-btn">
+        <i class="fas fa-bars text-2xl text-green-700"></i>
+       </button>
+      </div>
+     </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="hidden md:hidden bg-white shadow-md" id="mobile-menu">
+     <nav class="flex flex-col space-y-2 px-4 py-4 font-medium text-gray-700">
+      <a class="hover:text-green-700 transition" href="#layanan">Layanan</a>
+      <a class="hover:text-green-700 transition" href="#berita">Berita</a>
+      <a class="hover:text-green-700 transition" href="#profil">Profil Desa</a>
+      <a class="hover:text-green-700 transition" href="#kontak">Kontak</a>
      </nav>
-     <div class="md:hidden">
-      <button aria-label="Toggle menu" class="focus:outline-none" id="menu-btn">
-       <i class="fas fa-bars text-2xl text-green-700">
-       </i>
-      </button>
+    </div>
+   </header>
+
+   <main class="pt-20 flex-grow overflow-auto">
+    <!-- Hero Section -->
+    <section
+     aria-label="Hero section with welcome message and illustration"
+     class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 flex flex-col-reverse lg:flex-row items-center max-w-7xl mx-auto"
+    >
+     <div class="lg:w-1/2 text-center lg:text-left">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-green-800 leading-tight">
+       Selamat Datang di Portal Layanan Desa Pribadi
+      </h1>
+      <p class="mt-6 text-lg text-green-700 max-w-xl mx-auto lg:mx-0">
+       Memudahkan akses layanan administrasi dan informasi desa secara online
+       untuk warga terdaftar.
+      </p>
+      <a
+       class="inline-block mt-8 px-8 py-3 bg-green-700 text-white rounded-md font-semibold shadow-md hover:bg-green-800 transition"
+       href="#layanan"
+       >Lihat Layanan</a
+      >
      </div>
-    </div>
-   </div>
-   <!-- Mobile menu -->
-   <div class="hidden md:hidden bg-white shadow-md" id="mobile-menu">
-    <nav class="flex flex-col space-y-2 px-4 py-4 font-medium text-gray-700">
-     <a class="hover:text-green-700 transition" href="#layanan">
-      Layanan
-     </a>
-     <a class="hover:text-green-700 transition" href="#berita">
-      Berita
-     </a>
-     <a class="hover:text-green-700 transition" href="#profil">
-      Profil Desa
-     </a>
-     <a class="hover:text-green-700 transition" href="#kontak">
-      Kontak
-     </a>
-    </nav>
-   </div>
-  </header>
-  <main class="pt-20">
-   <!-- Hero Section -->
-   <section aria-label="Hero section with welcome message and illustration" class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 flex flex-col-reverse lg:flex-row items-center max-w-7xl mx-auto">
-    <div class="lg:w-1/2 text-center lg:text-left">
-     <h1 class="text-4xl sm:text-5xl font-extrabold text-green-800 leading-tight">
-      Selamat Datang di Portal Layanan Desa
-     </h1>
-     <p class="mt-6 text-lg text-green-700 max-w-xl mx-auto lg:mx-0">
-      Memudahkan akses layanan administrasi dan informasi desa secara online untuk masyarakat.
-     </p>
-     <a class="inline-block mt-8 px-8 py-3 bg-green-700 text-white rounded-md font-semibold shadow-md hover:bg-green-800 transition" href="#layanan">
-      Lihat Layanan
-     </a>
-    </div>
-    <div class="lg:w-1/2 mb-10 lg:mb-0">
-     <img alt="Ilustrasi warga desa sedang menggunakan layanan online di perangkat komputer dan smartphone, latar belakang pemandangan desa hijau dan rumah tradisional" class="mx-auto max-w-full rounded-lg shadow-lg" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/a3723a6b-c10c-4da6-5c79-f5e8122aa87b.jpg" width="600"/>
-    </div>
-   </section>
-   <!-- Layanan Section -->
-   <section aria-label="Daftar layanan administrasi desa" class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16" id="layanan">
-    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
-     Layanan Administrasi Desa
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-     <a aria-label="Layanan Surat Keterangan Domisili" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat keterangan domisili berupa dokumen dengan stempel hijau" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/8251253f-6a94-4a44-bc91-64525b15b9bd.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Keterangan Domisili
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat keterangan domisili untuk keperluan administrasi dan legalitas.
-      </p>
-     </a>
-     <a aria-label="Layanan Surat Keterangan Tidak Mampu" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat keterangan tidak mampu berupa dokumen dengan tanda tangan dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/ecf142fc-78fd-40ae-37c2-bdb5f6ee5ca6.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Keterangan Tidak Mampu
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat keterangan tidak mampu untuk bantuan sosial dan keperluan lain.
-      </p>
-     </a>
-     <a aria-label="Layanan Surat Keterangan Usaha" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat keterangan usaha berupa dokumen dengan grafik pertumbuhan usaha" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/38630a74-ecd0-470d-f0fe-596b45546b8a.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Keterangan Usaha
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat keterangan usaha untuk legalitas dan pengajuan modal usaha.
-      </p>
-     </a>
-     <a aria-label="Layanan Surat Keterangan Kelahiran" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat keterangan kelahiran berupa dokumen dengan gambar bayi dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/16b6c3d1-04fb-456d-84dc-da5edef00805.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Keterangan Kelahiran
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat keterangan kelahiran untuk pencatatan administrasi kependudukan.
-      </p>
-     </a>
-     <a aria-label="Layanan Surat Keterangan Kematian" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat keterangan kematian berupa dokumen dengan pita hitam dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b4197dc6-ba69-4a1b-bc07-691b40d6a610.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Keterangan Kematian
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat keterangan kematian untuk keperluan administrasi dan asuransi.
-      </p>
-     </a>
-     <a aria-label="Layanan Surat Pengantar Nikah" class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition" href="#">
-      <img alt="Ikon surat pengantar nikah berupa dokumen dengan cincin dan cap resmi" class="mb-4" height="100" loading="lazy" src="https://storage.googleapis.com/a1aa/image/e4618f66-8510-41de-3ba1-e3bb73ecb9af.jpg" width="100"/>
-      <h3 class="font-semibold text-lg text-green-700 mb-2">
-       Surat Pengantar Nikah
-      </h3>
-      <p class="text-gray-600 text-sm">
-       Pengajuan surat pengantar nikah untuk keperluan administrasi pernikahan.
-      </p>
-     </a>
-    </div>
-   </section>
-   <!-- Berita Section -->
-   <section aria-label="Berita dan informasi terbaru desa" class="bg-white py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto" id="berita">
-    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
-     Berita Terbaru Desa
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
-      <img alt="Foto warga desa sedang melakukan gotong royong membersihkan lingkungan desa dengan alat kebersihan" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/71225336-0a64-497a-b61c-1dd582c4c900.jpg" width="600"/>
-      <div class="p-6 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-green-700 mb-2">
-        Gotong Royong Bersihkan Lingkungan Desa
-       </h3>
-       <p class="text-gray-700 flex-grow">
-        Warga desa bersama-sama melakukan gotong royong membersihkan lingkungan untuk menjaga
-              kebersihan dan kesehatan.
-       </p>
-       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-10">
-        10 Juni 2024
-       </time>
-      </div>
-     </article>
-     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
-      <img alt="Foto petani desa sedang mengikuti pelatihan pertanian organik di aula desa dengan instruktur" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/01a968f5-64d3-48aa-df68-9cef28806544.jpg" width="600"/>
-      <div class="p-6 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-green-700 mb-2">
-        Pelatihan Pertanian Organik untuk Petani Muda
-       </h3>
-       <p class="text-gray-700 flex-grow">
-        Pemerintah desa mengadakan pelatihan pertanian organik untuk meningkatkan kualitas hasil
-              panen dan kesehatan tanah.
-       </p>
-       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-05">
-        5 Juni 2024
-       </time>
-      </div>
-     </article>
-     <article class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col">
-      <img alt="Foto festival budaya desa dengan warga mengenakan pakaian adat dan pertunjukan seni tradisional" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/db0e8529-52c1-4f1f-4c76-65c1e4090cf6.jpg" width="600"/>
-      <div class="p-6 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-green-700 mb-2">
-        Festival Budaya Desa Meriahkan Akhir Pekan
-       </h3>
-       <p class="text-gray-700 flex-grow">
-        Festival budaya desa menampilkan berbagai kesenian tradisional dan kuliner khas desa.
-       </p>
-       <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-05-28">
-        28 Mei 2024
-       </time>
-      </div>
-     </article>
-    </div>
-   </section>
-   <!-- Profil Desa Section -->
-   <section aria-label="Profil desa dan informasi umum" class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16" id="profil">
-    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
-     Profil Desa
-    </h2>
-    <div class="flex flex-col lg:flex-row items-center gap-12">
-     <img alt="Foto panorama desa dengan pemandangan sawah hijau, rumah tradisional, dan pegunungan di latar belakang" class="rounded-lg shadow-lg w-full max-w-md" height="350" loading="lazy" src="https://storage.googleapis.com/a1aa/image/7d847909-4268-4662-bc0c-4041705cf625.jpg" width="500"/>
-     <div class="max-w-xl text-gray-700">
-      <p class="mb-4">
-       Desa Sukamaju adalah sebuah desa yang terletak di kaki pegunungan dengan pemandangan alam yang
-            indah dan masyarakat yang ramah. Desa ini memiliki potensi pertanian yang besar dan budaya
-            tradisional yang masih terjaga dengan baik.
-      </p>
-      <p class="mb-4">
-       Pemerintah desa berkomitmen untuk meningkatkan kesejahteraan warga melalui berbagai program
-            layanan administrasi dan pembangunan infrastruktur.
-      </p>
-      <p>
-       Desa Sukamaju juga aktif mengadakan kegiatan sosial dan budaya untuk mempererat tali
-            persaudaraan antarwarga.
-      </p>
+     <div class="lg:w-1/2 mb-10 lg:mb-0">
+      <img
+       alt="Ilustrasi warga desa sedang menggunakan layanan online di perangkat komputer dan smartphone, latar belakang pemandangan desa hijau dan rumah tradisional"
+       class="mx-auto max-w-full rounded-lg shadow-lg"
+       height="400"
+       loading="lazy"
+       src="https://storage.googleapis.com/a1aa/image/a3723a6b-c10c-4da6-5c79-f5e8122aa87b.jpg"
+       width="600"
+      />
      </div>
-    </div>
-   </section>
-   <!-- Kontak Section -->
-   <section aria-label="Formulir kontak dan informasi alamat desa" class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto" id="kontak">
-    <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
-     Kontak Kami
-    </h2>
-    <div class="flex flex-col lg:flex-row gap-12">
-     <form action="#" aria-label="Formulir pengiriman pesan ke pemerintah desa" class="bg-white rounded-lg shadow-md p-8 flex-1 max-w-lg mx-auto" method="POST">
-      <div class="mb-6">
-       <label class="block text-green-700 font-semibold mb-2" for="nama">
-        Nama Lengkap
-       </label>
-       <input class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" required="" type="text"/>
+    </section>
+
+    <!-- Layanan Section with form -->
+    <section
+     aria-label="Formulir pengajuan layanan administrasi desa"
+     class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16"
+     id="layanan"
+    >
+     <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+      Pengajuan Layanan Administrasi Desa
+     </h2>
+     <form
+      id="layanan-form"
+      class="bg-white rounded-lg shadow-md p-8 max-w-3xl mx-auto space-y-6"
+      novalidate
+     >
+      <div>
+       <label
+        for="nama-lengkap"
+        class="block text-green-700 font-semibold mb-2"
+        >Nama Lengkap</label
+       >
+       <input
+        type="text"
+        id="nama-lengkap"
+        name="nama-lengkap"
+        required
+        placeholder="Masukkan nama lengkap Anda"
+        class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       />
+       <p
+        id="error-nama-lengkap"
+        class="text-red-600 text-sm mt-1 hidden"
+        role="alert"
+       >
+        Nama lengkap wajib diisi.
+       </p>
       </div>
-      <div class="mb-6">
-       <label class="block text-green-700 font-semibold mb-2" for="email">
-        Email
-       </label>
-       <input class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="email" name="email" placeholder="contoh@email.com" required="" type="email"/>
+
+      <div>
+       <label
+        for="nik"
+        class="block text-green-700 font-semibold mb-2"
+        >NIK (Nomor Induk Kependudukan)</label
+       >
+       <input
+        type="text"
+        id="nik"
+        name="nik"
+        required
+        pattern="^[0-9]{16}$"
+        placeholder="Masukkan NIK 16 digit"
+        class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       />
+       <p
+        id="error-nik"
+        class="text-red-600 text-sm mt-1 hidden"
+        role="alert"
+       >
+        NIK harus 16 digit angka.
+       </p>
       </div>
-      <div class="mb-6">
-       <label class="block text-green-700 font-semibold mb-2" for="pesan">
-        Pesan
-       </label>
-       <textarea class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="pesan" name="pesan" placeholder="Tulis pesan atau pertanyaan Anda" required="" rows="5"></textarea>
+
+      <div>
+       <label
+        for="jenis-layanan"
+        class="block text-green-700 font-semibold mb-2"
+        >Jenis Layanan</label
+       >
+       <select
+        id="jenis-layanan"
+        name="jenis-layanan"
+        required
+        class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       >
+        <option value="" disabled selected>
+         Pilih jenis layanan
+        </option>
+        <option value="domisili">Surat Keterangan Domisili</option>
+        <option value="tidak-mampu">Surat Keterangan Tidak Mampu</option>
+        <option value="usaha">Surat Keterangan Usaha</option>
+        <option value="kelahiran">Surat Keterangan Kelahiran</option>
+        <option value="kematian">Surat Keterangan Kematian</option>
+        <option value="pengantar-nikah">Surat Pengantar Nikah</option>
+       </select>
+       <p
+        id="error-jenis-layanan"
+        class="text-red-600 text-sm mt-1 hidden"
+        role="alert"
+       >
+        Pilih jenis layanan.
+       </p>
       </div>
-      <button class="w-full bg-green-700 text-white font-semibold py-3 rounded-md hover:bg-green-800 transition" type="submit">
-       Kirim Pesan
+
+      <div>
+       <label
+        for="keterangan"
+        class="block text-green-700 font-semibold mb-2"
+        >Keterangan Tambahan</label
+       >
+       <textarea
+        id="keterangan"
+        name="keterangan"
+        rows="4"
+        placeholder="Tuliskan keterangan tambahan jika diperlukan"
+        class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+       ></textarea>
+      </div>
+
+      <button
+       type="submit"
+       class="w-full bg-green-700 text-white font-semibold py-3 rounded-md hover:bg-green-800 transition"
+      >
+       Ajukan Layanan
       </button>
      </form>
-     <div class="flex-1 max-w-md mx-auto text-green-800">
-      <h3 class="text-xl font-semibold mb-4">
-       Alamat Kantor Desa
-      </h3>
-      <p class="mb-2">
-       <i class="fas fa-map-marker-alt mr-2">
-       </i>
-       Jl. Merdeka No. 123, Desa Sukamaju, Kecamatan
-            Sukamaju, Kabupaten Sukamaju
-      </p>
-      <p class="mb-2">
-       <i class="fas fa-phone-alt mr-2">
-       </i>
-       +62 812-3456-7890
-      </p>
-      <p class="mb-2">
-       <i class="fas fa-envelope mr-2">
-       </i>
-       kontak@desasukamaju.id
-      </p>
-      <p class="mb-6">
-       <i class="fas fa-clock mr-2">
-       </i>
-       Senin - Jumat, 08.00 - 16.00 WIB
-      </p>
-      <img alt="Peta lokasi kantor desa Sukamaju dengan penanda lokasi berwarna merah" class="rounded-lg shadow-md" height="300" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b384db2c-7e82-4530-e9d2-34a3544ab780.jpg" width="400"/>
+
+     <div
+      id="success-message"
+      class="hidden max-w-3xl mx-auto mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md"
+      role="alert"
+     >
+      Pengajuan layanan berhasil dikirim. Terima kasih.
+     </div>
+    </section>
+
+    <!-- Berita Section -->
+    <section
+     aria-label="Berita dan informasi terbaru desa"
+     class="bg-white py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto"
+     id="berita"
+    >
+     <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+      Berita Terbaru Desa
+     </h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <article
+       class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col"
+      >
+       <img
+        alt="Foto warga desa sedang melakukan gotong royong membersihkan lingkungan desa dengan alat kebersihan"
+        class="w-full h-48 object-cover"
+        height="400"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/71225336-0a64-497a-b61c-1dd582c4c900.jpg"
+        width="600"
+       />
+       <div class="p-6 flex flex-col flex-grow">
+        <h3 class="text-xl font-semibold text-green-700 mb-2">
+         Gotong Royong Bersihkan Lingkungan Desa
+        </h3>
+        <p class="text-gray-700 flex-grow">
+         Warga desa bersama-sama melakukan gotong royong membersihkan
+         lingkungan untuk menjaga kebersihan dan kesehatan.
+        </p>
+        <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-10">
+         10 Juni 2024
+        </time>
+       </div>
+      </article>
+      <article
+       class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col"
+      >
+       <img
+        alt="Foto petani desa sedang mengikuti pelatihan pertanian organik di aula desa dengan instruktur"
+        class="w-full h-48 object-cover"
+        height="400"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/01a968f5-64d3-48aa-df68-9cef28806544.jpg"
+        width="600"
+       />
+       <div class="p-6 flex flex-col flex-grow">
+        <h3 class="text-xl font-semibold text-green-700 mb-2">
+         Pelatihan Pertanian Organik untuk Petani Muda
+        </h3>
+        <p class="text-gray-700 flex-grow">
+         Pemerintah desa mengadakan pelatihan pertanian organik untuk
+         meningkatkan kualitas hasil panen dan kesehatan tanah.
+        </p>
+        <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-06-05">
+         5 Juni 2024
+        </time>
+       </div>
+      </article>
+      <article
+       class="bg-green-50 rounded-lg shadow-md overflow-hidden flex flex-col"
+      >
+       <img
+        alt="Foto festival budaya desa dengan warga mengenakan pakaian adat dan pertunjukan seni tradisional"
+        class="w-full h-48 object-cover"
+        height="400"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/db0e8529-52c1-4f1f-4c76-65c1e4090cf6.jpg"
+        width="600"
+       />
+       <div class="p-6 flex flex-col flex-grow">
+        <h3 class="text-xl font-semibold text-green-700 mb-2">
+         Festival Budaya Desa Meriahkan Akhir Pekan
+        </h3>
+        <p class="text-gray-700 flex-grow">
+         Festival budaya desa menampilkan berbagai kesenian tradisional dan
+         kuliner khas desa.
+        </p>
+        <time class="mt-4 text-sm text-gray-500 block text-right" datetime="2024-05-28">
+         28 Mei 2024
+        </time>
+       </div>
+      </article>
+     </div>
+    </section>
+
+    <!-- Profil Desa Section -->
+    <section
+     aria-label="Profil desa dan informasi umum"
+     class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-16"
+     id="profil"
+    >
+     <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+      Profil Desa
+     </h2>
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <img
+       alt="Foto panorama desa dengan pemandangan sawah hijau, rumah tradisional, dan pegunungan di latar belakang"
+       class="rounded-lg shadow-lg w-full max-w-md"
+       height="350"
+       loading="lazy"
+       src="https://storage.googleapis.com/a1aa/image/7d847909-4268-4662-bc0c-4041705cf625.jpg"
+       width="500"
+      />
+      <div class="max-w-xl text-gray-700">
+       <p class="mb-4">
+        Desa Sukamaju adalah sebuah desa yang terletak di kaki pegunungan
+        dengan pemandangan alam yang indah dan masyarakat yang ramah. Desa
+        ini memiliki potensi pertanian yang besar dan budaya tradisional yang
+        masih terjaga dengan baik.
+       </p>
+       <p class="mb-4">
+        Pemerintah desa berkomitmen untuk meningkatkan kesejahteraan warga
+        melalui berbagai program layanan administrasi dan pembangunan
+        infrastruktur.
+       </p>
+       <p>
+        Desa Sukamaju juga aktif mengadakan kegiatan sosial dan budaya untuk
+        mempererat tali persaudaraan antarwarga.
+       </p>
+      </div>
+     </div>
+    </section>
+
+    <!-- Kontak Section -->
+    <section
+     aria-label="Formulir kontak dan informasi alamat desa"
+     class="bg-green-50 py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto"
+     id="kontak"
+    >
+     <h2 class="text-3xl font-bold text-green-800 mb-10 text-center">
+      Kontak Kami
+     </h2>
+     <div class="flex flex-col lg:flex-row gap-12">
+      <form
+       action="#"
+       aria-label="Formulir pengiriman pesan ke pemerintah desa"
+       class="bg-white rounded-lg shadow-md p-8 flex-1 max-w-lg mx-auto"
+       method="POST"
+       id="contact-form"
+       novalidate
+      >
+       <div class="mb-6">
+        <label
+         class="block text-green-700 font-semibold mb-2"
+         for="nama-kontak"
+         >Nama Lengkap</label
+        >
+        <input
+         class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+         id="nama-kontak"
+         name="nama-kontak"
+         placeholder="Masukkan nama lengkap Anda"
+         required
+         type="text"
+        />
+        <p
+         id="error-nama-kontak"
+         class="text-red-600 text-sm mt-1 hidden"
+         role="alert"
+        >
+         Nama lengkap wajib diisi.
+        </p>
+       </div>
+       <div class="mb-6">
+        <label
+         class="block text-green-700 font-semibold mb-2"
+         for="email-kontak"
+         >Email</label
+        >
+        <input
+         class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+         id="email-kontak"
+         name="email-kontak"
+         placeholder="contoh@email.com"
+         required
+         type="email"
+        />
+        <p
+         id="error-email-kontak"
+         class="text-red-600 text-sm mt-1 hidden"
+         role="alert"
+        >
+         Email tidak valid.
+        </p>
+       </div>
+       <div class="mb-6">
+        <label
+         class="block text-green-700 font-semibold mb-2"
+         for="pesan-kontak"
+         >Pesan</label
+        >
+        <textarea
+         class="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+         id="pesan-kontak"
+         name="pesan-kontak"
+         placeholder="Tulis pesan atau pertanyaan Anda"
+         required
+         rows="5"
+        ></textarea>
+        <p
+         id="error-pesan-kontak"
+         class="text-red-600 text-sm mt-1 hidden"
+         role="alert"
+        >
+         Pesan wajib diisi.
+        </p>
+       </div>
+       <button
+        class="w-full bg-green-700 text-white font-semibold py-3 rounded-md hover:bg-green-800 transition"
+        type="submit"
+       >
+        Kirim Pesan
+       </button>
+       <p
+        id="contact-success"
+        class="text-green-700 mt-4 hidden font-semibold"
+        role="alert"
+       >
+        Pesan berhasil dikirim. Terima kasih.
+       </p>
+      </form>
+      <div class="flex-1 max-w-md mx-auto text-green-800">
+       <h3 class="text-xl font-semibold mb-4">Alamat Kantor Desa</h3>
+       <p class="mb-2">
+        <i class="fas fa-map-marker-alt mr-2"></i>Jl. Merdeka No. 123, Desa
+        Sukamaju, Kecamatan Sukamaju, Kabupaten Sukamaju
+       </p>
+       <p class="mb-2">
+        <i class="fas fa-phone-alt mr-2"></i>+62 812-3456-7890
+       </p>
+       <p class="mb-2">
+        <i class="fas fa-envelope mr-2"></i>kontak@desasukamaju.id
+       </p>
+       <p class="mb-6">
+        <i class="fas fa-clock mr-2"></i>Senin - Jumat, 08.00 - 16.00 WIB
+       </p>
+       <img
+        alt="Peta lokasi kantor desa Sukamaju dengan penanda lokasi berwarna merah"
+        class="rounded-lg shadow-md"
+        height="300"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/b384db2c-7e82-4530-e9d2-34a3544ab780.jpg"
+        width="400"
+       />
+      </div>
+     </div>
+    </section>
+   </main>
+
+   <!-- Footer -->
+   <footer class="bg-green-700 text-green-100 py-8 mt-16">
+    <div
+     class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 flex flex-col md:flex-row justify-between items-center"
+    >
+     <p class="text-sm">© 2024 Desa Sukamaju. Semua hak cipta dilindungi.</p>
+     <div class="flex space-x-6 mt-4 md:mt-0">
+      <a
+       aria-label="Facebook Desa Sukamaju"
+       class="hover:text-green-300 transition"
+       href="#"
+       ><i class="fab fa-facebook-f"></i
+      ></a>
+      <a
+       aria-label="Twitter Desa Sukamaju"
+       class="hover:text-green-300 transition"
+       href="#"
+       ><i class="fab fa-twitter"></i
+      ></a>
+      <a
+       aria-label="Instagram Desa Sukamaju"
+       class="hover:text-green-300 transition"
+       href="#"
+       ><i class="fab fa-instagram"></i
+      ></a>
      </div>
     </div>
-   </section>
-  </main>
-  <!-- Footer -->
-  <footer class="bg-green-700 text-green-100 py-8 mt-16">
-   <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 flex flex-col md:flex-row justify-between items-center">
-    <p class="text-sm">
-     © 2024 Desa Sukamaju. Semua hak cipta dilindungi.
-    </p>
-    <div class="flex space-x-6 mt-4 md:mt-0">
-     <a aria-label="Facebook Desa Sukamaju" class="hover:text-green-300 transition" href="#">
-      <i class="fab fa-facebook-f">
-      </i>
-     </a>
-     <a aria-label="Twitter Desa Sukamaju" class="hover:text-green-300 transition" href="#">
-      <i class="fab fa-twitter">
-      </i>
-     </a>
-     <a aria-label="Instagram Desa Sukamaju" class="hover:text-green-300 transition" href="#">
-      <i class="fab fa-instagram">
-      </i>
-     </a>
-    </div>
-   </div>
-  </footer>
-  <script>
-   const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+   </footer>
+  </div>
 
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+  <script>
+   // Toggle mobile menu
+   const menuBtn = document.getElementById("menu-btn");
+   const mobileMenu = document.getElementById("mobile-menu");
+   menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+   });
+
+   // Login logic (simple simulation)
+   const loginModal = document.getElementById("login-modal");
+   const loginForm = document.getElementById("login-form");
+   const appContent = document.getElementById("app-content");
+
+   const usernameInput = document.getElementById("username");
+   const passwordInput = document.getElementById("password");
+   const usernameError = document.getElementById("username-error");
+   const passwordError = document.getElementById("password-error");
+
+   // Dummy user data (for demo only)
+   const validUsers = [
+    { username: "warga1", password: "desa123" },
+    { username: "warga2", password: "desa123" },
+   ];
+
+   loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let valid = true;
+
+    if (!usernameInput.value.trim()) {
+     usernameError.classList.remove("hidden");
+     valid = false;
+    } else {
+     usernameError.classList.add("hidden");
+    }
+
+    if (!passwordInput.value.trim()) {
+     passwordError.classList.remove("hidden");
+     valid = false;
+    } else {
+     passwordError.classList.add("hidden");
+    }
+
+    if (!valid) return;
+
+    const userFound = validUsers.find(
+     (u) =>
+      u.username === usernameInput.value.trim() &&
+      u.password === passwordInput.value.trim()
+    );
+
+    if (userFound) {
+     loginModal.classList.add("hidden");
+     appContent.classList.remove("hidden");
+     // Clear login form
+     loginForm.reset();
+    } else {
+     alert("Nama pengguna atau kata sandi salah.");
+    }
+   });
+
+   // Layanan form validation and submission
+   const layananForm = document.getElementById("layanan-form");
+   const successMessage = document.getElementById("success-message");
+
+   layananForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Clear previous errors
+    [
+     "nama-lengkap",
+     "nik",
+     "jenis-layanan",
+    ].forEach((id) => {
+     document.getElementById(`error-${id}`).classList.add("hidden");
     });
+
+    let valid = true;
+
+    const namaLengkap = document.getElementById("nama-lengkap");
+    const nik = document.getElementById("nik");
+    const jenisLayanan = document.getElementById("jenis-layanan");
+
+    if (!namaLengkap.value.trim()) {
+     document.getElementById("error-nama-lengkap").classList.remove("hidden");
+     valid = false;
+    }
+    if (!nik.value.trim() || !/^\d{16}$/.test(nik.value.trim())) {
+     document.getElementById("error-nik").classList.remove("hidden");
+     valid = false;
+    }
+    if (!jenisLayanan.value) {
+     document.getElementById("error-jenis-layanan").classList.remove("hidden");
+     valid = false;
+    }
+
+    if (!valid) return;
+
+    // Simulate submission success
+    layananForm.reset();
+    successMessage.classList.remove("hidden");
+
+    // Scroll to success message
+    successMessage.scrollIntoView({ behavior: "smooth" });
+
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+     successMessage.classList.add("hidden");
+    }, 5000);
+   });
+
+   // Kontak form validation and submission
+   const contactForm = document.getElementById("contact-form");
+   const contactSuccess = document.getElementById("contact-success");
+
+   contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Clear previous errors
+    [
+     "nama-kontak",
+     "email-kontak",
+     "pesan-kontak",
+    ].forEach((id) => {
+     document.getElementById(`error-${id}`).classList.add("hidden");
+    });
+
+    let valid = true;
+
+    const namaKontak = document.getElementById("nama-kontak");
+    const emailKontak = document.getElementById("email-kontak");
+    const pesanKontak = document.getElementById("pesan-kontak");
+
+    if (!namaKontak.value.trim()) {
+     document.getElementById("error-nama-kontak").classList.remove("hidden");
+     valid = false;
+    }
+    if (
+     !emailKontak.value.trim() ||
+     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailKontak.value.trim())
+    ) {
+     document.getElementById("error-email-kontak").classList.remove("hidden");
+     valid = false;
+    }
+    if (!pesanKontak.value.trim()) {
+     document.getElementById("error-pesan-kontak").classList.remove("hidden");
+     valid = false;
+    }
+
+    if (!valid) return;
+
+    // Simulate submission success
+    contactForm.reset();
+    contactSuccess.classList.remove("hidden");
+
+    // Scroll to success message
+    contactSuccess.scrollIntoView({ behavior: "smooth" });
+
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+     contactSuccess.classList.add("hidden");
+    }, 5000);
+   });
   </script>
  </body>
-</html>
+        </html>
