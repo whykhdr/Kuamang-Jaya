@@ -1,1530 +1,428 @@
-<html class="scroll-smooth" lang="id">
+<html lang="id">
  <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   Aplikasi Pembuat RAB Bangunan Otomatis - Desa Kuamang Jaya
+   Aplikasi TV Lokal Indonesia
   </title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-   rel="stylesheet"
-  />
-  <link
-   href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap"
-   rel="stylesheet"
-  />
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
   <style>
    body {
-    font-family: "Inter", sans-serif;
-   }
-   /* Scrollbar for bahan table */
-   #bahanBody::-webkit-scrollbar {
-    height: 8px;
-   }
-   #bahanBody::-webkit-scrollbar-thumb {
-    background-color: rgba(34, 197, 94, 0.5);
-    border-radius: 4px;
-   }
+      font-family: 'Inter', sans-serif;
+    }
   </style>
  </head>
- <body class="bg-gray-50 min-h-screen flex flex-col">
-  <header class="bg-green-700 text-white shadow-md">
-   <div
-    class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between"
-   >
+ <body class="bg-gray-100 min-h-screen flex flex-col">
+  <header class="bg-white shadow-md">
+   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
     <div class="flex items-center space-x-3">
-     <img
-      alt="Logo Desa Kuamang Jaya, lambang desa berwarna hijau dan kuning"
-      class="w-12 h-12 rounded-full"
-      height="48"
-      src="https://storage.googleapis.com/a1aa/image/85e71c3a-48c1-432c-cca9-103f65858c04.jpg"
-      width="48"
-     />
-     <h1 class="text-2xl font-semibold">Aplikasi RAB Bangunan Otomatis</h1>
+     <img alt="Logo aplikasi TV lokal Indonesia, ikon televisi berwarna merah dan putih" class="w-12 h-12" height="48" src="https://storage.googleapis.com/a1aa/image/b71dead7-c1c5-4bc8-fc5d-9266b7cec069.jpg" width="48"/>
+     <h1 class="text-2xl font-semibold text-red-600">
+      TV Lokal Indonesia
+     </h1>
     </div>
-    <nav class="mt-3 md:mt-0">
-     <ul class="flex space-x-6 text-sm font-medium">
-      <li>
-       <a class="hover:underline" href="#form">Buat RAB Bangunan</a>
-      </li>
-      <li>
-       <a class="hover:underline" href="#daftar-rab">Daftar RAB Bangunan</a>
-      </li>
-      <li>
-       <a class="hover:underline" href="#tentang">Tentang</a>
-      </li>
-     </ul>
+    <nav class="hidden md:flex space-x-6 text-gray-700 font-medium">
+     <a class="hover:text-red-600 transition" href="#">
+      Beranda
+     </a>
+     <a class="hover:text-red-600 transition" href="#">
+      Saluran
+     </a>
+     <a class="hover:text-red-600 transition" href="#">
+      Jadwal
+     </a>
+     <a class="hover:text-red-600 transition" href="#">
+      Berita
+     </a>
+     <a class="hover:text-red-600 transition" href="#">
+      Tentang
+     </a>
     </nav>
+    <button aria-label="Buka menu navigasi" class="md:hidden text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600" id="menu-btn">
+     <i class="fas fa-bars fa-lg">
+     </i>
+    </button>
    </div>
+   <nav class="md:hidden bg-white shadow-md hidden flex-col space-y-2 px-4 pb-4" id="mobile-menu">
+    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
+     Beranda
+    </a>
+    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
+     Saluran
+    </a>
+    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
+     Jadwal
+    </a>
+    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
+     Berita
+    </a>
+    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
+     Tentang
+    </a>
+   </nav>
   </header>
-  <main class="flex-grow container mx-auto px-4 py-8">
-   <section
-    class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6"
-    id="form"
-   >
-    <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">
-     Formulir Pembuatan RAB Bangunan dengan Template Proyek Desa
+  <main class="flex-grow container mx-auto px-4 py-6">
+   <section>
+    <h2 class="text-3xl font-semibold text-red-600 mb-6">
+     Saluran TV Lokal Populer
     </h2>
-    <form class="space-y-6" id="rabForm">
-     <div>
-      <label
-       class="block text-gray-700 font-semibold mb-1"
-       for="templateProyek"
-       >Pilih Template Proyek Desa</label
-      >
-      <select
-       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600"
-       id="templateProyek"
-       name="templateProyek"
-      >
-       <option value="" selected disabled>-- Pilih Template Proyek --</option>
-       <option value="rumah">Pembangunan Rumah</option>
-       <option value="jalan_beton">Pembangunan Jalan Beton</option>
-       <option value="drainase">Pembangunan Drainase</option>
-       <option value="posyandu">Pembangunan Posyandu</option>
-       <option value="balai_desa">Pembangunan Balai Desa</option>
-       <option value="jembatan">Pembangunan Jembatan</option>
-       <option value="gapura">Pembangunan Gapura</option>
-      </select>
-     </div>
-     <div>
-      <label
-       class="block text-gray-700 font-semibold mb-1"
-       for="namaProyek"
-       >Nama Proyek Bangunan</label
-      >
-      <input
-       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600"
-       id="namaProyek"
-       name="namaProyek"
-       placeholder="Contoh: Pembangunan Rumah RT 05"
-       required=""
-       type="text"
-      />
-     </div>
-     <div>
-      <label
-       class="block text-gray-700 font-semibold mb-1"
-       for="lokasi"
-       >Lokasi Bangunan</label
-      >
-      <input
-       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600"
-       id="lokasi"
-       name="lokasi"
-       placeholder="Contoh: Dusun II, Desa Kuamang Jaya"
-       required=""
-       type="text"
-      />
-     </div>
-     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-       <label
-        class="block text-gray-700 font-semibold mb-1"
-        for="panjang"
-        >Panjang Bangunan (m)</label
-       >
-       <input
-        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600 text-right"
-        id="panjang"
-        min="0"
-        name="panjang"
-        oninput="updateLuas()"
-        required=""
-        step="any"
-        type="number"
-       />
-      </div>
-      <div>
-       <label
-        class="block text-gray-700 font-semibold mb-1"
-        for="lebar"
-        >Lebar Bangunan (m)</label
-       >
-       <input
-        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600 text-right"
-        id="lebar"
-        min="0"
-        name="lebar"
-        oninput="updateLuas()"
-        required=""
-        step="any"
-        type="number"
-       />
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TV RCTI berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/4a219d28-1d37-4b29-9a5b-7b991688da80.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        RCTI
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV nasional dengan program hiburan dan berita.
+       </p>
       </div>
      </div>
-     <div>
-      <label class="block text-gray-700 font-semibold mb-1" for="luas"
-       >Luas Bangunan (m²)</label
-      >
-      <input
-       class="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100 text-right"
-       id="luas"
-       name="luas"
-       placeholder="Luas otomatis dihitung"
-       readonly=""
-       type="text"
-      />
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TV MNCTV berwarna biru dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/b0df9fdb-54c4-48ff-5568-8e6c48ad04ac.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        MNCTV
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV dengan program hiburan keluarga dan musik.
+       </p>
+      </div>
      </div>
-     <div>
-      <label class="block text-gray-700 font-semibold mb-2">
-       Daftar Bahan Bangunan
-      </label>
-      <table
-       class="w-full border border-gray-300 rounded-md text-sm"
-       id="bahanTable"
-      >
-       <thead class="bg-green-100 text-green-800">
-        <tr>
-         <th class="border border-green-300 px-3 py-2 text-left w-28">Gambar</th>
-         <th class="border border-green-300 px-3 py-2 text-left">Nama Bahan</th>
-         <th class="border border-green-300 px-3 py-2 text-left w-24">Volume</th>
-         <th class="border border-green-300 px-3 py-2 text-left w-24">Satuan</th>
-         <th class="border border-green-300 px-3 py-2 text-left w-36">
-          Harga Satuan (Rp)
-         </th>
-         <th class="border border-green-300 px-3 py-2 text-left w-36">Total (Rp)</th>
-         <th class="border border-green-300 px-3 py-2 w-12"></th>
-        </tr>
-       </thead>
-       <tbody id="bahanBody">
-        <tr class="border-b border-gray-200">
-         <td class="border border-green-300 px-2 py-1">
-          <img
-           alt="Gambar bahan semen dalam kantong berwarna abu-abu dengan tulisan semen"
-           class="w-16 h-10 object-contain mx-auto rounded"
-           height="40"
-           loading="lazy"
-           src="https://storage.googleapis.com/a1aa/image/9d336fc6-2b59-4a27-496a-d561039135c2.jpg"
-           width="60"
-          />
-         </td>
-         <td class="border border-green-300 px-2 py-1">
-          <input
-           class="w-full border-none focus:ring-0 focus:outline-none"
-           name="namaBahan[]"
-           oninput="updateBahanImage(this)"
-           placeholder="Contoh: Semen"
-           required=""
-           type="text"
-          />
-         </td>
-         <td class="border border-green-300 px-2 py-1">
-          <input
-           class="w-full border-none focus:ring-0 focus:outline-none text-right"
-           min="0"
-           name="volumeBahan[]"
-           oninput="updateRowTotal(this)"
-           required=""
-           step="any"
-           type="number"
-          />
-         </td>
-         <td class="border border-green-300 px-2 py-1">
-          <input
-           class="w-full border-none focus:ring-0 focus:outline-none"
-           name="satuanBahan[]"
-           placeholder="Contoh: Sak"
-           required=""
-           type="text"
-          />
-         </td>
-         <td class="border border-green-300 px-2 py-1">
-          <input
-           class="w-full border-none focus:ring-0 focus:outline-none text-right"
-           min="0"
-           name="hargaSatuanBahan[]"
-           oninput="updateRowTotal(this)"
-           required=""
-           step="any"
-           type="number"
-          />
-         </td>
-         <td
-          class="border border-green-300 px-2 py-1 text-right font-semibold text-green-700"
-         >
-          Rp 0
-         </td>
-         <td class="border border-green-300 px-2 py-1 text-center">
-          <button
-           aria-label="Hapus baris bahan"
-           class="text-red-600 hover:text-red-800"
-           onclick="removeBahanRow(this)"
-           type="button"
-          >
-           <i class="fas fa-trash-alt"></i>
-          </button>
-         </td>
-        </tr>
-       </tbody>
-      </table>
-      <button
-       class="mt-3 inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600"
-       id="addBahanBtn"
-       type="button"
-      >
-       <i class="fas fa-plus mr-2"></i> Tambah Bahan
-      </button>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TV Trans7 berwarna hijau dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/c3c7d5fc-7e33-444c-1a04-98c87416f472.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        Trans7
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV dengan program berita, olahraga, dan hiburan.
+       </p>
+      </div>
      </div>
-     <div class="text-right text-lg font-semibold text-green-800">
-      Total RAB Bangunan:
-      <span id="totalRab">Rp 0</span>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TV MetroTV berwarna biru tua dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/d82f21b8-2c41-4ef2-9a0f-fb555fd9af1d.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        MetroTV
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV berita dan informasi terkini di Indonesia.
+       </p>
+      </div>
      </div>
-     <div class="flex justify-center space-x-6 mt-6">
-      <button
-       class="px-8 py-3 bg-green-700 text-white rounded-md text-lg font-semibold hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-700"
-       type="submit"
-      >
-       Buat RAB Bangunan
-      </button>
-      <button
-       type="button"
-       id="btnGenerateImage"
-       class="px-8 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
-      >
-       Generate Gambar RAB
-      </button>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TV Indosiar berwarna kuning dan hijau dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/9f7af134-7209-4b73-d81e-c1179f53b06c.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        Indosiar
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV dengan program drama dan hiburan keluarga.
+       </p>
+      </div>
      </div>
-    </form>
-   </section>
-   <section class="max-w-6xl mx-auto mt-12 mb-16" id="daftar-rab">
-    <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">
-     Daftar RAB Bangunan yang Dibuat
-    </h2>
-    <div class="space-y-6" id="rabList">
-     <p class="text-center text-gray-500">Belum ada RAB Bangunan yang dibuat.</p>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TVRI berwarna biru dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/1ea87382-d7bd-4676-0cd9-0c57b9a2aa94.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        TVRI
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV pemerintah dengan program edukasi dan budaya.
+       </p>
+      </div>
+     </div>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran GTV berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/7aecec82-4988-45ad-f7ed-55e23827973a.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        GTV
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV hiburan dengan program musik dan reality show.
+       </p>
+      </div>
+     </div>
+     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      <img alt="Logo saluran TransTV berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/abfbc7ed-03eb-4f87-5608-31da3c296a2c.jpg" width="400"/>
+      <div class="px-4 py-2">
+       <h3 class="text-lg font-semibold text-gray-800">
+        TransTV
+       </h3>
+       <p class="text-sm text-gray-600">
+        Saluran TV hiburan dan berita populer di Indonesia.
+       </p>
+      </div>
+     </div>
     </div>
    </section>
-   <section
-    class="max-w-4xl mx-auto mb-16 px-4 py-8 bg-white rounded-lg shadow-md"
-    id="tentang"
-   >
-    <h2 class="text-3xl font-semibold text-green-800 mb-4 text-center">
-     Tentang Aplikasi RAB Bangunan
+   <section class="mt-12">
+    <h2 class="text-3xl font-semibold text-red-600 mb-6">
+     Jadwal Acara Hari Ini
     </h2>
-    <p class="text-gray-700 leading-relaxed text-justify">
-     Aplikasi Pembuat RAB Bangunan Otomatis ini membantu warga dan pengurus
-     Desa Kuamang Jaya dalam menyusun Rencana Anggaran Biaya pembangunan
-     bangunan dengan memasukkan ukuran bangunan dan daftar bahan bangunan
-     lengkap dengan gambar bahan. Aplikasi ini menghitung total biaya secara
-     otomatis berdasarkan volume dan harga satuan bahan.
-    </p>
-    <p class="text-gray-700 leading-relaxed mt-4 text-justify">
-     Dengan fitur template proyek desa, Anda dapat memilih jenis proyek
-     umum seperti pembangunan rumah, jalan beton, drainase, posyandu, balai
-     desa, jembatan, dan gapura. Template akan otomatis mengisi daftar bahan
-     standar yang biasa digunakan sehingga memudahkan dan mempercepat
-     pembuatan RAB.
-    </p>
-    <img
-     alt="Ilustrasi pembangunan bangunan desa Kuamang Jaya dengan pekerja konstruksi sedang memasang bata merah dan alat bangunan"
-     class="mt-6 rounded-lg mx-auto"
-     height="300"
-     src="https://storage.googleapis.com/a1aa/image/a83fa96c-d8ab-4a2e-0973-2d6670d42021.jpg"
-     width="600"
-    />
+    <div class="bg-white rounded-lg shadow-md p-4 overflow-x-auto">
+     <table class="min-w-full text-left text-gray-700">
+      <thead>
+       <tr class="border-b border-gray-300">
+        <th class="py-3 px-4 font-semibold">
+         Waktu
+        </th>
+        <th class="py-3 px-4 font-semibold">
+         Saluran
+        </th>
+        <th class="py-3 px-4 font-semibold">
+         Acara
+        </th>
+        <th class="py-3 px-4 font-semibold">
+         Deskripsi
+        </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         06:00 - 07:00
+        </td>
+        <td class="py-2 px-4">
+         RCTI
+        </td>
+        <td class="py-2 px-4">
+         Seputar Indonesia
+        </td>
+        <td class="py-2 px-4">
+         Berita pagi terkini dari seluruh Indonesia.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         07:00 - 08:00
+        </td>
+        <td class="py-2 px-4">
+         MNCTV
+        </td>
+        <td class="py-2 px-4">
+         Cerita Anak
+        </td>
+        <td class="py-2 px-4">
+         Program edukasi dan hiburan untuk anak-anak.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         08:00 - 09:00
+        </td>
+        <td class="py-2 px-4">
+         Trans7
+        </td>
+        <td class="py-2 px-4">
+         Kick Andy
+        </td>
+        <td class="py-2 px-4">
+         Talkshow inspiratif dengan berbagai narasumber.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         09:00 - 10:00
+        </td>
+        <td class="py-2 px-4">
+         MetroTV
+        </td>
+        <td class="py-2 px-4">
+         Metro Hari Ini
+        </td>
+        <td class="py-2 px-4">
+         Berita dan analisis terkini dari dalam dan luar negeri.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         10:00 - 11:00
+        </td>
+        <td class="py-2 px-4">
+         Indosiar
+        </td>
+        <td class="py-2 px-4">
+         Dahsyat
+        </td>
+        <td class="py-2 px-4">
+         Program musik dan hiburan populer di Indonesia.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         11:00 - 12:00
+        </td>
+        <td class="py-2 px-4">
+         TVRI
+        </td>
+        <td class="py-2 px-4">
+         Indonesia Pagi
+        </td>
+        <td class="py-2 px-4">
+         Program berita dan budaya dari TVRI.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         12:00 - 13:00
+        </td>
+        <td class="py-2 px-4">
+         GTV
+        </td>
+        <td class="py-2 px-4">
+         Inbox
+        </td>
+        <td class="py-2 px-4">
+         Program musik dan hiburan untuk remaja.
+        </td>
+       </tr>
+       <tr class="border-b border-gray-200 hover:bg-gray-50">
+        <td class="py-2 px-4">
+         13:00 - 14:00
+        </td>
+        <td class="py-2 px-4">
+         TransTV
+        </td>
+        <td class="py-2 px-4">
+         Brownis
+        </td>
+        <td class="py-2 px-4">
+         Program talkshow dan hiburan ringan.
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
    </section>
-   <section
-    id="imageOutputSection"
-    class="max-w-4xl mx-auto mb-16 px-4 py-8 bg-white rounded-lg shadow-md hidden"
-   >
-    <h2 class="text-3xl font-semibold text-green-800 mb-4 text-center">
-     Gambar RAB Bangunan
+   <section class="mt-12">
+    <h2 class="text-3xl font-semibold text-red-600 mb-6">
+     Berita Terbaru
     </h2>
-    <div
-     id="imageOutput"
-     class="border border-green-300 rounded p-6 bg-gray-50 overflow-auto"
-     style="white-space: pre-wrap; font-family: monospace; font-size: 14px;"
-    ></div>
-    <button
-     id="btnDownloadImage"
-     class="mt-6 px-6 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-700 block mx-auto"
-     type="button"
-    >
-     Download Gambar RAB (PNG)
-    </button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang perkembangan teknologi televisi di Indonesia, menampilkan layar TV modern dan antena" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/b08b1b70-26ac-462b-9e1a-1a0e959c5f35.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Perkembangan Teknologi TV di Indonesia
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        Teknologi televisi di Indonesia terus berkembang dengan hadirnya siaran digital dan interaktif.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang acara televisi baru yang populer di kalangan anak muda Indonesia, menampilkan remaja menonton TV bersama" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/61e5f274-2c92-4787-8870-c0f39e239132.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Acara TV Baru yang Populer di Kalangan Anak Muda
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        Program hiburan terbaru menarik perhatian generasi muda dengan konsep yang segar dan interaktif.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang peningkatan kualitas siaran TV lokal di daerah-daerah terpencil Indonesia, menampilkan antena parabola di pegunungan" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/8bcfee28-4716-4b45-f598-dcf220fbe110.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Peningkatan Kualitas Siaran TV Lokal di Daerah Terpencil
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        Pemerintah dan penyedia layanan TV lokal bekerja sama untuk memperluas jangkauan siaran berkualitas.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang festival televisi lokal Indonesia yang menampilkan panggung dan penonton antusias" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/1e357110-0fed-4e15-4812-a54322653597.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Festival Televisi Lokal Indonesia 2024
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        Festival tahunan yang menampilkan karya terbaik dari saluran TV lokal di seluruh Indonesia.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang kolaborasi antara saluran TV lokal dan platform digital untuk konten streaming" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/55320ff0-021a-4204-672c-019cc6d588bc.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Kolaborasi TV Lokal dan Platform Digital
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        Saluran TV lokal mulai berkolaborasi dengan platform streaming untuk menjangkau audiens lebih luas.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+      <img alt="Gambar ilustrasi berita tentang program edukasi baru di TVRI yang mendukung pembelajaran jarak jauh di Indonesia" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/df9cac66-f997-4062-831e-7056639b1f86.jpg" width="600"/>
+      <div class="p-4 flex flex-col flex-grow">
+       <h3 class="text-xl font-semibold text-gray-800 mb-2">
+        Program Edukasi Baru di TVRI Mendukung Pembelajaran Jarak Jauh
+       </h3>
+       <p class="text-gray-600 flex-grow">
+        TVRI meluncurkan program edukasi yang membantu siswa belajar dari rumah selama pandemi.
+       </p>
+       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
+        Baca Selengkapnya
+       </a>
+      </div>
+     </article>
+    </div>
    </section>
   </main>
-  <footer class="bg-green-700 text-white py-6">
-   <div class="container mx-auto px-4 text-center text-sm">
-    © 2024 Desa Kuamang Jaya - Aplikasi Pembuat RAB Bangunan Otomatis
+  <footer class="bg-white border-t border-gray-300 mt-12">
+   <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
+    <p>
+     © 2024 TV Lokal Indonesia. Semua hak cipta dilindungi.
+    </p>
+    <div class="flex space-x-4 mt-4 md:mt-0">
+     <a aria-label="Facebook" class="hover:text-red-600 transition" href="#">
+      <i class="fab fa-facebook fa-lg">
+      </i>
+     </a>
+     <a aria-label="Twitter" class="hover:text-red-600 transition" href="#">
+      <i class="fab fa-twitter fa-lg">
+      </i>
+     </a>
+     <a aria-label="Instagram" class="hover:text-red-600 transition" href="#">
+      <i class="fab fa-instagram fa-lg">
+      </i>
+     </a>
+     <a aria-label="YouTube" class="hover:text-red-600 transition" href="#">
+      <i class="fab fa-youtube fa-lg">
+      </i>
+     </a>
+    </div>
    </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-   // Format angka ke Rupiah
-   function formatRupiah(angka) {
-    if (isNaN(angka) || angka === null) return "Rp 0";
-    return (
-     "Rp " +
-     angka
-      .toFixed(0)
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    );
-   }
+   const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-   // Update luas bangunan otomatis
-   function updateLuas() {
-    const panjang = parseFloat(document.getElementById("panjang").value) || 0;
-    const lebar = parseFloat(document.getElementById("lebar").value) || 0;
-    const luas = panjang * lebar;
-    document.getElementById("luas").value = luas > 0 ? luas.toFixed(2) : "";
-   }
-
-   // Update total per baris bahan dan total keseluruhan
-   function updateRowTotal(input) {
-    const row = input.closest("tr");
-    const volumeInput = row.querySelector('input[name="volumeBahan[]"]');
-    const hargaInput = row.querySelector('input[name="hargaSatuanBahan[]"]');
-    const totalCell = row.querySelector("td:nth-child(6)");
-
-    const volume = parseFloat(volumeInput.value) || 0;
-    const harga = parseFloat(hargaInput.value) || 0;
-    const total = volume * harga;
-
-    totalCell.textContent = formatRupiah(total);
-    updateTotalRab();
-   }
-
-   // Update total RAB keseluruhan
-   function updateTotalRab() {
-    const rows = document.querySelectorAll("#bahanBody tr");
-    let totalRab = 0;
-    rows.forEach((row) => {
-     const volume =
-      parseFloat(row.querySelector('input[name="volumeBahan[]"]').value) || 0;
-     const harga =
-      parseFloat(row.querySelector('input[name="hargaSatuanBahan[]"]').value) ||
-      0;
-     totalRab += volume * harga;
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
     });
-    document.getElementById("totalRab").textContent = formatRupiah(totalRab);
-   }
-
-   // Update gambar bahan berdasarkan nama bahan (simple mapping)
-   function updateBahanImage(input) {
-    const row = input.closest("tr");
-    const img = row.querySelector("img");
-    const bahan = input.value.trim().toLowerCase();
-
-    // Mapping nama bahan ke URL gambar placeholder
-    const bahanImages = {
-     semen: "https://placehold.co/60x40/png?text=Semen",
-     pasir: "https://placehold.co/60x40/png?text=Pasir",
-     batu: "https://placehold.co/60x40/png?text=Batu",
-     kayu: "https://placehold.co/60x40/png?text=Kayu",
-     besi: "https://placehold.co/60x40/png?text=Besi",
-     cat: "https://placehold.co/60x40/png?text=Cat",
-     bata: "https://placehold.co/60x40/png?text=Bata",
-     triplek: "https://placehold.co/60x40/png?text=Triplek",
-     keramik: "https://placehold.co/60x40/png?text=Keramik",
-     paku: "https://placehold.co/60x40/png?text=Paku",
-     cor: "https://placehold.co/60x40/png?text=Cor",
-     pasir_urug: "https://placehold.co/60x40/png?text=Pasir+Urug",
-     aspal: "https://placehold.co/60x40/png?text=Aspal",
-     beton: "https://placehold.co/60x40/png?text=Beton",
-    };
-
-    if (bahanImages[bahan]) {
-     img.src = bahanImages[bahan];
-     img.alt = `Gambar bahan ${input.value} untuk bangunan`;
-    } else if (input.value.trim() === "") {
-     img.src = "https://placehold.co/60x40/png?text=Gambar";
-     img.alt = "Gambar bahan bangunan placeholder";
-    } else {
-     // Default placeholder with text bahan
-     img.src = `https://placehold.co/60x40/png?text=${encodeURIComponent(
-      input.value
-     )}`;
-     img.alt = `Gambar bahan ${input.value} untuk bangunan`;
-    }
-   }
-
-   // Tambah baris bahan baru
-   document.getElementById("addBahanBtn").addEventListener("click", () => {
-    const tbody = document.getElementById("bahanBody");
-    const newRow = document.createElement("tr");
-    newRow.classList.add("border-b", "border-gray-200");
-    newRow.innerHTML = `
-        <td class="border border-green-300 px-2 py-1">
-          <img
-            src="https://placehold.co/60x40/png?text=Gambar"
-            alt="Gambar bahan bangunan placeholder"
-            class="w-16 h-10 object-contain mx-auto rounded"
-            loading="lazy"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="text"
-            name="namaBahan[]"
-            placeholder="Contoh: Semen"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none"
-            oninput="updateBahanImage(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="number"
-            name="volumeBahan[]"
-            min="0"
-            step="any"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none text-right"
-            oninput="updateRowTotal(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="text"
-            name="satuanBahan[]"
-            placeholder="Contoh: Sak"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="number"
-            name="hargaSatuanBahan[]"
-            min="0"
-            step="any"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none text-right"
-            oninput="updateRowTotal(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1 text-right font-semibold text-green-700">
-          Rp 0
-        </td>
-        <td class="border border-green-300 px-2 py-1 text-center">
-          <button
-            type="button"
-            class="text-red-600 hover:text-red-800"
-            onclick="removeBahanRow(this)"
-            aria-label="Hapus baris bahan"
-          >
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </td>
-      `;
-    tbody.appendChild(newRow);
-   });
-
-   // Hapus baris bahan
-   function removeBahanRow(button) {
-    const tbody = document.getElementById("bahanBody");
-    if (tbody.rows.length > 1) {
-     button.closest("tr").remove();
-     updateTotalRab();
-    } else {
-     alert("Minimal harus ada satu bahan bangunan.");
-    }
-   }
-
-   // Simpan RAB Bangunan ke localStorage dan tampilkan di daftar
-   document.getElementById("rabForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const namaProyek = e.target.namaProyek.value.trim();
-    const lokasi = e.target.lokasi.value.trim();
-    const panjang = parseFloat(e.target.panjang.value);
-    const lebar = parseFloat(e.target.lebar.value);
-    const luas = panjang * lebar;
-
-    if (luas <= 0) {
-     alert("Panjang dan lebar harus lebih besar dari 0.");
-     return;
-    }
-
-    const deskripsiBahanArr = Array.from(
-     e.target.querySelectorAll('input[name="namaBahan[]"]')
-    ).map((i) => i.value.trim());
-    const volumeBahanArr = Array.from(
-     e.target.querySelectorAll('input[name="volumeBahan[]"]')
-    ).map((i) => parseFloat(i.value));
-    const satuanBahanArr = Array.from(
-     e.target.querySelectorAll('input[name="satuanBahan[]"]')
-    ).map((i) => i.value.trim());
-    const hargaSatuanBahanArr = Array.from(
-     e.target.querySelectorAll('input[name="hargaSatuanBahan[]"]')
-    ).map((i) => parseFloat(i.value));
-
-    // Validasi bahan bangunan
-    for (let i = 0; i < deskripsiBahanArr.length; i++) {
-     if (
-      !deskripsiBahanArr[i] ||
-      isNaN(volumeBahanArr[i]) ||
-      volumeBahanArr[i] < 0 ||
-      !satuanBahanArr[i] ||
-      isNaN(hargaSatuanBahanArr[i]) ||
-      hargaSatuanBahanArr[i] < 0
-     ) {
-      alert("Mohon isi semua data bahan bangunan dengan benar.");
-      return;
-     }
-    }
-
-    const bahan = deskripsiBahanArr.map((nama, i) => ({
-     nama,
-     volume: volumeBahanArr[i],
-     satuan: satuanBahanArr[i],
-     hargaSatuan: hargaSatuanBahanArr[i],
-     total: volumeBahanArr[i] * hargaSatuanBahanArr[i],
-    }));
-
-    const totalRab = bahan.reduce((acc, cur) => acc + cur.total, 0);
-
-    const rabData = {
-     id: Date.now(),
-     namaProyek,
-     lokasi,
-     panjang,
-     lebar,
-     luas,
-     bahan,
-     totalRab,
-    };
-
-    // Ambil data RAB dari localStorage
-    let rabList =
-     JSON.parse(localStorage.getItem("rabBangunanKuamangJaya")) || [];
-    rabList.push(rabData);
-    localStorage.setItem("rabBangunanKuamangJaya", JSON.stringify(rabList));
-
-    alert("RAB Bangunan berhasil dibuat dan disimpan.");
-
-    e.target.reset();
-    resetBahanTable();
-    document.getElementById("luas").value = "";
-    updateTotalRab();
-    renderRabList();
-    window.location.href = "#daftar-rab";
-   });
-
-   // Reset tabel bahan ke 1 baris kosong
-   function resetBahanTable() {
-    const tbody = document.getElementById("bahanBody");
-    tbody.innerHTML = `
-        <tr class="border-b border-gray-200">
-          <td class="border border-green-300 px-2 py-1">
-            <img
-              src="https://placehold.co/60x40/png?text=Gambar"
-              alt="Gambar bahan bangunan placeholder"
-              class="w-16 h-10 object-contain mx-auto rounded"
-              loading="lazy"
-            />
-          </td>
-          <td class="border border-green-300 px-2 py-1">
-            <input
-              type="text"
-              name="namaBahan[]"
-              placeholder="Contoh: Semen"
-              required
-              class="w-full border-none focus:ring-0 focus:outline-none"
-              oninput="updateBahanImage(this)"
-            />
-          </td>
-          <td class="border border-green-300 px-2 py-1">
-            <input
-              type="number"
-              name="volumeBahan[]"
-              min="0"
-              step="any"
-              required
-              class="w-full border-none focus:ring-0 focus:outline-none text-right"
-              oninput="updateRowTotal(this)"
-            />
-          </td>
-          <td class="border border-green-300 px-2 py-1">
-            <input
-              type="text"
-              name="satuanBahan[]"
-              placeholder="Contoh: Sak"
-              required
-              class="w-full border-none focus:ring-0 focus:outline-none"
-            />
-          </td>
-          <td class="border border-green-300 px-2 py-1">
-            <input
-              type="number"
-              name="hargaSatuanBahan[]"
-              min="0"
-              step="any"
-              required
-              class="w-full border-none focus:ring-0 focus:outline-none text-right"
-              oninput="updateRowTotal(this)"
-            />
-          </td>
-          <td class="border border-green-300 px-2 py-1 text-right font-semibold text-green-700">
-            Rp 0
-          </td>
-          <td class="border border-green-300 px-2 py-1 text-center">
-            <button
-              type="button"
-              class="text-red-600 hover:text-red-800"
-              onclick="removeBahanRow(this)"
-              aria-label="Hapus baris bahan"
-            >
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
-      `;
-   }
-
-   // Render daftar RAB dari localStorage
-   function renderRabList() {
-    const container = document.getElementById("rabList");
-    const rabList = JSON.parse(localStorage.getItem("rabBangunanKuamangJaya")) || [];
-
-    if (rabList.length === 0) {
-     container.innerHTML = `<p class="text-center text-gray-500">Belum ada RAB Bangunan yang dibuat.</p>`;
-     return;
-    }
-
-    container.innerHTML = "";
-
-    rabList
-     .slice()
-     .reverse()
-     .forEach((rab) => {
-      const rabCard = document.createElement("article");
-      rabCard.className = "bg-white rounded-lg shadow-md p-6 border border-green-200";
-
-      rabCard.innerHTML = `
-            <header class="mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-              <h3 class="text-xl font-semibold text-green-800">${rab.namaProyek}</h3>
-              <div class="text-sm text-gray-600 mt-1 sm:mt-0">Lokasi: ${rab.lokasi}</div>
-            </header>
-            <div class="mb-4 text-gray-700 text-sm">
-              <div><strong>Ukuran Bangunan:</strong> ${rab.panjang} m x ${rab.lebar} m</div>
-              <div><strong>Luas Bangunan:</strong> ${rab.luas.toFixed(2)} m²</div>
-            </div>
-            <div class="overflow-x-auto mb-4">
-              <table class="w-full text-sm border border-green-300 rounded-md">
-                <thead class="bg-green-100 text-green-800">
-                  <tr>
-                    <th class="border border-green-300 px-3 py-2 text-left w-28">Gambar</th>
-                    <th class="border border-green-300 px-3 py-2 text-left">Nama Bahan</th>
-                    <th class="border border-green-300 px-3 py-2 text-right w-20">Volume</th>
-                    <th class="border border-green-300 px-3 py-2 text-left w-24">Satuan</th>
-                    <th class="border border-green-300 px-3 py-2 text-right w-36">Harga Satuan (Rp)</th>
-                    <th class="border border-green-300 px-3 py-2 text-right w-36">Total (Rp)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rab.bahan
-                   .map(
-                    (item) => `
-                    <tr>
-                      <td class="border border-green-300 px-2 py-1 text-center">
-                        <img src="${getBahanImageUrl(item.nama)}" alt="Gambar bahan ${item.nama}" class="w-16 h-10 object-contain mx-auto rounded" loading="lazy" />
-                      </td>
-                      <td class="border border-green-300 px-2 py-1">${item.nama}</td>
-                      <td class="border border-green-300 px-2 py-1 text-right">${item.volume}</td>
-                      <td class="border border-green-300 px-2 py-1">${item.satuan}</td>
-                      <td class="border border-green-300 px-2 py-1 text-right">${formatRupiah(item.hargaSatuan)}</td>
-                      <td class="border border-green-300 px-2 py-1 text-right font-semibold text-green-700">${formatRupiah(item.total)}</td>
-                    </tr>
-                  `
-                   )
-                   .join("")}
-                </tbody>
-              </table>
-            </div>
-            <div class="text-right font-bold text-green-800 text-lg">
-              Total RAB Bangunan: ${formatRupiah(rab.totalRab)}
-            </div>
-            <div class="mt-4 flex justify-end space-x-3">
-              <button class="btnDeleteRAB px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600" data-id="${rab.id}" aria-label="Hapus RAB Bangunan ${rab.namaProyek}">
-                <i class="fas fa-trash-alt mr-2"></i> Hapus
-              </button>
-            </div>
-          `;
-
-      container.appendChild(rabCard);
-     });
-
-    // Event listener tombol hapus RAB
-    document.querySelectorAll(".btnDeleteRAB").forEach((btn) => {
-     btn.addEventListener("click", (e) => {
-      const id = parseInt(e.currentTarget.getAttribute("data-id"));
-      if (confirm("Apakah Anda yakin ingin menghapus RAB Bangunan ini?")) {
-       let rabList = JSON.parse(localStorage.getItem("rabBangunanKuamangJaya")) || [];
-       rabList = rabList.filter((r) => r.id !== id);
-       localStorage.setItem("rabBangunanKuamangJaya", JSON.stringify(rabList));
-       renderRabList();
-      }
-     });
-    });
-   }
-
-   // Mendapatkan URL gambar bahan berdasarkan nama bahan (sama dengan di form)
-   function getBahanImageUrl(bahan) {
-    const bahanImages = {
-     semen: "https://placehold.co/60x40/png?text=Semen",
-     pasir: "https://placehold.co/60x40/png?text=Pasir",
-     batu: "https://placehold.co/60x40/png?text=Batu",
-     kayu: "https://placehold.co/60x40/png?text=Kayu",
-     besi: "https://placehold.co/60x40/png?text=Besi",
-     cat: "https://placehold.co/60x40/png?text=Cat",
-     bata: "https://placehold.co/60x40/png?text=Bata",
-     triplek: "https://placehold.co/60x40/png?text=Triplek",
-     keramik: "https://placehold.co/60x40/png?text=Keramik",
-     paku: "https://placehold.co/60x40/png?text=Paku",
-     cor: "https://placehold.co/60x40/png?text=Cor",
-     pasir_urug: "https://placehold.co/60x40/png?text=Pasir+Urug",
-     aspal: "https://placehold.co/60x40/png?text=Aspal",
-     beton: "https://placehold.co/60x40/png?text=Beton",
-    };
-    const key = bahan.trim().toLowerCase();
-    if (bahanImages[key]) return bahanImages[key];
-    return `https://placehold.co/60x40/png?text=${encodeURIComponent(bahan)}`;
-   }
-
-   // Template data bahan untuk proyek desa
-   const templates = {
-    rumah: [
-     {
-      nama: "Semen",
-      volume: 50,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 5,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 3000,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 20,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Paku",
-      volume: 10,
-      satuan: "kg",
-      hargaSatuan: 50000,
-     },
-    ],
-    jalan_beton: [
-     {
-      nama: "Semen",
-      volume: 40,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 4,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Batu",
-      volume: 3,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 500,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 10,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    drainase: [
-     {
-      nama: "Semen",
-      volume: 30,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir Urug",
-      volume: 6,
-      satuan: "m³",
-      hargaSatuan: 300000,
-     },
-     {
-      nama: "Batu",
-      volume: 4,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 200,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 8,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    posyandu: [
-     {
-      nama: "Semen",
-      volume: 45,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 5,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 2500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 15,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Cat",
-      volume: 20,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-    balai_desa: [
-     {
-      nama: "Semen",
-      volume: 60,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 7,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 3500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Besi",
-      volume: 600,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cat",
-      volume: 30,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-    jembatan: [
-     {
-      nama: "Semen",
-      volume: 70,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 8,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Batu",
-      volume: 6,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 800,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 12,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    gapura: [
-     {
-      nama: "Semen",
-      volume: 25,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 3,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 1500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 10,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Cat",
-      volume: 15,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-   };
-
-   // Load template bahan ke tabel
-   document
-    .getElementById("templateProyek")
-    .addEventListener("change", function () {
-     const selected = this.value;
-     if (!selected || !templates[selected]) return;
-
-     const bahanList = templates[selected];
-     const tbody = document.getElementById("bahanBody");
-     tbody.innerHTML = "";
-
-     bahanList.forEach((bahan) => {
-      const tr = document.createElement("tr");
-      tr.classList.add("border-b", "border-gray-200");
-      tr.innerHTML = `
-        <td class="border border-green-300 px-2 py-1">
-          <img
-            src="${getBahanImageUrl(bahan.nama)}"
-            alt="Gambar bahan ${bahan.nama}"
-            class="w-16 h-10 object-contain mx-auto rounded"
-            loading="lazy"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="text"
-            name="namaBahan[]"
-            value="${bahan.nama}"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none"
-            oninput="updateBahanImage(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="number"
-            name="volumeBahan[]"
-            min="0"
-            step="any"
-            value="${bahan.volume}"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none text-right"
-            oninput="updateRowTotal(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="text"
-            name="satuanBahan[]"
-            value="${bahan.satuan}"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1">
-          <input
-            type="number"
-            name="hargaSatuanBahan[]"
-            min="0"
-            step="any"
-            value="${bahan.hargaSatuan}"
-            required
-            class="w-full border-none focus:ring-0 focus:outline-none text-right"
-            oninput="updateRowTotal(this)"
-          />
-        </td>
-        <td class="border border-green-300 px-2 py-1 text-right font-semibold text-green-700">
-          ${formatRupiah(bahan.volume * bahan.hargaSatuan)}
-        </td>
-        <td class="border border-green-300 px-2 py-1 text-center">
-          <button
-            type="button"
-            class="text-red-600 hover:text-red-800"
-            onclick="removeBahanRow(this)"
-            aria-label="Hapus baris bahan"
-          >
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-     });
-     updateTotalRab();
-    });
-
-   // Generate gambar RAB sebagai PNG menggunakan html2canvas
-   document.getElementById("btnGenerateImage").addEventListener("click", () => {
-    const rabList = JSON.parse(localStorage.getItem("rabBangunanKuamangJaya")) || [];
-    if (rabList.length === 0) {
-     alert("Belum ada RAB Bangunan yang dibuat untuk digenerate gambarnya.");
-     return;
-    }
-
-    // Ambil RAB terakhir yang dibuat
-    const rab = rabList[rabList.length - 1];
-
-    // Buat elemen div untuk gambar RAB
-    const imageOutput = document.getElementById("imageOutput");
-    imageOutput.innerHTML = "";
-
-    // Buat konten gambar RAB dengan styling sederhana
-    const container = document.createElement("div");
-    container.style.backgroundColor = "#ffffff";
-    container.style.color = "#064e3b";
-    container.style.padding = "20px";
-    container.style.width = "700px";
-    container.style.fontFamily = "'Inter', sans-serif";
-    container.style.border = "2px solid #22c55e";
-    container.style.borderRadius = "8px";
-
-    // Judul
-    const title = document.createElement("h2");
-    title.textContent = "Rencana Anggaran Biaya (RAB) Bangunan";
-    title.style.textAlign = "center";
-    title.style.fontWeight = "700";
-    title.style.fontSize = "24px";
-    title.style.marginBottom = "12px";
-    container.appendChild(title);
-
-    // Info proyek
-    const info = document.createElement("div");
-    info.style.marginBottom = "16px";
-    info.innerHTML = `
-      <strong>Nama Proyek:</strong> ${rab.namaProyek}<br/>
-      <strong>Lokasi:</strong> ${rab.lokasi}<br/>
-      <strong>Ukuran Bangunan:</strong> ${rab.panjang} m x ${rab.lebar} m<br/>
-      <strong>Luas Bangunan:</strong> ${rab.luas.toFixed(2)} m²
-    `;
-    container.appendChild(info);
-
-    // Tabel bahan
-    const table = document.createElement("table");
-    table.style.width = "100%";
-    table.style.borderCollapse = "collapse";
-    table.style.fontSize = "14px";
-
-    // Header tabel
-    const thead = document.createElement("thead");
-    thead.style.backgroundColor = "#dcfce7";
-    thead.style.color = "#166534";
-    thead.style.fontWeight = "600";
-
-    const headerRow = document.createElement("tr");
-    ["Gambar", "Nama Bahan", "Volume", "Satuan", "Harga Satuan (Rp)", "Total (Rp)"].forEach((text) => {
-     const th = document.createElement("th");
-     th.textContent = text;
-     th.style.border = "1px solid #22c55e";
-     th.style.padding = "6px 8px";
-     th.style.textAlign = text === "Nama Bahan" ? "left" : "right";
-     if (text === "Gambar") th.style.textAlign = "center";
-     headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    // Body tabel
-    const tbody = document.createElement("tbody");
-    rab.bahan.forEach((item) => {
-     const tr = document.createElement("tr");
-
-     // Gambar
-     const tdImg = document.createElement("td");
-     tdImg.style.border = "1px solid #22c55e";
-     tdImg.style.padding = "4px";
-     tdImg.style.textAlign = "center";
-     const img = document.createElement("img");
-     img.src = getBahanImageUrl(item.nama);
-     img.alt = `Gambar bahan ${item.nama}`;
-     img.style.width = "60px";
-     img.style.height = "40px";
-     img.style.objectFit = "contain";
-     img.style.borderRadius = "4px";
-     tdImg.appendChild(img);
-     tr.appendChild(tdImg);
-
-     // Nama bahan
-     const tdNama = document.createElement("td");
-     tdNama.textContent = item.nama;
-     tdNama.style.border = "1px solid #22c55e";
-     tdNama.style.padding = "6px 8px";
-     tdNama.style.textAlign = "left";
-     tr.appendChild(tdNama);
-
-     // Volume
-     const tdVol = document.createElement("td");
-     tdVol.textContent = item.volume;
-     tdVol.style.border = "1px solid #22c55e";
-     tdVol.style.padding = "6px 8px";
-     tdVol.style.textAlign = "right";
-     tr.appendChild(tdVol);
-
-     // Satuan
-     const tdSat = document.createElement("td");
-     tdSat.textContent = item.satuan;
-     tdSat.style.border = "1px solid #22c55e";
-     tdSat.style.padding = "6px 8px";
-     tdSat.style.textAlign = "center";
-     tr.appendChild(tdSat);
-
-     // Harga satuan
-     const tdHarga = document.createElement("td");
-     tdHarga.textContent = formatRupiah(item.hargaSatuan);
-     tdHarga.style.border = "1px solid #22c55e";
-     tdHarga.style.padding = "6px 8px";
-     tdHarga.style.textAlign = "right";
-     tr.appendChild(tdHarga);
-
-     // Total
-     const tdTotal = document.createElement("td");
-     tdTotal.textContent = formatRupiah(item.total);
-     tdTotal.style.border = "1px solid #22c55e";
-     tdTotal.style.padding = "6px 8px";
-     tdTotal.style.textAlign = "right";
-     tdTotal.style.fontWeight = "700";
-     tdTotal.style.color = "#166534";
-     tr.appendChild(tdTotal);
-
-     tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-    container.appendChild(table);
-
-    // Total keseluruhan
-    const totalDiv = document.createElement("div");
-    totalDiv.style.marginTop = "16px";
-    totalDiv.style.textAlign = "right";
-    totalDiv.style.fontWeight = "700";
-    totalDiv.style.fontSize = "18px";
-    totalDiv.style.color = "#166534";
-    totalDiv.textContent = `Total RAB Bangunan: ${formatRupiah(rab.totalRab)}`;
-    container.appendChild(totalDiv);
-
-    imageOutput.appendChild(container);
-
-    // Tampilkan section gambar
-    document.getElementById("imageOutputSection").classList.remove("hidden");
-
-    // Scroll ke section gambar
-    document.getElementById("imageOutputSection").scrollIntoView({ behavior: "smooth" });
-   });
-
-   // Download gambar RAB sebagai PNG
-   document.getElementById("btnDownloadImage").addEventListener("click", () => {
-    const imageOutput = document.getElementById("imageOutput");
-    if (!imageOutput.hasChildNodes()) {
-     alert("Silakan generate gambar RAB terlebih dahulu.");
-     return;
-    }
-    html2canvas(imageOutput.firstChild, { scale: 2 }).then((canvas) => {
-     const link = document.createElement("a");
-     link.download = "RAB_Bangunan_Desa_Kuamang_Jaya.png";
-     link.href = canvas.toDataURL("image/png");
-     link.click();
-    });
-   });
-
-   // Mendapatkan URL gambar bahan berdasarkan nama bahan (sama dengan di form)
-   function getBahanImageUrl(bahan) {
-    const bahanImages = {
-     semen: "https://placehold.co/60x40/png?text=Semen",
-     pasir: "https://placehold.co/60x40/png?text=Pasir",
-     batu: "https://placehold.co/60x40/png?text=Batu",
-     kayu: "https://placehold.co/60x40/png?text=Kayu",
-     besi: "https://placehold.co/60x40/png?text=Besi",
-     cat: "https://placehold.co/60x40/png?text=Cat",
-     bata: "https://placehold.co/60x40/png?text=Bata",
-     triplek: "https://placehold.co/60x40/png?text=Triplek",
-     keramik: "https://placehold.co/60x40/png?text=Keramik",
-     paku: "https://placehold.co/60x40/png?text=Paku",
-     cor: "https://placehold.co/60x40/png?text=Cor",
-     pasir_urug: "https://placehold.co/60x40/png?text=Pasir+Urug",
-     aspal: "https://placehold.co/60x40/png?text=Aspal",
-     beton: "https://placehold.co/60x40/png?text=Beton",
-    };
-    const key = bahan.trim().toLowerCase();
-    if (bahanImages[key]) return bahanImages[key];
-    return `https://placehold.co/60x40/png?text=${encodeURIComponent(bahan)}`;
-   }
-
-   // Template data bahan untuk proyek desa
-   const templates = {
-    rumah: [
-     {
-      nama: "Semen",
-      volume: 50,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 5,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 3000,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 20,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Paku",
-      volume: 10,
-      satuan: "kg",
-      hargaSatuan: 50000,
-     },
-    ],
-    jalan_beton: [
-     {
-      nama: "Semen",
-      volume: 40,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 4,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Batu",
-      volume: 3,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 500,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 10,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    drainase: [
-     {
-      nama: "Semen",
-      volume: 30,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir Urug",
-      volume: 6,
-      satuan: "m³",
-      hargaSatuan: 300000,
-     },
-     {
-      nama: "Batu",
-      volume: 4,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 200,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 8,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    posyandu: [
-     {
-      nama: "Semen",
-      volume: 45,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 5,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 2500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 15,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Cat",
-      volume: 20,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-    balai_desa: [
-     {
-      nama: "Semen",
-      volume: 60,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 7,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 3500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Besi",
-      volume: 600,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cat",
-      volume: 30,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-    jembatan: [
-     {
-      nama: "Semen",
-      volume: 70,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 8,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Batu",
-      volume: 6,
-      satuan: "m³",
-      hargaSatuan: 400000,
-     },
-     {
-      nama: "Besi",
-      volume: 800,
-      satuan: "kg",
-      hargaSatuan: 12000,
-     },
-     {
-      nama: "Cor",
-      volume: 12,
-      satuan: "m³",
-      hargaSatuan: 800000,
-     },
-    ],
-    gapura: [
-     {
-      nama: "Semen",
-      volume: 25,
-      satuan: "Sak",
-      hargaSatuan: 60000,
-     },
-     {
-      nama: "Pasir",
-      volume: 3,
-      satuan: "m³",
-      hargaSatuan: 350000,
-     },
-     {
-      nama: "Bata",
-      volume: 1500,
-      satuan: "buah",
-      hargaSatuan: 1200,
-     },
-     {
-      nama: "Kayu",
-      volume: 10,
-      satuan: "m³",
-      hargaSatuan: 1500000,
-     },
-     {
-      nama: "Cat",
-      volume: 15,
-      satuan: "liter",
-      hargaSatuan: 75000,
-     },
-    ],
-   };
-
-   // Inisialisasi halaman
-   document.addEventListener("DOMContentLoaded", () => {
-    updateTotalRab();
-    renderRabList();
-   });
   </script>
  </body>
-  </html>
+</html>
