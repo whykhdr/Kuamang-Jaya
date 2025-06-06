@@ -1,428 +1,396 @@
+<!DOCTYPE html>
 <html lang="id">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Aplikasi TV Lokal Indonesia
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
-  <style>
-   body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
- </head>
- <body class="bg-gray-100 min-h-screen flex flex-col">
-  <header class="bg-white shadow-md">
-   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-     <img alt="Logo aplikasi TV lokal Indonesia, ikon televisi berwarna merah dan putih" class="w-12 h-12" height="48" src="https://storage.googleapis.com/a1aa/image/b71dead7-c1c5-4bc8-fc5d-9266b7cec069.jpg" width="48"/>
-     <h1 class="text-2xl font-semibold text-red-600">
-      TV Lokal Indonesia
-     </h1>
-    </div>
-    <nav class="hidden md:flex space-x-6 text-gray-700 font-medium">
-     <a class="hover:text-red-600 transition" href="#">
-      Beranda
-     </a>
-     <a class="hover:text-red-600 transition" href="#">
-      Saluran
-     </a>
-     <a class="hover:text-red-600 transition" href="#">
-      Jadwal
-     </a>
-     <a class="hover:text-red-600 transition" href="#">
-      Berita
-     </a>
-     <a class="hover:text-red-600 transition" href="#">
-      Tentang
-     </a>
-    </nav>
-    <button aria-label="Buka menu navigasi" class="md:hidden text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600" id="menu-btn">
-     <i class="fas fa-bars fa-lg">
-     </i>
-    </button>
-   </div>
-   <nav class="md:hidden bg-white shadow-md hidden flex-col space-y-2 px-4 pb-4" id="mobile-menu">
-    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
-     Beranda
-    </a>
-    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
-     Saluran
-    </a>
-    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
-     Jadwal
-    </a>
-    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
-     Berita
-    </a>
-    <a class="block py-2 text-gray-700 font-medium hover:text-red-600 transition" href="#">
-     Tentang
-    </a>
-   </nav>
-  </header>
-  <main class="flex-grow container mx-auto px-4 py-6">
-   <section>
-    <h2 class="text-3xl font-semibold text-red-600 mb-6">
-     Saluran TV Lokal Populer
-    </h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TV RCTI berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/4a219d28-1d37-4b29-9a5b-7b991688da80.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        RCTI
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV nasional dengan program hiburan dan berita.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TV MNCTV berwarna biru dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/b0df9fdb-54c4-48ff-5568-8e6c48ad04ac.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        MNCTV
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV dengan program hiburan keluarga dan musik.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TV Trans7 berwarna hijau dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/c3c7d5fc-7e33-444c-1a04-98c87416f472.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        Trans7
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV dengan program berita, olahraga, dan hiburan.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TV MetroTV berwarna biru tua dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/d82f21b8-2c41-4ef2-9a0f-fb555fd9af1d.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        MetroTV
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV berita dan informasi terkini di Indonesia.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TV Indosiar berwarna kuning dan hijau dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/9f7af134-7209-4b73-d81e-c1179f53b06c.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        Indosiar
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV dengan program drama dan hiburan keluarga.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TVRI berwarna biru dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/1ea87382-d7bd-4676-0cd9-0c57b9a2aa94.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        TVRI
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV pemerintah dengan program edukasi dan budaya.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran GTV berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/7aecec82-4988-45ad-f7ed-55e23827973a.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        GTV
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV hiburan dengan program musik dan reality show.
-       </p>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      <img alt="Logo saluran TransTV berwarna merah dan putih dengan latar belakang transparan" class="w-full h-36 object-contain p-4 bg-gray-50" height="225" src="https://storage.googleapis.com/a1aa/image/abfbc7ed-03eb-4f87-5608-31da3c296a2c.jpg" width="400"/>
-      <div class="px-4 py-2">
-       <h3 class="text-lg font-semibold text-gray-800">
-        TransTV
-       </h3>
-       <p class="text-sm text-gray-600">
-        Saluran TV hiburan dan berita populer di Indonesia.
-       </p>
-      </div>
-     </div>
-    </div>
-   </section>
-   <section class="mt-12">
-    <h2 class="text-3xl font-semibold text-red-600 mb-6">
-     Jadwal Acara Hari Ini
-    </h2>
-    <div class="bg-white rounded-lg shadow-md p-4 overflow-x-auto">
-     <table class="min-w-full text-left text-gray-700">
-      <thead>
-       <tr class="border-b border-gray-300">
-        <th class="py-3 px-4 font-semibold">
-         Waktu
-        </th>
-        <th class="py-3 px-4 font-semibold">
-         Saluran
-        </th>
-        <th class="py-3 px-4 font-semibold">
-         Acara
-        </th>
-        <th class="py-3 px-4 font-semibold">
-         Deskripsi
-        </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         06:00 - 07:00
-        </td>
-        <td class="py-2 px-4">
-         RCTI
-        </td>
-        <td class="py-2 px-4">
-         Seputar Indonesia
-        </td>
-        <td class="py-2 px-4">
-         Berita pagi terkini dari seluruh Indonesia.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         07:00 - 08:00
-        </td>
-        <td class="py-2 px-4">
-         MNCTV
-        </td>
-        <td class="py-2 px-4">
-         Cerita Anak
-        </td>
-        <td class="py-2 px-4">
-         Program edukasi dan hiburan untuk anak-anak.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         08:00 - 09:00
-        </td>
-        <td class="py-2 px-4">
-         Trans7
-        </td>
-        <td class="py-2 px-4">
-         Kick Andy
-        </td>
-        <td class="py-2 px-4">
-         Talkshow inspiratif dengan berbagai narasumber.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         09:00 - 10:00
-        </td>
-        <td class="py-2 px-4">
-         MetroTV
-        </td>
-        <td class="py-2 px-4">
-         Metro Hari Ini
-        </td>
-        <td class="py-2 px-4">
-         Berita dan analisis terkini dari dalam dan luar negeri.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         10:00 - 11:00
-        </td>
-        <td class="py-2 px-4">
-         Indosiar
-        </td>
-        <td class="py-2 px-4">
-         Dahsyat
-        </td>
-        <td class="py-2 px-4">
-         Program musik dan hiburan populer di Indonesia.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         11:00 - 12:00
-        </td>
-        <td class="py-2 px-4">
-         TVRI
-        </td>
-        <td class="py-2 px-4">
-         Indonesia Pagi
-        </td>
-        <td class="py-2 px-4">
-         Program berita dan budaya dari TVRI.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         12:00 - 13:00
-        </td>
-        <td class="py-2 px-4">
-         GTV
-        </td>
-        <td class="py-2 px-4">
-         Inbox
-        </td>
-        <td class="py-2 px-4">
-         Program musik dan hiburan untuk remaja.
-        </td>
-       </tr>
-       <tr class="border-b border-gray-200 hover:bg-gray-50">
-        <td class="py-2 px-4">
-         13:00 - 14:00
-        </td>
-        <td class="py-2 px-4">
-         TransTV
-        </td>
-        <td class="py-2 px-4">
-         Brownis
-        </td>
-        <td class="py-2 px-4">
-         Program talkshow dan hiburan ringan.
-        </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-   </section>
-   <section class="mt-12">
-    <h2 class="text-3xl font-semibold text-red-600 mb-6">
-     Berita Terbaru
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang perkembangan teknologi televisi di Indonesia, menampilkan layar TV modern dan antena" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/b08b1b70-26ac-462b-9e1a-1a0e959c5f35.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Perkembangan Teknologi TV di Indonesia
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        Teknologi televisi di Indonesia terus berkembang dengan hadirnya siaran digital dan interaktif.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang acara televisi baru yang populer di kalangan anak muda Indonesia, menampilkan remaja menonton TV bersama" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/61e5f274-2c92-4787-8870-c0f39e239132.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Acara TV Baru yang Populer di Kalangan Anak Muda
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        Program hiburan terbaru menarik perhatian generasi muda dengan konsep yang segar dan interaktif.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang peningkatan kualitas siaran TV lokal di daerah-daerah terpencil Indonesia, menampilkan antena parabola di pegunungan" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/8bcfee28-4716-4b45-f598-dcf220fbe110.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Peningkatan Kualitas Siaran TV Lokal di Daerah Terpencil
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        Pemerintah dan penyedia layanan TV lokal bekerja sama untuk memperluas jangkauan siaran berkualitas.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang festival televisi lokal Indonesia yang menampilkan panggung dan penonton antusias" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/1e357110-0fed-4e15-4812-a54322653597.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Festival Televisi Lokal Indonesia 2024
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        Festival tahunan yang menampilkan karya terbaik dari saluran TV lokal di seluruh Indonesia.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang kolaborasi antara saluran TV lokal dan platform digital untuk konten streaming" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/55320ff0-021a-4204-672c-019cc6d588bc.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Kolaborasi TV Lokal dan Platform Digital
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        Saluran TV lokal mulai berkolaborasi dengan platform streaming untuk menjangkau audiens lebih luas.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-     <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-      <img alt="Gambar ilustrasi berita tentang program edukasi baru di TVRI yang mendukung pembelajaran jarak jauh di Indonesia" class="w-full h-48 object-cover" height="350" src="https://storage.googleapis.com/a1aa/image/df9cac66-f997-4062-831e-7056639b1f86.jpg" width="600"/>
-      <div class="p-4 flex flex-col flex-grow">
-       <h3 class="text-xl font-semibold text-gray-800 mb-2">
-        Program Edukasi Baru di TVRI Mendukung Pembelajaran Jarak Jauh
-       </h3>
-       <p class="text-gray-600 flex-grow">
-        TVRI meluncurkan program edukasi yang membantu siswa belajar dari rumah selama pandemi.
-       </p>
-       <a class="mt-4 text-red-600 font-semibold hover:underline self-start" href="#">
-        Baca Selengkapnya
-       </a>
-      </div>
-     </article>
-    </div>
-   </section>
-  </main>
-  <footer class="bg-white border-t border-gray-300 mt-12">
-   <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
-    <p>
-     © 2024 TV Lokal Indonesia. Semua hak cipta dilindungi.
-    </p>
-    <div class="flex space-x-4 mt-4 md:mt-0">
-     <a aria-label="Facebook" class="hover:text-red-600 transition" href="#">
-      <i class="fab fa-facebook fa-lg">
-      </i>
-     </a>
-     <a aria-label="Twitter" class="hover:text-red-600 transition" href="#">
-      <i class="fab fa-twitter fa-lg">
-      </i>
-     </a>
-     <a aria-label="Instagram" class="hover:text-red-600 transition" href="#">
-      <i class="fab fa-instagram fa-lg">
-      </i>
-     </a>
-     <a aria-label="YouTube" class="hover:text-red-600 transition" href="#">
-      <i class="fab fa-youtube fa-lg">
-      </i>
-     </a>
-    </div>
-   </div>
-  </footer>
-  <script>
-   const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buat Akun Trojan, Vmess, Vless & SSH - VPS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+  :root {
+    --color-bg: #ffffff;
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-accent: #000000;
+    --color-accent-hover: #333333;
+    --color-border: #e5e7eb;
+    --color-success: #16a34a;
+    --color-error: #dc2626;
+    --radius: 0.75rem;
+    --shadow-light: 0 1px 4px rgba(0,0,0,0.1);
+    --transition-fast: 0.25s ease;
+    --container-max-width: 1200px;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  a:hover, a:focus {
+    color: var(--color-accent-hover);
+    outline: none;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-light);
+    z-index: 1000;
+  }
+  nav {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 1.75rem;
+    user-select: none;
+  }
+  ul.menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+  ul.menu li a {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  main.container {
+    flex-grow: 1;
+    max-width: var(--container-max-width);
+    margin: 3rem auto 5rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  section.hero {
+    max-width: 720px;
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  section.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 0.6rem 0;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+  }
+  section.hero p {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    margin-top: 0;
+  }
+
+  form.account-form {
+    background: #f9fafb;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-light);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 480px;
+    display: grid;
+    gap: 1.6rem;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--color-text-primary);
+  }
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+
+  .balance-info {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  button.create-btn {
+    margin-top: 1.5rem;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    user-select: none;
+  }
+  button.create-btn:hover:not(:disabled),
+  button.create-btn:focus:not(:disabled) {
+    background-color: var(--color-accent-hover);
+    transform: scale(1.05);
+    outline: none;
+  }
+  button.create-btn:disabled {
+    background-color: var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .status-message {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 0.75rem;
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+  }
+  .status-message.success {
+    background-color: #dcfce7;
+    color: var(--color-success);
+    border: 1px solid #4ade80;
+  }
+  .status-message.error {
+    background-color: #fee2e2;
+    color: var(--color-error);
+    border: 1px solid #f87171;
+  }
+
+  footer {
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    section.hero h1 {
+      font-size: 2.5rem;
+    }
+    form.account-form {
+      padding: 2rem 1rem;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav aria-label="Navigasi utama">
+    <div class="logo" tabindex="0" aria-label="Logo aplikasi buat akun">VPS Account Manager</div>
+    <ul class="menu" role="menubar">
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Beranda</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Cara Pakai</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Bantuan</a></li>
+    </ul>
+  </nav>
+</header>
+<main class="container" role="main">
+  <section class="hero" aria-label="Bagian pembuka">
+    <h1>Buat Akun Trojan, Vmess, Vless, dan SSH dengan Mudah</h1>
+    <p>Buat akun baru di VPS Anda menggunakan saldo yang tersedia. Kelola layanan tunneling dengan cepat dan efisien.</p>
+  </section>
+  <form class="account-form" aria-label="Formulir pembuatan akun" id="accountForm">
+    <div>
+      <span class="balance-info" id="balanceDisplay" aria-live="polite" aria-atomic="true">Saldo Anda: Rp 0</span>
+    </div>
+    <div>
+      <label for="accountType">Jenis Akun</label>
+      <select id="accountType" name="accountType" required aria-required="true" aria-describedby="accountTypeDesc">
+        <option value="" disabled selected>Pilih jenis akun</option>
+        <option value="trojan">Trojan</option>
+        <option value="vmess">Vmess</option>
+        <option value="vless">Vless</option>
+        <option value="ssh">SSH</option>
+      </select>
+      <small id="accountTypeDesc" style="color: var(--color-text-secondary);">Pilih tipe akun yang ingin Anda buat</small>
+    </div>
+    <div>
+      <label for="username">Nama Pengguna</label>
+      <input type="text" id="username" name="username" required aria-required="true" placeholder="Masukkan nama pengguna" minlength="3" maxlength="20" pattern="^[a-zA-Z0-9_]+$" title="Hanya huruf, angka, dan underscore yang diperbolehkan" />
+    </div>
+    <div>
+      <label for="duration">Durasi Aktif (Hari)</label>
+      <input type="number" id="duration" name="duration" min="1" max="365" value="30" required aria-required="true" />
+    </div>
+    <div>
+      <label for="configs">Konfigurasi Tambahan (opsional)</label>
+      <input type="text" id="configs" name="configs" placeholder="Misal: custom port, password, dsb." aria-describedby="configsDesc" />
+      <small id="configsDesc" style="color: var(--color-text-secondary);">Opsional: Konfigurasi tambahan untuk akun</small>
+    </div>
+    <button type="submit" class="create-btn" id="createBtn" disabled aria-disabled="true">Buat Akun</button>
+    <div id="statusMessage" role="alert" aria-live="assertive" aria-atomic="true"></div>
+  </form>
+</main>
+<footer>
+  &copy; 2024 VPS Account Manager. Semua Hak Dilindungi.
+</footer>
+<script>
+  (() => {
+    'use strict';
+
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const createBtn = document.getElementById('createBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const form = document.getElementById('accountForm');
+
+    let userBalance = 0;
+    const accountPrices = {
+      trojan: 10000,
+      vmess: 12000,
+      vless: 12000,
+      ssh: 8000,
+    };
+
+    // Simulasi pengambilan saldo pengguna dari API backend
+    async function fetchUser Balance() {
+      // Simulasi delay dan respons API
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(25000); // Simulasi pengguna memiliki saldo Rp 25.000
+        }, 500);
+      });
+    }
+
+    // Simulasi panggilan API backend untuk membuat akun
+    async function createAccountAPI(data) {
+      // Simulasi delay dan respons sukses/gagal
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Simulasi skenario kegagalan acak
+          if (Math.random() < 0.1) reject({ message: 'Gagal membuat akun. Coba lagi.' });
+          else resolve({ message: 'Akun berhasil dibuat!', accountId: Math.floor(Math.random() * 1000000) });
+        }, 1500);
+      });
+    }
+
+    // Format mata uang Rp dengan pemisah ribuan
+    function formatRp(amount) {
+      return 'Rp ' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Perbarui tampilan UI saldo dan status tombol tergantung pada jenis akun yang dipilih
+    function updateUI() {
+      const selectedType = form.accountType.value;
+      if (!selectedType) {
+        createBtn.disabled = true;
+        createBtn.setAttribute('aria-disabled', 'true');
+        statusMessage.textContent = '';
+        return;
+      }
+      const price = accountPrices[selectedType];
+      if (userBalance >= price) {
+        createBtn.disabled = false;
+        createBtn.setAttribute('aria-disabled', 'false');
+        statusMessage.textContent = '';
+      } else {
+        createBtn.disabled = true;
+        createBtn.setAttribute('aria-disabled', 'true');
+        statusMessage.textContent = `Saldo tidak cukup. Dibutuhkan ${formatRp(price)} untuk membuat akun ${selectedType}.`;
+        statusMessage.className = 'status-message error';
+      }
+    }
+
+    // Inisialisasi: ambil saldo dan perbarui UI
+    async function init() {
+      userBalance = await fetchUser Balance();
+      balanceDisplay.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
+      updateUI();
+    }
+
+    form.accountType.addEventListener('change', () => {
+      updateUI();
     });
-  </script>
- </body>
+
+    form.addEventListener('input', () => {
+      updateUI();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      createBtn.disabled = true;
+      statusMessage.textContent = 'Membuat akun...';
+      statusMessage.className = '';
+
+      const selectedType = form.accountType.value;
+      const price = accountPrices[selectedType];
+      if (userBalance < price) {
+        statusMessage.textContent = `Saldo tidak cukup untuk membuat akun ${selectedType}.`;
+        statusMessage.className = 'status-message error';
+        createBtn.disabled = false;
+        return;
+      }
+
+      const formData = {
+        type: selectedType,
+        username: form.username.value.trim(),
+        durationDays: Number(form.duration.value),
+        configs: form.configs.value.trim(),
+      };
+
+      try {
+        const response = await createAccountAPI(formData);
+        statusMessage.textContent = response.message;
+        statusMessage.className = 'status-message success';
+
+        // Kurangi saldo yang disimulasikan di sini
+        userBalance -= price;
+        balanceDisplay.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
+
+        // Reset form kecuali tampilan saldo dan tombol
+        form.reset();
+        createBtn.disabled = true;
+        createBtn.setAttribute('aria-disabled', 'true');
+      } catch (err) {
+        statusMessage.textContent = err.message || 'Terjadi kesalahan saat membuat akun.';
+        statusMessage.className = 'status-message error';
+        createBtn.disabled = false;
+        createBtn.setAttribute('aria-disabled', 'false');
+      }
+    });
+
+    init();
+  })();
+</script>
+</body>
 </html>
