@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mentas Project</title>
+  <title>Buat Akun Trojan, Vmess, Vless, SSH &amp; Bayar Dana Terhubung VPS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -15,18 +15,17 @@
       --color-bg: #ffffff;
       --color-primary: #111827;
       --color-secondary: #6b7280;
-      --color-accent: #2563eb;
-      --color-accent-hover: #1e40af;
+      --color-accent: #111827;
+      --color-accent-hover: #444c59;
       --color-success: #16a34a;
+      --color-error: #dc2626;
       --shadow-light: rgba(0, 0, 0, 0.05);
       --border-radius: 0.75rem;
       --transition-speed: 0.3s;
       --input-bg: #f9fafb;
     }
 
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       box-sizing: border-box;
     }
 
@@ -57,17 +56,18 @@
 
     header .logo {
       font-weight: 700;
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       color: var(--color-primary);
       user-select: none;
     }
 
     nav a {
-      margin-left: 1.5rem;
+      margin-left: 2rem;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--color-secondary);
       transition: color var(--transition-speed) ease;
+      font-size: 1rem;
     }
 
     nav a:hover,
@@ -80,43 +80,47 @@
       flex-grow: 1;
       max-width: 1200px;
       margin: 3rem auto 4rem;
-      padding: 0 1rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
     }
 
     .hero {
       text-align: center;
       padding-top: 2rem;
-      padding-bottom: 4rem;
+      padding-bottom: 3rem;
     }
 
     .hero h1 {
       font-weight: 700;
-      font-size: 3.25rem;
+      font-size: 3.5rem;
       color: var(--color-primary);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       line-height: 1.1;
     }
 
     .hero p {
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       color: var(--color-secondary);
-      max-width: 600px;
+      max-width: 640px;
       margin: 0 auto;
     }
 
     .form-container {
       background-color: var(--input-bg);
-      box-shadow: 0 8px 24px var(--shadow-light);
+      box-shadow: 0 14px 28px var(--shadow-light);
       border-radius: var(--border-radius);
-      padding: 2.5rem 3rem;
+      padding: 3rem 4rem;
       max-width: 600px;
       margin: 0 auto;
+      position: relative;
     }
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      gap: 2rem;
     }
 
     label {
@@ -129,37 +133,36 @@
 
     select,
     input[type="text"],
-    input[type="email"],
     input[type="password"],
     input[type="tel"],
     input[type="number"] {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1.2rem;
       border-radius: var(--border-radius);
       border: 1px solid #d1d5db;
       font-size: 1rem;
       transition: border-color var(--transition-speed) ease;
-      background-color: #fff;
+      background-color: white;
       color: var(--color-primary);
       font-family: inherit;
+      font-weight: 400;
     }
 
     select:focus,
     input[type="text"]:focus,
-    input[type="email"]:focus,
     input[type="password"]:focus,
     input[type="tel"]:focus,
     input[type="number"]:focus {
       border-color: var(--color-accent);
       outline: none;
-      box-shadow: 0 0 0 3px rgb(37 99 235 / 0.3);
+      box-shadow: 0 0 0 3px rgb(17 24 39 / 0.15);
       background-color: #fefefe;
     }
 
     .protocol-tabs {
       display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -168,22 +171,26 @@
       flex: 1 0 auto;
       background: #e5e7eb;
       border-radius: var(--border-radius);
-      padding: 0.75rem 1.25rem;
-      font-weight: 600;
-      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      font-weight: 700;
+      font-size: 1rem;
       text-align: center;
       cursor: pointer;
       color: var(--color-primary);
       user-select: none;
       transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
       border: 2px solid transparent;
+      user-select: none;
+      border-bottom-width: 3px;
+      border-bottom-style: solid;
+      border-bottom-color: transparent;
     }
 
     .protocol-tab.active,
     .protocol-tab:hover,
     .protocol-tab:focus-visible {
       background-color: var(--color-accent);
-      color: #fff;
+      color: white;
       border-color: var(--color-accent-hover);
       outline-offset: 2px;
     }
@@ -192,28 +199,30 @@
       background-color: var(--color-accent);
       color: white;
       font-weight: 700;
-      font-size: 1.125rem;
-      padding: 0.75rem 1.5rem;
+      font-size: 1.25rem;
+      padding: 1rem 2rem;
       border-radius: var(--border-radius);
       border: none;
       cursor: pointer;
       transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
       align-self: center;
-      min-width: 160px;
+      min-width: 180px;
       user-select: none;
+      box-shadow: 0 10px 10px rgb(37 99 235 / 0.25);
     }
 
     button[type="submit"]:hover,
     button[type="submit"]:focus-visible {
       background-color: var(--color-accent-hover);
-      transform: scale(1.04);
+      transform: scale(1.05);
       outline-offset: 4px;
+      box-shadow: 0 14px 14px rgb(37 99 235 / 0.3);
     }
 
     .form-section {
       display: none;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .form-section.active {
@@ -222,9 +231,9 @@
 
     .payment-section {
       background-color: #f3f4f6;
-      padding: 1.5rem 2rem;
+      padding: 1.8rem 2.4rem;
       border-radius: var(--border-radius);
-      box-shadow: inset 0 0 8px var(--shadow-light);
+      box-shadow: inset 0 0 10px var(--shadow-light);
     }
 
     .payment-section label {
@@ -232,41 +241,84 @@
       color: var(--color-primary);
     }
 
+    .response-message {
+      margin-top: 1.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    .response-success {
+      color: var(--color-success);
+    }
+
+    .response-error {
+      color: var(--color-error);
+    }
+
     .footer {
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1rem;
       font-size: 0.875rem;
       color: var(--color-secondary);
       user-select: none;
+      font-weight: 500;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: var(--border-radius);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--color-primary);
+      user-select: none;
+      display: none;
+      z-index: 10;
+    }
+
+    .loading-overlay.active {
+      display: flex;
     }
 
     @media (max-width: 640px) {
+      main {
+        padding: 0 1rem;
+      }
       .hero h1 {
-        font-size: 2.25rem;
+        font-size: 2.4rem;
       }
       .form-container {
-        padding: 2rem 1.5rem;
+        padding: 2rem 2rem;
+      }
+      .protocol-tab {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo" tabindex="0" aria-label="Logo Pembuat Akun VPN">Mentas Project</div>
-    <nav>
+    <div class="logo" tabindex="0" aria-label="Logo Pembuat Akun VPN">Pembuat Akun VPN</div>
+    <nav aria-label="Navigasi utama">
       <a href="#create-account" tabindex="0">Buat Akun</a>
       <a href="#about" tabindex="0">Tentang</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero" aria-label="Pengantar Halaman">
-      <h1>Selamat Datang</h1>
-      <p>Semoga Lancar Segala Urusannya.</p>
+    <section class="hero" aria-label="Pengantar halaman">
+      <h1>Buat Akun Trojan, Vmess, Vless, SSH dengan Pembayaran Dana</h1>
+      <p>Kelola akun VPS Anda dengan mudah dan bayar menggunakan Dana dengan cepat dan aman.</p>
     </section>
 
-    <section class="form-container" id="create-account" aria-label="Formulir Buat Akun">
-      <div class="protocol-tabs" role="tablist" aria-label="Pilih Protokol">
+    <section class="form-container" id="create-account" aria-label="Form buat akun dan pembayaran">
+      <div class="protocol-tabs" role="tablist" aria-label="Pilih protokol VPN atau SSH">
         <div class="protocol-tab active" role="tab" tabindex="0" aria-selected="true" aria-controls="trojan-section" id="tab-trojan">Trojan</div>
         <div class="protocol-tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="vmess-section" id="tab-vmess">Vmess</div>
         <div class="protocol-tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="vless-section" id="tab-vless">Vless</div>
@@ -274,7 +326,6 @@
       </div>
 
       <form id="account-form" novalidate>
-        <!-- Form Trojan -->
         <section class="form-section active" id="trojan-section" role="tabpanel" aria-labelledby="tab-trojan">
           <label for="trojan-username">Nama Pengguna</label>
           <input type="text" id="trojan-username" name="trojan-username" required autocomplete="username" placeholder="Masukkan nama pengguna" />
@@ -286,7 +337,6 @@
           <input type="number" id="trojan-expiry" name="trojan-expiry" required min="1" max="365" value="30" />
         </section>
 
-        <!-- Form Vmess -->
         <section class="form-section" id="vmess-section" role="tabpanel" aria-labelledby="tab-vmess" tabindex="0" hidden>
           <label for="vmess-uuid">UUID</label>
           <input type="text" id="vmess-uuid" name="vmess-uuid" required placeholder="Masukkan UUID valid" autocomplete="off" pattern="[0-9a-fA-F\-]{36}" title="Format UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
@@ -298,7 +348,6 @@
           <input type="number" id="vmess-expiry" name="vmess-expiry" required min="1" max="365" value="30" />
         </section>
 
-        <!-- Form Vless -->
         <section class="form-section" id="vless-section" role="tabpanel" aria-labelledby="tab-vless" tabindex="0" hidden>
           <label for="vless-uuid">UUID</label>
           <input type="text" id="vless-uuid" name="vless-uuid" required placeholder="Masukkan UUID valid" autocomplete="off" pattern="[0-9a-fA-F\-]{36}" title="Format UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
@@ -310,7 +359,6 @@
           <input type="number" id="vless-expiry" name="vless-expiry" required min="1" max="365" value="30" />
         </section>
 
-        <!-- Form SSH -->
         <section class="form-section" id="ssh-section" role="tabpanel" aria-labelledby="tab-ssh" tabindex="0" hidden>
           <label for="ssh-username">Nama Pengguna</label>
           <input
@@ -355,12 +403,15 @@
 
         <button type="submit" aria-label="Buat akun dan bayar">Buat Akun &amp; Bayar</button>
       </form>
+
+      <div class="response-message" role="alert" aria-live="polite"></div>
+      <div class="loading-overlay" aria-hidden="true">Sedang memproses...</div>
     </section>
 
     <section id="about" style="max-width: 600px; margin: 4rem auto 0; text-align:center; padding: 0 1rem;">
-      <h2 style="font-weight:600; font-size: 1.75rem; color: var(--color-primary); margin-bottom: 1rem;">Tentang Alat Ini</h2>
+      <h2 style="font-weight:700; font-size: 1.75rem; color: var(--color-primary); margin-bottom: 1rem;">Tentang Alat Ini</h2>
       <p>
-        Antarmuka web ini memungkinkan Anda membuat akun Trojan, Vmess, Vless, dan SSH di VPS Anda, dengan manajemen akun yang aman dan pembayaran menggunakan Dana.
+        Halaman ini memudahkan pembuatan akun Trojan, Vmess, Vless, dan SSH di VPS Anda dengan pembayaran Dana. Data dari form dikirim ke backend yang menjalankan pembuatan akun secara otomatis.
       </p>
     </section>
   </main>
@@ -372,7 +423,9 @@
   <script>
     (() => {
       const tabs = document.querySelectorAll(".protocol-tab");
-      const sections = document.querySelectorAll(".form-section");
+      const form = document.getElementById("account-form");
+      const responseMessage = document.querySelector(".response-message");
+      const loadingOverlay = document.querySelector(".loading-overlay");
 
       function setActiveTab(selectedTab) {
         tabs.forEach((tab) => {
@@ -388,6 +441,12 @@
             section.tabIndex = isSelected ? 0 : -1;
           }
         });
+        clearResponse();
+      }
+
+      function clearResponse() {
+        responseMessage.textContent = "";
+        responseMessage.className = "response-message";
       }
 
       tabs.forEach((tab) => {
@@ -409,60 +468,77 @@
         });
       });
 
-      const form = document.getElementById("account-form");
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        clearResponse();
 
-        // Validasi sederhana
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
 
-        // Ambil tab aktif dan data
         const activeTab = document.querySelector(".protocol-tab.active");
         const protocol = activeTab.textContent.toLowerCase();
 
-        // Kumpulkan data sesuai protokol
         const formData = new FormData(form);
         let accountData = {};
         switch (protocol) {
           case "trojan":
             accountData.username = formData.get("trojan-username");
             accountData.password = formData.get("trojan-password");
-            accountData.expiry = formData.get("trojan-expiry");
+            accountData.expiry = Number(formData.get("trojan-expiry"));
             break;
           case "vmess":
             accountData.uuid = formData.get("vmess-uuid");
-            accountData.alterid = formData.get("vmess-alterid");
-            accountData.expiry = formData.get("vmess-expiry");
+            accountData.alterid = Number(formData.get("vmess-alterid"));
+            accountData.expiry = Number(formData.get("vmess-expiry"));
             break;
           case "vless":
             accountData.uuid = formData.get("vless-uuid");
             accountData.flow = formData.get("vless-flow");
-            accountData.expiry = formData.get("vless-expiry");
+            accountData.expiry = Number(formData.get("vless-expiry"));
             break;
           case "ssh":
             accountData.username = formData.get("ssh-username");
             accountData.password = formData.get("ssh-password");
-            accountData.expiry = formData.get("ssh-expiry");
-            break;
-          default:
+            accountData.expiry = Number(formData.get("ssh-expiry"));
             break;
         }
 
         const danaPhone = formData.get("dana-phone");
-        const paymentAmount = formData.get("payment-amount");
+        const paymentAmount = Number(formData.get("payment-amount"));
 
-        alert(
-          `Membuat akun ${protocol} dengan data:\n` +
-            JSON.stringify(accountData, null, 2) +
-            `\n\nInfo Pembayaran:\nNomor Dana: ${danaPhone}\nJumlah: IDR ${paymentAmount}`
-        );
+        loadingOverlay.classList.add("active");
 
-        form.reset();
-        // Kembali ke tab pertama untuk kemudahan
-        setActiveTab(tabs[0]);
+        try {
+          // Ganti [VPS_IP_OR_DOMAIN] dengan IP/domain VPS anda yang menjalankan backend
+          const response = await fetch("http://mp3.whykho.web.id:5000/api/create-account", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              protocol,
+              accountData,
+              danaPhone,
+              paymentAmount,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            responseMessage.textContent = `Sukses: ${result.message}`;
+            responseMessage.classList.add("response-success");
+            form.reset();
+            setActiveTab(tabs[0]);
+          } else {
+            throw new Error(result.message || "Terjadi kesalahan saat membuat akun.");
+          }
+        } catch (err) {
+          responseMessage.textContent = `Error: ${err.message}`;
+          responseMessage.classList.add("response-error");
+        } finally {
+          loadingOverlay.classList.remove("active");
+        }
       });
     })();
   </script>
