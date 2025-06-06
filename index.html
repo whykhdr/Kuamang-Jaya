@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Buat Akun Trojan, Vmess, Vless & SSH - VPS</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap');
 
   :root {
     --color-bg: #ffffff;
@@ -83,7 +83,7 @@
   main.container {
     flex-grow: 1;
     max-width: var(--container-max-width);
-    margin: 3rem auto 5rem auto;
+    margin: 4rem auto 6rem auto;
     padding: 0 1rem;
     display: flex;
     flex-direction: column;
@@ -96,14 +96,14 @@
     margin-bottom: 4rem;
   }
   section.hero h1 {
-    font-size: 3.5rem;
+    font-size: 48px;
     font-weight: 800;
     margin: 0 0 0.6rem 0;
     color: var(--color-text-primary);
     line-height: 1.1;
   }
   section.hero p {
-    font-size: 1.25rem;
+    font-size: 18px;
     color: var(--color-text-secondary);
     margin-top: 0;
   }
@@ -129,7 +129,7 @@
   select {
     width: 100%;
     padding: 0.6rem 0.9rem;
-    font-size: 1rem;
+    font-size: 16px;
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius);
     color: var(--color-text-primary);
@@ -145,7 +145,7 @@
 
   .balance-info {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 16px;
     color: var(--color-text-primary);
   }
 
@@ -154,7 +154,7 @@
     background-color: var(--color-accent);
     color: #fff;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 20px;
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: var(--radius);
@@ -177,7 +177,7 @@
   }
 
   .status-message {
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: 600;
     line-height: 1.4;
     margin-top: 0.75rem;
@@ -198,14 +198,14 @@
   footer {
     padding: 2rem 1rem;
     text-align: center;
-    font-size: 0.875rem;
+    font-size: 14px;
     color: var(--color-text-secondary);
     border-top: 1px solid var(--color-border);
   }
 
   @media (max-width: 640px) {
     section.hero h1 {
-      font-size: 2.5rem;
+      font-size: 32px;
     }
     form.account-form {
       padding: 2rem 1rem;
@@ -282,40 +282,49 @@
       ssh: 8000,
     };
 
-    // Simulasi pengambilan saldo pengguna dari API backend
-    async function fetchUser Balance() {
-      // Simulasi delay dan respons API
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(25000); // Simulasi pengguna memiliki saldo Rp 25.000
-        }, 500);
-      });
+    async function fetchUserBalance() {
+      try {
+        const resp = await fetch('https://152.42.227.218/api/balance', {
+          headers: {
+            'Authorization': 'Bearer token-anda-here' // Ganti dengan token yang valid
+          }
+        });
+        if (!resp.ok) throw new Error('Gagal mengambil saldo');
+        const data = await resp.json();
+        return data.balance || 0;
+      } catch (error) {
+        console.error(error);
+        return 0;
+      }
     }
 
-    // Simulasi panggilan API backend untuk membuat akun
     async function createAccountAPI(data) {
-      // Simulasi delay dan respons sukses/gagal
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simulasi skenario kegagalan acak
-          if (Math.random() < 0.1) reject({ message: 'Gagal membuat akun. Coba lagi.' });
-          else resolve({ message: 'Akun berhasil dibuat!', accountId: Math.floor(Math.random() * 1000000) });
-        }, 1500);
+      const resp = await fetch('https://152.42.227.218/api/create-account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer token-anda-here' // Ganti dengan token yang valid
+        },
+        body: JSON.stringify(data)
       });
+      if (!resp.ok) {
+        const errData = await resp.json().catch(() => null);
+        throw new Error((errData && errData.message) || 'Gagal membuat akun');
+      }
+      return await resp.json();
     }
 
-    // Format mata uang Rp dengan pemisah ribuan
     function formatRp(amount) {
       return 'Rp ' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
-    // Perbarui tampilan UI saldo dan status tombol tergantung pada jenis akun yang dipilih
     function updateUI() {
       const selectedType = form.accountType.value;
       if (!selectedType) {
         createBtn.disabled = true;
         createBtn.setAttribute('aria-disabled', 'true');
         statusMessage.textContent = '';
+        statusMessage.className = '';
         return;
       }
       const price = accountPrices[selectedType];
@@ -323,28 +332,23 @@
         createBtn.disabled = false;
         createBtn.setAttribute('aria-disabled', 'false');
         statusMessage.textContent = '';
+        statusMessage.className = '';
       } else {
         createBtn.disabled = true;
         createBtn.setAttribute('aria-disabled', 'true');
-        statusMessage.textContent = `Saldo tidak cukup. Dibutuhkan ${formatRp(price)} untuk membuat akun ${selectedType}.`;
+        statusMessage.textContent = \`Saldo tidak cukup. Dibutuhkan \${formatRp(price)} untuk membuat akun \${selectedType}.\`;
         statusMessage.className = 'status-message error';
       }
     }
 
-    // Inisialisasi: ambil saldo dan perbarui UI
     async function init() {
-      userBalance = await fetchUser Balance();
-      balanceDisplay.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
+      userBalance = await fetchUserBalance();
+      balanceDisplay.textContent = \`Saldo Anda: \${formatRp(userBalance)}\`;
       updateUI();
     }
 
-    form.accountType.addEventListener('change', () => {
-      updateUI();
-    });
-
-    form.addEventListener('input', () => {
-      updateUI();
-    });
+    form.accountType.addEventListener('change', updateUI);
+    form.addEventListener('input', updateUI);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -355,9 +359,10 @@
       const selectedType = form.accountType.value;
       const price = accountPrices[selectedType];
       if (userBalance < price) {
-        statusMessage.textContent = `Saldo tidak cukup untuk membuat akun ${selectedType}.`;
+        statusMessage.textContent = \`Saldo tidak cukup untuk membuat akun \${selectedType}.\`;
         statusMessage.className = 'status-message error';
         createBtn.disabled = false;
+        createBtn.setAttribute('aria-disabled', 'false');
         return;
       }
 
@@ -373,11 +378,9 @@
         statusMessage.textContent = response.message;
         statusMessage.className = 'status-message success';
 
-        // Kurangi saldo yang disimulasikan di sini
         userBalance -= price;
-        balanceDisplay.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
+        balanceDisplay.textContent = \`Saldo Anda: \${formatRp(userBalance)}\`;
 
-        // Reset form kecuali tampilan saldo dan tombol
         form.reset();
         createBtn.disabled = true;
         createBtn.setAttribute('aria-disabled', 'true');
