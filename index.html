@@ -4,19 +4,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Buat Akun VPS – Minimal & Elegan</title>
+  <title>Buat Akun VPS & Pembayaran DANA</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap');
 
     :root {
-      --bg: #ffffff;
-      --text-primary: #111827;
-      --text-secondary: #6b7280;
-      --accent: #000000;
-      --accent-hover: #333;
+      --color-bg: #ffffff;
+      --color-text-primary: #111827;
+      --color-text-secondary: #6b7280;
+      --color-accent: #000000;
+      --color-accent-hover: #333333;
+      --color-border: #e5e7eb;
+      --color-success: #16a34a;
+      --color-error: #dc2626;
       --radius: 0.75rem;
-      --shadow-light: 0 2px 6px rgba(17, 24, 39, 0.05);
-      --container-max: 1200px;
+      --shadow-light: 0 1px 4px rgba(0, 0, 0, 0.1);
+      --transition-fast: 0.25s ease;
+      --container-max-width: 1200px;
     }
 
     * {
@@ -26,89 +30,97 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      color: var(--text-secondary);
-      font-size: 16px;
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 1rem;
     }
 
     header {
       position: sticky;
       top: 0;
       width: 100%;
-      background: var(--bg);
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
       box-shadow: var(--shadow-light);
+      margin-bottom: 2rem;
       padding: 1rem 2rem;
-      z-index: 10;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
     }
 
-    nav {
-      max-width: var(--container-max);
-      margin: 0 auto;
+    .nav-container {
+      max-width: var(--container-max-width);
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      color: var(--text-primary);
-      font-weight: 700;
+      color: var(--color-text-primary);
+      font-weight: 800;
       font-size: 1.5rem;
       user-select: none;
     }
 
-    .nav-links {
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       gap: 2rem;
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
       font-weight: 600;
-      transition: color 0.25s ease;
-      cursor: pointer;
     }
 
-    .nav-links a:hover,
-    .nav-links a:focus {
-      color: var(--accent);
+    nav ul li a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      color: var(--color-accent);
       outline: none;
     }
 
     main {
       width: 100%;
-      max-width: var(--container-max);
-      padding: 4rem 1.5rem 6rem;
-      flex-grow: 1;
+      max-width: var(--container-max-width);
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 3rem;
+      padding: 0 1rem;
     }
 
     .hero {
-      max-width: 600px;
+      max-width: 700px;
       text-align: center;
-      margin-bottom: 3rem;
-      color: var(--text-primary);
+      margin-bottom: 1rem;
     }
 
     .hero h1 {
       font-size: 3rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 0.5rem;
       line-height: 1.1;
+      color: var(--color-text-primary);
     }
 
     .hero p {
       font-weight: 600;
       font-size: 1.125rem;
-      color: var(--text-secondary);
-      margin: 0 auto;
+      color: var(--color-text-secondary);
+      margin-top: 0;
     }
 
     form {
@@ -120,14 +132,13 @@
       max-width: 440px;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
-      color: var(--text-primary);
+      gap: 1.5rem;
+      color: var(--color-text-primary);
     }
 
     label {
       font-weight: 600;
       font-size: 0.875rem;
-      margin-bottom: 0.25rem;
       user-select: none;
     }
 
@@ -135,45 +146,39 @@
     select {
       font-family: inherit;
       font-size: 1rem;
-      padding: 0.6rem 0.8rem;
-      border: 1.5px solid #d1d5db;
+      padding: 0.6rem 0.85rem;
       border-radius: var(--radius);
-      color: var(--text-primary);
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      border: 1.5px solid var(--color-border);
+      color: var(--color-text-primary);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      width: 100%;
     }
 
     input:focus,
     select:focus {
       outline: none;
-      border-color: var(--accent);
+      border-color: var(--color-accent);
       box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
-    }
-
-    .balance {
-      font-weight: 700;
-      text-align: center;
-      font-size: 1rem;
-      margin-bottom: 1rem;
     }
 
     button {
       margin-top: 1rem;
       padding: 0.75rem;
       font-size: 1.25rem;
-      background: var(--accent);
+      background-color: var(--color-accent);
       color: #fff;
       border: none;
       border-radius: var(--radius);
       cursor: pointer;
       font-weight: 700;
       box-shadow: var(--shadow-light);
-      transition: background 0.25s ease, transform 0.25s ease;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
       user-select: none;
     }
 
     button:disabled {
-      background: #e5e7eb;
-      color: #9ca3af;
+      background-color: var(--color-border);
+      color: var(--color-text-secondary);
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -181,46 +186,87 @@
 
     button:not(:disabled):hover,
     button:not(:disabled):focus {
-      background: var(--accent-hover);
+      background-color: var(--color-accent-hover);
       transform: scale(1.05);
       outline: none;
     }
 
-    .status {
-      margin-top: 1rem;
+    .status-message {
+      font-size: 1rem;
       font-weight: 600;
       padding: 0.75rem 1rem;
       border-radius: var(--radius);
       text-align: center;
       user-select: text;
-      font-size: 1rem;
     }
 
-    .status.success {
-      background: #dcfce7;
-      color: #16a34a;
+    .success {
+      background-color: #dcfce7;
       border: 1px solid #4ade80;
+      color: var(--color-success);
     }
 
-    .status.error {
-      background: #fee2e2;
-      color: #dc2626;
+    .error {
+      background-color: #fee2e2;
       border: 1px solid #f87171;
+      color: var(--color-error);
     }
 
+    .payment-section {
+      background: #f9fafb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-light);
+      padding: 2rem;
+      max-width: 440px;
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      color: var(--color-text-primary);
+    }
+
+    .payment-section.active {
+      display: flex;
+    }
+
+    .payment-section h2 {
+      margin: 0;
+      font-weight: 800;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .payment-instructions {
+      font-size: 1rem;
+      text-align: center;
+      color: var(--color-text-secondary);
+      user-select: text;
+    }
+
+    .account-details {
+      font-family: monospace;
+      background: #e5e7eb;
+      padding: 1rem;
+      border-radius: var(--radius);
+      white-space: pre-wrap;
+      user-select: text;
+    }
+
+    /* Responsive */
     @media (max-width: 480px) {
       .hero h1 {
         font-size: 2rem;
       }
 
-      form {
+      form,
+      .payment-section {
         padding: 1.5rem 1.5rem;
         max-width: 100%;
       }
 
       button {
         font-size: 1.1rem;
-        padding: 0.65rem;
+        padding: 0.6rem;
       }
     }
   </style>
@@ -228,27 +274,27 @@
 
 <body>
   <header>
-    <nav>
+    <div class="nav-container" role="navigation" aria-label="Navigasi utama">
       <div class="logo" tabindex="0">VPS Account Manager</div>
-      <div class="nav-links">
-        <a href="#" tabindex="0">Beranda</a>
-        <a href="#" tabindex="0">Cara Pakai</a>
-        <a href="#" tabindex="0">Bantuan</a>
-      </div>
-    </nav>
+      <nav>
+        <ul>
+          <li><a href="#" tabindex="0">Beranda</a></li>
+          <li><a href="#" tabindex="0">Cara Pakai</a></li>
+          <li><a href="#" tabindex="0">Bantuan</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="hero" aria-label="Pendahuluan">
-      <h1>Buat Akun Trojan, Vmess, Vless & SSH</h1>
-      <p>Kelola akun VPS dengan mudah menggunakan saldo yang tersedia.</p>
+    <section class="hero" aria-label="Pengantar Aplikasi">
+      <h1>Buat Akun VPS dan Bayar dengan DANA</h1>
+      <p>Buat akun VPS Anda dulu, lalu lakukan pembayaran DANA untuk aktivasi. Setelah bayar, Anda akan melihat detail akun.</p>
     </section>
 
-    <form id="accountForm" aria-label="Form pembuatan akun">
-      <div class="balance" id="balance">Saldo Anda: Rp 0</div>
-
+    <form id="createAccountForm" aria-label="Form Pembuatan Akun VPS">
       <label for="accountType">Jenis Akun</label>
-      <select id="accountType" required aria-required="true" name="type" aria-describedby="accountTypeDesc">
+      <select id="accountType" name="type" required aria-required="true">
         <option value="" disabled selected>Pilih jenis akun</option>
         <option value="trojan">Trojan</option>
         <option value="vmess">Vmess</option>
@@ -257,131 +303,141 @@
       </select>
 
       <label for="username">Nama Pengguna</label>
-      <input type="text" id="username" name="username" required minlength="3" maxlength="20" pattern="^[a-zA-Z0-9_]+$"
-        title="Hanya huruf, angka dan garis bawah (_) yang diperbolehkan" placeholder="Masukkan nama pengguna" />
+      <input id="username" name="username" type="text" placeholder="Masukkan username" pattern="^[a-zA-Z0-9_]{3,20}$" required aria-required="true"/>
 
-      <label for="duration">Durasi (Hari)</label>
-      <input type="number" id="duration" name="durationDays" min="1" max="365" value="30" required />
+      <label for="duration">Durasi Aktif (Hari)</label>
+      <input id="duration" name="durationDays" type="number" min="1" max="365" value="30" required aria-required="true"/>
 
       <label for="configs">Konfigurasi Tambahan (Opsional)</label>
-      <input type="text" id="configs" name="configs" placeholder="Misal: custom port, password" aria-describedby="configsDesc" />
+      <input id="configs" name="configs" type="text" placeholder="Contoh: custom port, password" />
 
-      <button type="submit" id="submitBtn" disabled>Buat Akun</button>
-
-      <div id="status" role="alert" aria-live="assertive"></div>
+      <button type="submit">Buat Akun</button>
+      <div id="formStatus" role="alert" aria-live="assertive"></div>
     </form>
+
+    <section id="paymentSection" class="payment-section" aria-live="polite" aria-atomic="true" style="display:none;">
+      <h2>Bayar Menggunakan DANA</h2>
+      <div class="payment-instructions">
+        Silakan scan kode QR DANA di bawah ini untuk pembayaran, atau transfer ke nomor berikut:<br />
+        <strong>0822-2879-6979</strong>
+      </div>
+      <img src="https://i.ibb.co/0Z0LcFk/dana-qr-sample.png" alt="Kode QR Pembayaran DANA" style="width:180px; margin: 1rem auto;display:block;" />
+      <button id="confirmPaymentBtn">Saya Sudah Bayar</button>
+      <div id="paymentStatus"></div>
+    </section>
+
+    <section id="accountDetails" class="payment-section" aria-live="polite" aria-atomic="true" style="display:none;">
+      <h2>Detail Akun Anda</h2>
+      <pre class="account-details" id="accountInfo"></pre>
+      <button id="createNewBtn">Buat Akun Baru</button>
+    </section>
   </main>
 
   <script>
-    (function () {
+    (() => {
+      'use strict';
+
       const API_BASE = 'https://152.42.227.218:3000/api';
-      const AUTH_TOKEN = 'token-rahasia-anda'; // Ganti dengan token API Anda
+      const AUTH_TOKEN = 'token-rahasia-anda'; // Ganti token dengan token backend
 
-      const accountPrices = {
-        trojan: 15000,
-        vmess: 15000,
-        vless: 15000,
-        ssh: 15000,
-      };
+      const form = document.getElementById('createAccountForm');
+      const formStatus = document.getElementById('formStatus');
+      const paymentSection = document.getElementById('paymentSection');
+      const paymentStatus = document.getElementById('paymentStatus');
+      const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+      const accountDetailsSection = document.getElementById('accountDetails');
+      const accountInfo = document.getElementById('accountInfo');
+      const createNewBtn = document.getElementById('createNewBtn');
 
-      const balanceEl = document.getElementById('balance');
-      const statusEl = document.getElementById('status');
-      const form = document.getElementById('accountForm');
-      const submitBtn = document.getElementById('submitBtn');
+      let createdAccountData = null; // Simpan data akun yang dibuat
 
-      let userBalance = 0;
-
-      function formatRp(n) {
-        return 'Rp ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      }
-
-      function setStatus(message, success = null) {
-        statusEl.textContent = message;
-        statusEl.className = 'status';
-        if (success === true) statusEl.classList.add('success');
-        else if (success === false) statusEl.classList.add('error');
-      }
-
-      async function fetchBalance() {
-        try {
-          const res = await fetch(API_BASE + '/balance', {
-            headers: { 'Authorization': 'Bearer ' + AUTH_TOKEN },
-          });
-          if (!res.ok) throw new Error('Gagal mengambil saldo');
-          const data = await res.json();
-          return data.balance || 0;
-        } catch (err) {
-          console.error(err);
-          setStatus('Tidak dapat mengambil saldo', false);
-          return 0;
-        }
-      }
-
-      function updateSubmitState() {
-        const type = form.accountType.value;
-        if (!type) return (submitBtn.disabled = true);
-
-        const price = accountPrices[type] || 0;
-        submitBtn.disabled = userBalance < price;
-        if (userBalance < price) {
-          setStatus(`Saldo minimum diperlukan: ${formatRp(price)}`, false);
-        } else {
-          setStatus('', null);
-        }
-      }
-
-      form.addEventListener('input', updateSubmitState);
-
-      form.addEventListener('submit', async e => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        submitBtn.disabled = true;
-        setStatus('Sedang membuat akun…', null);
+        formStatus.textContent = '';
+        formStatus.className = '';
 
+        // Ambil data form
         const data = {
           type: form.accountType.value,
           username: form.username.value.trim(),
-          durationDays: +form.duration.value,
-          configs: form.configs.value.trim() || '',
+          durationDays: Number(form.duration.value),
+          configs: form.configs.value.trim()
         };
 
+        // Validasi form html sudah cukup, tapi cek kembali pengiriman
+        if (!data.type || !data.username || !data.durationDays) {
+          formStatus.textContent = 'Mohon lengkapi semua kolom yang wajib.';
+          formStatus.className = 'error';
+          return;
+        }
+
         try {
-          const res = await fetch(API_BASE + '/create-account', {
+          form.querySelector('button[type="submit"]').disabled = true;
+          formStatus.textContent = 'Membuat akun...';
+
+          const resp = await fetch(`${API_BASE}/create-account`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + AUTH_TOKEN,
+              'Authorization': `Bearer ${AUTH_TOKEN}`
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data)
           });
 
-          if (!res.ok) {
-            let errMsg = 'Gagal membuat akun';
-            try {
-              const errData = await res.json();
-              if (errData.message) errMsg = errData.message;
-            } catch {}
-            throw new Error(errMsg);
+          if (!resp.ok) {
+            const err = await resp.json().catch(() => ({}));
+            throw new Error(err.message || 'Gagal membuat akun');
           }
 
-          const result = await res.json();
-          userBalance = result.balanceAfter || userBalance - (accountPrices[data.type] || 0);
-          balanceEl.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
-          setStatus(result.message || 'Akun berhasil dibuat!', true);
-          form.reset();
-          submitBtn.disabled = true;
-        } catch (err) {
-          setStatus(err.message || 'Terjadi kesalahan', false);
-          submitBtn.disabled = false;
+          createdAccountData = await resp.json();
+          form.style.display = 'none';
+          paymentSection.style.display = 'flex';
+          formStatus.textContent = '';
+          paymentStatus.textContent = '';
+        } catch (error) {
+          formStatus.textContent = error.message;
+          formStatus.className = 'error';
+          form.querySelector('button[type="submit"]').disabled = false;
         }
       });
 
-      async function init() {
-        userBalance = await fetchBalance();
-        balanceEl.textContent = `Saldo Anda: ${formatRp(userBalance)}`;
-        updateSubmitState();
+      confirmPaymentBtn.addEventListener('click', () => {
+        paymentStatus.textContent = 'Memeriksa pembayaran...';
+        // Simulasi delay pengecekan pembayaran, ganti dengan API pengecekan jika ada
+        setTimeout(() => {
+          // Untuk demo, anggap pembayaran berhasil
+          paymentStatus.textContent = 'Pembayaran diterima, akun Anda aktif!';
+          paymentStatus.className = 'success';
+          paymentSection.style.display = 'none';
+          accountDetailsSection.style.display = 'flex';
+          displayAccountInfo();
+        }, 2000);
+      });
+
+      function displayAccountInfo() {
+        if (!createdAccountData) return;
+        const account = createdAccountData.account || {};
+        const infoLines = [
+          `Jenis Akun : ${account.type || '-'}`,
+          `Username   : ${account.username || '-'}`,
+          `Durasi     : ${account.durationDays || '-'} hari`,
+          `Konfigurasi Tambahan : ${account.configs || '-'}`,
+          `Pesan     : ${createdAccountData.message || '-'}`,
+        ];
+        accountInfo.textContent = infoLines.join('\n');
       }
 
-      init();
+      createNewBtn.addEventListener('click', () => {
+        createdAccountData = null;
+        accountInfo.textContent = '';
+        accountDetailsSection.style.display = 'none';
+        form.style.display = 'flex';
+        form.reset();
+        form.querySelector('button[type="submit"]').disabled = false;
+        formStatus.textContent = '';
+        formStatus.className = '';
+      });
+
     })();
   </script>
 </body>
