@@ -3,544 +3,155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Buat Akun Trojan, Vmess, Vless, SSH &amp; Bayar Dana Terhubung VPS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap"
-    rel="stylesheet"
-  />
+  <title>Cek Kuota XL & AXIS - Mentas Project</title>
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Toastr -->
+  <link href="https://my.kmsp-store.com/assets/build/toastr.css" rel="stylesheet" />
+  <!-- Spinner -->
+  <link rel="stylesheet" href="https://my.kmsp-store.com/assets/css/spinner.css" />
+
   <style>
-    :root {
-      --color-bg: #ffffff;
-      --color-primary: #111827;
-      --color-secondary: #6b7280;
-      --color-accent: #111827;
-      --color-accent-hover: #444c59;
-      --color-success: #16a34a;
-      --color-error: #dc2626;
-      --shadow-light: rgba(0, 0, 0, 0.05);
-      --border-radius: 0.75rem;
-      --transition-speed: 0.3s;
-      --input-bg: #f9fafb;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
       font-family: 'Poppins', sans-serif;
-      background-color: var(--color-bg);
-      color: var(--color-secondary);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      color: #fff;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      background-color: var(--color-bg);
-      box-shadow: 0 2px 6px var(--shadow-light);
-      z-index: 1000;
-      display: flex;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
+      padding: 2rem;
     }
 
-    header .logo {
-      font-weight: 700;
-      font-size: 1.75rem;
-      color: var(--color-primary);
-      user-select: none;
-    }
-
-    nav a {
-      margin-left: 2rem;
-      text-decoration: none;
-      font-weight: 600;
-      color: var(--color-secondary);
-      transition: color var(--transition-speed) ease;
-      font-size: 1rem;
-    }
-
-    nav a:hover,
-    nav a:focus-visible {
-      color: var(--color-accent);
-      outline-offset: 2px;
-    }
-
-    main {
-      flex-grow: 1;
-      max-width: 1200px;
-      margin: 3rem auto 4rem;
-      padding: 0 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4rem;
-    }
-
-    .hero {
-      text-align: center;
-      padding-top: 2rem;
-      padding-bottom: 3rem;
-    }
-
-    .hero h1 {
-      font-weight: 700;
-      font-size: 3.5rem;
-      color: var(--color-primary);
-      margin-bottom: 0.75rem;
-      line-height: 1.1;
-    }
-
-    .hero p {
-      font-size: 1.25rem;
-      color: var(--color-secondary);
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    .form-container {
-      background-color: var(--input-bg);
-      box-shadow: 0 14px 28px var(--shadow-light);
-      border-radius: var(--border-radius);
-      padding: 3rem 4rem;
-      max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      color: var(--color-primary);
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-    }
-
-    select,
-    input[type="text"],
-    input[type="password"],
-    input[type="tel"],
-    input[type="number"] {
+    .card-glass {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
       width: 100%;
-      padding: 0.85rem 1.2rem;
-      border-radius: var(--border-radius);
-      border: 1px solid #d1d5db;
-      font-size: 1rem;
-      transition: border-color var(--transition-speed) ease;
-      background-color: white;
-      color: var(--color-primary);
-      font-family: inherit;
-      font-weight: 400;
+      max-width: 480px;
     }
 
-    select:focus,
-    input[type="text"]:focus,
-    input[type="password"]:focus,
-    input[type="tel"]:focus,
-    input[type="number"]:focus {
-      border-color: var(--color-accent);
-      outline: none;
-      box-shadow: 0 0 0 3px rgb(17 24 39 / 0.15);
-      background-color: #fefefe;
+    .card-glass h3 {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
     }
 
-    .protocol-tabs {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
+    .form-control {
+      background-color: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
     }
 
-    .protocol-tab {
-      flex: 1 0 auto;
-      background: #e5e7eb;
-      border-radius: var(--border-radius);
-      padding: 0.85rem 2rem;
-      font-weight: 700;
-      font-size: 1rem;
-      text-align: center;
-      cursor: pointer;
-      color: var(--color-primary);
-      user-select: none;
-      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-      border: 2px solid transparent;
-      user-select: none;
-      border-bottom-width: 3px;
-      border-bottom-style: solid;
-      border-bottom-color: transparent;
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.7);
     }
 
-    .protocol-tab.active,
-    .protocol-tab:hover,
-    .protocol-tab:focus-visible {
-      background-color: var(--color-accent);
-      color: white;
-      border-color: var(--color-accent-hover);
-      outline-offset: 2px;
-    }
-
-    button[type="submit"] {
-      background-color: var(--color-accent);
-      color: white;
-      font-weight: 700;
-      font-size: 1.25rem;
-      padding: 1rem 2rem;
-      border-radius: var(--border-radius);
+    .btn-primary {
+      background-color: #00d2ff;
       border: none;
-      cursor: pointer;
-      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
-      align-self: center;
-      min-width: 180px;
-      user-select: none;
-      box-shadow: 0 10px 10px rgb(37 99 235 / 0.25);
+      font-weight: bold;
     }
 
-    button[type="submit"]:hover,
-    button[type="submit"]:focus-visible {
-      background-color: var(--color-accent-hover);
-      transform: scale(1.05);
-      outline-offset: 4px;
-      box-shadow: 0 14px 14px rgb(37 99 235 / 0.3);
+    .btn-primary:hover {
+      background-color: #3a7bd5;
     }
 
-    .form-section {
-      display: none;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .form-section.active {
-      display: flex;
-    }
-
-    .payment-section {
-      background-color: #f3f4f6;
-      padding: 1.8rem 2.4rem;
-      border-radius: var(--border-radius);
-      box-shadow: inset 0 0 10px var(--shadow-light);
-    }
-
-    .payment-section label {
-      font-weight: 700;
-      color: var(--color-primary);
-    }
-
-    .response-message {
-      margin-top: 1.5rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    .response-success {
-      color: var(--color-success);
-    }
-
-    .response-error {
-      color: var(--color-error);
-    }
-
-    .footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      font-size: 0.875rem;
-      color: var(--color-secondary);
-      user-select: none;
-      font-weight: 500;
-    }
-
-    .loading-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.75);
-      border-radius: var(--border-radius);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: var(--color-primary);
-      user-select: none;
-      display: none;
-      z-index: 10;
-    }
-
-    .loading-overlay.active {
-      display: flex;
-    }
-
-    @media (max-width: 640px) {
-      main {
-        padding: 0 1rem;
-      }
-      .hero h1 {
-        font-size: 2.4rem;
-      }
-      .form-container {
-        padding: 2rem 2rem;
-      }
-      .protocol-tab {
-        padding: 0.65rem 1.25rem;
-        font-size: 0.9rem;
-      }
+    .alert {
+      background-color: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo" tabindex="0" aria-label="Logo Pembuat Akun VPN">Pembuat Akun VPN</div>
-    <nav aria-label="Navigasi utama">
-      <a href="#create-account" tabindex="0">Buat Akun</a>
-      <a href="#about" tabindex="0">Tentang</a>
-    </nav>
-  </header>
 
-  <main>
-    <section class="hero" aria-label="Pengantar halaman">
-      <h1>Buat Akun Trojan, Vmess, Vless, SSH dengan Pembayaran Dana</h1>
-      <p>Kelola akun VPS Anda dengan mudah dan bayar menggunakan Dana dengan cepat dan aman.</p>
-    </section>
+<div id="cover-spin"></div>
 
-    <section class="form-container" id="create-account" aria-label="Form buat akun dan pembayaran">
-      <div class="protocol-tabs" role="tablist" aria-label="Pilih protokol VPN atau SSH">
-        <div class="protocol-tab active" role="tab" tabindex="0" aria-selected="true" aria-controls="trojan-section" id="tab-trojan">Trojan</div>
-        <div class="protocol-tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="vmess-section" id="tab-vmess">Vmess</div>
-        <div class="protocol-tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="vless-section" id="tab-vless">Vless</div>
-        <div class="protocol-tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="ssh-section" id="tab-ssh">SSH</div>
-      </div>
+<div class="card-glass">
+  <div class="text-center mb-4">
+    <h3><i class="fa fa-signal"></i> Cek Kuota XL/AXIS</h3>
+    <small>Powered by RZ-STORE | v4.0.0</small>
+  </div>
 
-      <form id="account-form" novalidate>
-        <section class="form-section active" id="trojan-section" role="tabpanel" aria-labelledby="tab-trojan">
-          <label for="trojan-username">Nama Pengguna</label>
-          <input type="text" id="trojan-username" name="trojan-username" required autocomplete="username" placeholder="Masukkan nama pengguna" />
-          
-          <label for="trojan-password">Kata Sandi</label>
-          <input type="password" id="trojan-password" name="trojan-password" required placeholder="Masukkan kata sandi" autocomplete="new-password" />
+  <div class="alert alert-info">
+    <i class="fa fa-info-circle"></i> Gunakan layanan ini secara bijak. Hindari spam.
+  </div>
 
-          <label for="trojan-expiry">Masa Aktif Akun (hari)</label>
-          <input type="number" id="trojan-expiry" name="trojan-expiry" required min="1" max="365" value="30" />
-        </section>
+  <form id="formnya">
+    <div class="mb-3">
+      <label for="msisdn" class="form-label">Nomor HP XL/AXIS:</label>
+      <input type="number" class="form-control" id="msisdn" placeholder="Contoh: 08xxx / 628xxx" maxlength="16" required>
+    </div>
+    <button type="button" id="submitCekKuota" class="btn btn-primary w-100">
+      <i class="fa fa-search"></i> Cek Sekarang
+    </button>
+    <div id="hasilnya" class="mt-3"></div>
+  </form>
+</div>
 
-        <section class="form-section" id="vmess-section" role="tabpanel" aria-labelledby="tab-vmess" tabindex="0" hidden>
-          <label for="vmess-uuid">UUID</label>
-          <input type="text" id="vmess-uuid" name="vmess-uuid" required placeholder="Masukkan UUID valid" autocomplete="off" pattern="[0-9a-fA-F\-]{36}" title="Format UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://my.kmsp-store.com/assets/toastr.js"></script>
 
-          <label for="vmess-alterid">Alter ID</label>
-          <input type="number" id="vmess-alterid" name="vmess-alterid" min="0" max="65535" value="0" />
+<script>
+  function cekKuota() {
+    const msisdn = $('#msisdn').val();
+    if (!msisdn) {
+      toastr.warning('Nomor tidak boleh kosong.');
+      return;
+    }
 
-          <label for="vmess-expiry">Masa Aktif Akun (hari)</label>
-          <input type="number" id="vmess-expiry" name="vmess-expiry" required min="1" max="365" value="30" />
-        </section>
-
-        <section class="form-section" id="vless-section" role="tabpanel" aria-labelledby="tab-vless" tabindex="0" hidden>
-          <label for="vless-uuid">UUID</label>
-          <input type="text" id="vless-uuid" name="vless-uuid" required placeholder="Masukkan UUID valid" autocomplete="off" pattern="[0-9a-fA-F\-]{36}" title="Format UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
-
-          <label for="vless-flow">Flow (opsional)</label>
-          <input type="text" id="vless-flow" name="vless-flow" placeholder="contoh: xtls-rprx-vision" autocomplete="off" />
-
-          <label for="vless-expiry">Masa Aktif Akun (hari)</label>
-          <input type="number" id="vless-expiry" name="vless-expiry" required min="1" max="365" value="30" />
-        </section>
-
-        <section class="form-section" id="ssh-section" role="tabpanel" aria-labelledby="tab-ssh" tabindex="0" hidden>
-          <label for="ssh-username">Nama Pengguna</label>
-          <input
-            type="text"
-            id="ssh-username"
-            name="ssh-username"
-            required
-            autocomplete="username"
-            placeholder="Masukkan nama pengguna"
-          />
-
-          <label for="ssh-password">Kata Sandi</label>
-          <input
-            type="password"
-            id="ssh-password"
-            name="ssh-password"
-            required
-            placeholder="Masukkan kata sandi"
-            autocomplete="new-password"
-          />
-
-          <label for="ssh-expiry">Masa Aktif Akun (hari)</label>
-          <input type="number" id="ssh-expiry" name="ssh-expiry" required min="1" max="365" value="30" />
-        </section>
-
-        <fieldset class="payment-section" aria-label="Informasi Pembayaran Dana">
-          <label for="dana-phone">Nomor Telepon Dana</label>
-          <input
-            type="tel"
-            id="dana-phone"
-            name="dana-phone"
-            required
-            pattern="^08[0-9]{8,11}$"
-            placeholder="08xxxxxxxxxx"
-            autocomplete="tel"
-            title="Nomor telepon Indonesia yang dimulai dengan 08"
-          />
-
-          <label for="payment-amount">Jumlah Pembayaran (IDR)</label>
-          <input type="number" id="payment-amount" name="payment-amount" required min="1000" step="500" value="10000" />
-        </fieldset>
-
-        <button type="submit" aria-label="Buat akun dan bayar">Buat Akun &amp; Bayar</button>
-      </form>
-
-      <div class="response-message" role="alert" aria-live="polite"></div>
-      <div class="loading-overlay" aria-hidden="true">Sedang memproses...</div>
-    </section>
-
-    <section id="about" style="max-width: 600px; margin: 4rem auto 0; text-align:center; padding: 0 1rem;">
-      <h2 style="font-weight:700; font-size: 1.75rem; color: var(--color-primary); margin-bottom: 1rem;">Tentang Alat Ini</h2>
-      <p>
-        Halaman ini memudahkan pembuatan akun Trojan, Vmess, Vless, dan SSH di VPS Anda dengan pembayaran Dana. Data dari form dikirim ke backend yang menjalankan pembuatan akun secara otomatis.
-      </p>
-    </section>
-  </main>
-
-  <footer class="footer" aria-label="Footer">
-    &copy; 2024 Pembuat Akun VPN. Semua hak dilindungi.
-  </footer>
-
-  <script>
-    (() => {
-      const tabs = document.querySelectorAll(".protocol-tab");
-      const form = document.getElementById("account-form");
-      const responseMessage = document.querySelector(".response-message");
-      const loadingOverlay = document.querySelector(".loading-overlay");
-
-      function setActiveTab(selectedTab) {
-        tabs.forEach((tab) => {
-          const isSelected = tab === selectedTab;
-          tab.classList.toggle("active", isSelected);
-          tab.setAttribute("aria-selected", isSelected ? "true" : "false");
-          tab.tabIndex = isSelected ? 0 : -1;
-          const controlsId = tab.getAttribute("aria-controls");
-          const section = document.getElementById(controlsId);
-          if (section) {
-            section.classList.toggle("active", isSelected);
-            section.hidden = !isSelected;
-            section.tabIndex = isSelected ? 0 : -1;
-          }
-        });
-        clearResponse();
+    $.ajax({
+      type: 'GET',
+      url: `https://apigw.kmsp-store.com/sidompul/v4/cek_kuota?msisdn=${msisdn}&isJSON=true`,
+      dataType: 'JSON',
+      contentType: 'application/x-www-form-urlencoded',
+      beforeSend: function (req) {
+        req.setRequestHeader('Authorization', 'Basic c2lkb21wdWxhcGk6YXBpZ3drbXNw');
+        req.setRequestHeader('X-API-Key', '60ef29aa-a648-4668-90ae-20951ef90c55');
+        req.setRequestHeader('X-App-Version', '4.0.0');
+        $('#cover-spin').show();
+      },
+      success: function (res) {
+        $('#cover-spin').hide();
+        $('#hasilnya').html('');
+        if (res.status) {
+          toastr.success(res.message);
+          $('#hasilnya').html(`<div class="alert alert-success">${res.data.hasil}</div>`);
+        } else {
+          toastr.error(res.message);
+          $('#hasilnya').html(`<div class="alert alert-danger">${res.data.keteranganError}</div>`);
+        }
+      },
+      error: function () {
+        $('#cover-spin').hide();
+        toastr.error('Terjadi kesalahan, silakan coba kembali.');
       }
+    });
+  }
 
-      function clearResponse() {
-        responseMessage.textContent = "";
-        responseMessage.className = "response-message";
-      }
+  $(document).ready(function () {
+    $('#submitCekKuota').click(cekKuota);
+    $('#msisdn').on('keypress', function (e) {
+      if (e.which === 13) cekKuota();
+    });
+  });
+</script>
 
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          setActiveTab(tab);
-        });
-        tab.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-            e.preventDefault();
-            let index = Array.from(tabs).indexOf(document.activeElement);
-            if (e.key === "ArrowRight") {
-              index = (index + 1) % tabs.length;
-            } else if (e.key === "ArrowLeft") {
-              index = (index - 1 + tabs.length) % tabs.length;
-            }
-            tabs[index].focus();
-            setActiveTab(tabs[index]);
-          }
-        });
-      });
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144237878-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-144237878-1');
+</script>
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        clearResponse();
-
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        const activeTab = document.querySelector(".protocol-tab.active");
-        const protocol = activeTab.textContent.toLowerCase();
-
-        const formData = new FormData(form);
-        let accountData = {};
-        switch (protocol) {
-          case "trojan":
-            accountData.username = formData.get("trojan-username");
-            accountData.password = formData.get("trojan-password");
-            accountData.expiry = Number(formData.get("trojan-expiry"));
-            break;
-          case "vmess":
-            accountData.uuid = formData.get("vmess-uuid");
-            accountData.alterid = Number(formData.get("vmess-alterid"));
-            accountData.expiry = Number(formData.get("vmess-expiry"));
-            break;
-          case "vless":
-            accountData.uuid = formData.get("vless-uuid");
-            accountData.flow = formData.get("vless-flow");
-            accountData.expiry = Number(formData.get("vless-expiry"));
-            break;
-          case "ssh":
-            accountData.username = formData.get("ssh-username");
-            accountData.password = formData.get("ssh-password");
-            accountData.expiry = Number(formData.get("ssh-expiry"));
-            break;
-        }
-
-        const danaPhone = formData.get("dana-phone");
-        const paymentAmount = Number(formData.get("payment-amount"));
-
-        loadingOverlay.classList.add("active");
-
-        try {
-          // Ganti [VPS_IP_OR_DOMAIN] dengan IP/domain VPS anda yang menjalankan backend
-          const response = await fetch("http://mp3.whykho.web.id:5000/api/create-account", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              protocol,
-              accountData,
-              danaPhone,
-              paymentAmount,
-            }),
-          });
-
-          const result = await response.json();
-
-          if (response.ok && result.success) {
-            responseMessage.textContent = `Sukses: ${result.message}`;
-            responseMessage.classList.add("response-success");
-            form.reset();
-            setActiveTab(tabs[0]);
-          } else {
-            throw new Error(result.message || "Terjadi kesalahan saat membuat akun.");
-          }
-        } catch (err) {
-          responseMessage.textContent = `Error: ${err.message}`;
-          responseMessage.classList.add("response-error");
-        } finally {
-          loadingOverlay.classList.remove("active");
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
