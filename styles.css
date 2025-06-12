@@ -1,0 +1,112 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    color: #333;
+    background-color: #f0f2f5;
+}
+.container {
+    width: 800px;
+    margin: 40px auto;
+    border: 1px solid #dcdcdc;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #4a4a4a;
+}
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.form-group textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+.item-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.item-row input {
+    flex: 1;
+}
+.item-row .item-name {
+    flex: 2;
+}
+.item-row button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.item-row button:hover {
+    background-color: #c0392b;
+}
+#items-container {
+    border: 1px dashed #cccccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+#add-item {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin-top: 10px;
+}
+#add-item:hover {
+    background-color: #218838;
+}
+.form-group button[type="submit"],
+.form-group #printKwitansiBtn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 20px;
+    display: block;
+}
+.form-group button[type="submit"]:hover,
+.form-group #printKwitansiBtn:hover {
+    background-color: #0056b3;
+}
+#printKwitansiBtn {
+    background-color: #6c757d;
+    margin-top: 10px;
+}
+#printKwitansiBtn:hover {
+    background-color: #5a6268;
+}
