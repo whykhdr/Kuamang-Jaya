@@ -766,43 +766,58 @@
                             ${terbilang.toString()}
                             ${formatCurrency.toString()}
                             ${formatDate.toString()}
-                        </script>
-                    </body>
-                    </html>
-                `;
-            }
+<script>
+    // --- FUNGSI UNTUK MENGELOLA ITEM DAN TOTAL ---
 
+    addItemButton.addEventListener('click', function() {
+        // ... (kode yang ada tetap)
+    });
 
-            kwitansiForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Mencegah form submit default
+    // Helper function to calculate total for a specific row and trigger grand total update
+    function calculateItemTotalForElement(inputElement) {
+        const row = inputElement.closest('.item-row');
+        const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
+        const price = parseFloat(row.querySelector('.item-price').value) || 0;
+        row.querySelector('.item-total').value = quantity * price; // Update the individual item total
+        updateGrandTotal(); // Update the overall grand total and terbilang
+    }
 
-                const kwitansiHtml = generateKwitansiHtml();
+    // Attach event listeners (input events) to quantity and price fields in a row
+    function attachEventListenersToNewItemRow(row) {
+        const quantityInput = row.querySelector('.item-quantity');
+        const priceInput = row.querySelector('.item-price');
 
-                // Buka di jendela baru
-                const newWindow = window.open('', '_blank');
-                newWindow.document.write(kwitansiHtml);
-                newWindow.document.close();
-            });
+        quantityInput.addEventListener('input', () => calculateItemTotalForElement(quantityInput));
+        priceInput.addEventListener('input', () => calculateItemTotalForElement(priceInput));
+    }
 
-            // Event listener untuk tombol Print Kwitansi
-            printKwitansiBtn.addEventListener('click', function() {
-                const kwitansiHtml = generateKwitansiHtml();
-
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(kwitansiHtml);
-                printWindow.document.close();
-
-                // Tunggu konten dimuat sebelum print
-                printWindow.onload = function() {
-                    printWindow.focus(); // Fokus ke jendela baru
-                    printWindow.print(); // Trigger dialog print
-                };
-            });
-
-
-            // Expose removeItem to global scope so it can be called from onclick
-            window.removeItem = removeItem;
+    // Calculates the sum of all item totals and updates the main total and terbilang fields.
+    function updateGrandTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll('.item-total').forEach(totalInput => {
+            grandTotal += parseFloat(totalInput.value) || 0;
         });
-    </script>
+        console.log("Grand Total Terhitung (Angka):", grandTotal); // DEBUG
+        jumlahUangInput.value = grandTotal; // Update the main numerical total input
+        terbilangInput.value = terbilang(grandTotal); // Update the "terbilang" text input
+        console.log("Terbilang Teks (Output):", terbilangInput.value); // DEBUG
+    }
+
+    // --- INISIALISASI FORM SAAT DOMContentLoaded ---
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... (kode yang ada tetap)
+
+        // Tambahkan event listener untuk input jumlah uang
+        jumlahUangInput.addEventListener('input', function() {
+            terbilangInput.value = terbilang(parseFloat(jumlahUangInput.value) || 0);
+        });
+
+        // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
+        // ... (kode yang ada tetap)
+    });
+
+    // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
+    // ... (kode yang ada tetap)
+</script>
 </body>
 </html>
