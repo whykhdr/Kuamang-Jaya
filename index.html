@@ -151,21 +151,21 @@
                     <input type="text" class="item-name" placeholder="Item" value="Pipa PVC 4 inci">
                     <input type="number" class="item-quantity" placeholder="Jumlah" value="5">
                     <input type="number" class="item-price" placeholder="Harga Satuan" value="80000">
-                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Nilai ini akan dihitung oleh JS -->
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
                 <div class="item-row">
                     <input type="text" class="item-name" placeholder="Item" value="Lem Pipa">
                     <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
                     <input type="number" class="item-price" placeholder="Harga Satuan" value="25000">
-                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Nilai ini akan dihitung oleh JS -->
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
                 <div class="item-row">
                     <input type="text" class="item-name" placeholder="Item" value="Ongkos transportasi">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="0">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="0">
-                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="75000">
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Nilai ini akan dihitung oleh JS -->
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
             </div>
@@ -188,6 +188,114 @@
     </div>
 
     <script>
+        // --- FUNGSI HELPER YANG DIBUTUHKAN DI WINDOW UTAMA DAN WINDOW CETAK ---
+
+        // Fungsi untuk mengonversi angka menjadi teks terbilang dalam bahasa Indonesia
+        function terbilang(number) {
+            if (typeof number !== 'number' || isNaN(number)) {
+                console.warn("terbilang: Input bukan angka atau NaN:", number);
+                return "Bukan Angka";
+            }
+
+            const units = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan'];
+            const teens = ['sepuluh', 'sebelas', 'dua belas', 'tiga belas', 'empat belas', 'lima belas', 'enam belas', 'tujuh belas', 'delapan belas', 'sembilan belas'];
+            const tens = ['', '', 'dua puluh', 'tiga puluh', 'empat puluh', 'lima puluh', 'enam puluh', 'tujuh puluh', 'delapan puluh', 'sembilan puluh'];
+            const thousands = ['', 'ribu', 'juta', 'miliar', 'triliun'];
+
+            function convertGroup(n) {
+                let text = '';
+                const hundred = Math.floor(n / 100);
+                const remainder = n % 100;
+
+                if (hundred === 1) {
+                    text += 'seratus';
+                } else if (hundred > 0) {
+                    text += units[hundred] + ' ratus';
+                }
+
+                if (remainder > 0) {
+                    if (text !== '') text += ' ';
+                    if (remainder < 10) {
+                        text += units[remainder];
+                    } else if (remainder >= 10 && remainder < 20) {
+                        text += teens[remainder - 10];
+                    } else {
+                        text += tens[Math.floor(remainder / 10)];
+                        if (remainder % 10 > 0) {
+                            text += ' ' + units[remainder % 10];
+                        }
+                    }
+                }
+                return text;
+            }
+
+            if (number === 0) return 'Nol';
+
+            let result = '';
+            let numStr = String(Math.floor(number));
+            let groups = [];
+
+            while (numStr.length > 0) {
+                if (numStr.length <= 3) {
+                    groups.unshift(numStr);
+                    numStr = '';
+                } else {
+                    groups.unshift(numStr.slice(-3));
+                    numStr = numStr.slice(0, -3);
+                }
+            }
+
+            for (let i = 0; i < groups.length; i++) {
+                const groupNum = parseInt(groups[i], 10);
+                if (groupNum === 0) continue;
+
+                let groupText = convertGroup(groupNum);
+                if (groupText !== '') {
+                    if (i === groups.length - 2 && groupNum === 1 && groups.length > 1) {
+                         groupText = "seribu";
+                    } else {
+                         groupText += ' ' + thousands[groups.length - 1 - i];
+                    }
+                }
+
+                if (result !== '') result += ' ';
+                result += groupText;
+            }
+
+            result = result.trim();
+            if (result.length > 0) {
+                result = result.charAt(0).toUpperCase() + result.slice(1);
+            }
+
+            return result + " Rupiah";
+        }
+
+        // Fungsi untuk memformat mata uang (misal: 500000 -> 500.000)
+        function formatCurrency(number) {
+            const num = parseFloat(number);
+            if (isNaN(num)) {
+                console.warn("formatCurrency: Input bukan angka:", number);
+                return "NaN";
+            }
+            return new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(num);
+        }
+
+        // Fungsi untuk memformat tanggal
+        function formatDate(dateString) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+
+        // Define a string containing the helper functions for injection
+        // This will be added directly into the generated HTML to ensure scope in the new window
+        const allHelperFunctionsForPrintString = `
+            <script>
+                ${terbilang.toString()}
+                ${formatCurrency.toString()}
+                ${formatDate.toString()}
+            </script>
+        `;
+
         document.addEventListener('DOMContentLoaded', function() {
             const kwitansiForm = document.getElementById('kwitansiForm');
             const itemsContainer = document.getElementById('items-container');
@@ -198,98 +306,23 @@
             const terbilangInput = document.getElementById('terbilang');
             const printKwitansiBtn = document.getElementById('printKwitansiBtn');
 
-            // Fungsi untuk mengonversi angka menjadi teks terbilang dalam bahasa Indonesia
-            function terbilang(number) {
-                if (typeof number !== 'number' || isNaN(number)) {
-                    return "Bukan Angka";
-                }
-
-                const units = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan'];
-                const teens = ['sepuluh', 'sebelas', 'dua belas', 'tiga belas', 'empat belas', 'lima belas', 'enam belas', 'tujuh belas', 'delapan belas', 'sembilan belas'];
-                const tens = ['', '', 'dua puluh', 'tiga puluh', 'empat puluh', 'lima puluh', 'enam puluh', 'tujuh puluh', 'delapan puluh', 'sembilan puluh'];
-                const thousands = ['', 'ribu', 'juta', 'miliar', 'triliun'];
-
-                function convertGroup(n) {
-                    let text = '';
-                    const hundred = Math.floor(n / 100);
-                    const remainder = n % 100;
-
-                    if (hundred === 1) {
-                        text += 'seratus';
-                    } else if (hundred > 0) {
-                        text += units[hundred] + ' ratus';
-                    }
-
-                    if (remainder > 0) {
-                        if (text !== '') text += ' ';
-                        if (remainder < 10) {
-                            text += units[remainder];
-                        } else if (remainder >= 10 && remainder < 20) {
-                            text += teens[remainder - 10];
-                        } else {
-                            text += tens[Math.floor(remainder / 10)];
-                            if (remainder % 10 > 0) {
-                                text += ' ' + units[remainder % 10];
-                            }
-                        }
-                    }
-                    return text;
-                }
-
-                if (number === 0) return 'Nol';
-
-                let result = '';
-                let numStr = String(Math.floor(number));
-                let groups = [];
-
-                while (numStr.length > 0) {
-                    if (numStr.length <= 3) {
-                        groups.unshift(numStr);
-                        numStr = '';
-                    } else {
-                        groups.unshift(numStr.slice(-3));
-                        numStr = numStr.slice(0, -3);
-                    }
-                }
-
-                for (let i = 0; i < groups.length; i++) {
-                    const groupNum = parseInt(groups[i], 10);
-                    if (groupNum === 0) continue;
-
-                    let groupText = convertGroup(groupNum);
-                    if (groupText !== '') {
-                        if (i === groups.length - 2 && groupNum === 1 && groups.length > 1) {
-                             groupText = "seribu";
-                        } else {
-                             groupText += ' ' + thousands[groups.length - 1 - i];
-                        }
-                    }
-
-                    if (result !== '') result += ' ';
-                    result += groupText;
-                }
-
-                result = result.trim();
-                if (result.length > 0) {
-                    result = result.charAt(0).toUpperCase() + result.slice(1);
-                }
-
-                return result + " Rupiah";
-            }
+            // --- INISIALISASI FORM SAAT DOMContentLoaded ---
 
             // Set default date to current date
             const today = new Date();
-            const yyyy = today.getFullYear();
+            const currentYear = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
-            tanggalInput.value = `${yyyy}-${mm}-${dd}`;
+            tanggalInput.value = `${currentYear}-${mm}-${dd}`;
             
             // Generate a simple default receipt number based on date and time
             const hours = String(today.getHours()).padStart(2, '0');
             const minutes = String(today.getMinutes()).padStart(2, '0');
             const seconds = String(today.getSeconds()).padStart(2, '0');
-            nomorKwitansiInput.value = `KAS/KJ/${dd}${mm}/${yyyy}/${hours}${minutes}${seconds}`;
+            nomorKwitansiInput.value = `KAS/KJ/${dd}${mm}/${currentYear}/${hours}${minutes}${seconds}`;
 
+
+            // --- FUNGSI UNTUK MENGELOLA ITEM DAN TOTAL ---
 
             addItemButton.addEventListener('click', function() {
                 const newItemRow = document.createElement('div');
@@ -302,44 +335,51 @@
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 `;
                 itemsContainer.appendChild(newItemRow);
-                attachEventListenersToNewItemRow(newItemRow);
-                // No explicit call to updateGrandTotal needed here, as the new row's input event listeners will trigger it.
-                // However, an initial calculation for this new row's total is good practice:
-                const newlyAddedItemTotalInput = newItemRow.querySelector('.item-total');
-                const newlyAddedItemQty = parseFloat(newItemRow.querySelector('.item-quantity').value) || 0;
-                const newlyAddedItemPrice = parseFloat(newItemRow.querySelector('.item-price').value) || 0;
-                newlyAddedItemTotalInput.value = newlyAddedItemQty * newlyAddedItemPrice; // Calculate total for newly added row
-                updateGrandTotal(); // Then update overall total
+                attachEventListenersToNewItemRow(newItemRow); 
+                
+                // Set initial default values for new item if desired, then re-calculate
+                newItemRow.querySelector('.item-quantity').value = '0'; // Default quantity for new item
+                newItemRow.querySelector('.item-price').value = '0';   // Default price for new item
+                calculateItemTotalForElement(newItemRow.querySelector('.item-quantity')); // Trigger calculation for this new row
             });
 
+            // Helper function to calculate total for a specific row and trigger grand total update
+            function calculateItemTotalForElement(inputElement) {
+                const row = inputElement.closest('.item-row');
+                const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                row.querySelector('.item-total').value = quantity * price; // Update the individual item total
+                updateGrandTotal(); // Update the overall grand total and terbilang
+            }
+
+            // Attach event listeners (input events) to quantity and price fields in a row
             function attachEventListenersToNewItemRow(row) {
                 const quantityInput = row.querySelector('.item-quantity');
                 const priceInput = row.querySelector('.item-price');
-                const totalInput = row.querySelector('.item-total');
 
-                const calculateItemTotal = () => {
-                    const quantity = parseFloat(quantityInput.value) || 0;
-                    const price = parseFloat(priceInput.value) || 0;
-                    totalInput.value = quantity * price; // Update the individual item total
-                    updateGrandTotal(); // Then update the overall grand total and terbilang
-                };
-
-                quantityInput.addEventListener('input', calculateItemTotal);
-                priceInput.addEventListener('input', calculateItemTotal);
+                quantityInput.addEventListener('input', () => calculateItemTotalForElement(quantityInput));
+                priceInput.addEventListener('input', () => calculateItemTotalForElement(priceInput));
             }
 
-            // This function calculates the sum of all item totals and updates the main total and terbilang fields.
+            // Calculates the sum of all item totals and updates the main total and terbilang fields.
             function updateGrandTotal() {
                 let grandTotal = 0;
                 document.querySelectorAll('.item-total').forEach(totalInput => {
                     grandTotal += parseFloat(totalInput.value) || 0;
                 });
+                console.log("Grand Total Terhitung (Angka):", grandTotal); // DEBUG
                 jumlahUangInput.value = grandTotal; // Update the main numerical total input
                 terbilangInput.value = terbilang(grandTotal); // Update the "terbilang" text input
+                console.log("Terbilang Teks (Output):", terbilangInput.value); // DEBUG
             }
 
-            // Attach event listeners to all existing item rows when the page loads.
-            // Also, immediately calculate initial totals.
+            // Remove item from list and update grand total
+            function removeItem(button) {
+                button.closest('.item-row').remove();
+                updateGrandTotal();
+            }
+
+            // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
             document.querySelectorAll('.item-row').forEach(row => {
                 const quantityInput = row.querySelector('.item-quantity');
                 const priceInput = row.querySelector('.item-price');
@@ -348,8 +388,9 @@
                 const initialQuantity = parseFloat(quantityInput.value) || 0;
                 const initialPrice = parseFloat(priceInput.value) || 0;
                 totalInput.value = initialQuantity * initialPrice; // Calculate initial total for each existing row
-
+                
                 attachEventListenersToNewItemRow(row); // Attach listeners for future changes
+                console.log(`Initial item total for '${row.querySelector('.item-name').value}': ${totalInput.value}`); // DEBUG
             });
 
             // Perform an initial grand total calculation and terbilang update on page load.
@@ -357,6 +398,7 @@
             updateGrandTotal();
 
 
+            // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
             function generateKwitansiHtml() {
                 const nomorKwitansi = document.getElementById('nomorKwitansi').value;
                 const tanggal = document.getElementById('tanggal').value;
@@ -366,12 +408,14 @@
                 const penerimaUang = document.getElementById('penerimaUang').value;
                 const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
 
+                console.log("Generating Kwitansi HTML - JumlahUang:", jumlahUang, "TerbilangText:", terbilangText); // DEBUG
+
                 const items = [];
                 document.querySelectorAll('#items-container .item-row').forEach(row => {
                     const itemName = row.querySelector('.item-name').value;
-                    const itemQuantity = row.querySelector('.item-quantity').value;
-                    const itemPrice = row.querySelector('.item-price').value;
-                    const itemTotal = parseFloat(row.querySelector('.item-total').value) || 0; // Ensure numerical
+                    const itemQuantity = row.querySelector('.item-quantity').value; // Keep as string for display
+                    const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0; // Ensure numerical for formatting
+                    const itemTotal = parseFloat(row.querySelector('.item-total').value) || 0; // Ensure numerical for formatting
                     if (itemName) {
                         items.push({
                             name: itemName,
@@ -717,6 +761,12 @@
                             </div>
                             <!-- Catatan Penting telah dihilangkan -->
                         </div>
+                        <!-- Inject the helper functions here for the print window -->
+                        <script>
+                            ${terbilang.toString()}
+                            ${formatCurrency.toString()}
+                            ${formatDate.toString()}
+                        </script>
                     </body>
                     </html>
                 `;
@@ -750,24 +800,8 @@
             });
 
 
-            function removeItem(button) {
-                button.closest('.item-row').remove();
-                updateGrandTotal();
-            }
-
-            function formatCurrency(number) {
-                return new Intl.NumberFormat('id-ID').format(number);
-            }
-
-            function formatDate(dateString) {
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                return new Date(dateString).toLocaleDateString('id-ID', options);
-            }
-
             // Expose removeItem to global scope so it can be called from onclick
             window.removeItem = removeItem;
-            window.formatCurrency = formatCurrency;
-            window.formatDate = formatDate;
         });
     </script>
 </body>
