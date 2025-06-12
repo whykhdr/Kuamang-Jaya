@@ -1,100 +1,3 @@
-// main.js
-
-document.addEventListener('DOMContentLoaded', function() {
-    const kwitansiForm = document.getElementById('kwitansiForm');
-    const itemsContainer = document.getElementById('items-container');
-    const addItemButton = document.getElementById('add-item');
-    const tanggalInput = document.getElementById('tanggal');
-    const nomorKwitansiInput = document.getElementById('nomorKwitansi');
-    const jumlahUangInput = document.getElementById('jumlahUang');
-    const terbilangInput = document.getElementById('terbilang');
-    const printKwitansiBtn = document.getElementById('printKwitansiBtn');
-
-    // Set default date to current date
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    tanggalInput.value = `${currentYear}-${mm}-${dd}`;
-
-    // Generate a simple default receipt number based on date and time
-    const hours = String(today.getHours()).padStart(2, '0');
-    const minutes = String(today.getMinutes()).padStart(2, '0');
-    const seconds = String(today.getSeconds()).padStart(2, '0');
-    nomorKwitansiInput.value = `KAS/KJ/${dd}${mm}/${currentYear}/${hours}${minutes}${seconds}`;
-
-    // Tambahkan event listener untuk input jumlah uang
-    jumlahUangInput.addEventListener('input', function() {
-        terbilangInput.value = terbilang(parseFloat(jumlahUangInput.value) || 0);
-    });
-
-    // --- FUNGSI UNTUK MENGELOLA ITEM DAN TOTAL ---
-    addItemButton.addEventListener('click', function() {
-        const newItemRow = document.createElement('div');
-        newItemRow.classList.add('item-row');
-        newItemRow.innerHTML = `
-            <input type="text" class="item-name" placeholder="Item">
-            <input type="number" class="item-quantity" placeholder="Jumlah">
-            <input type="number" class="item-price" placeholder="Harga Satuan">
-            <input type="number" class="item-total" placeholder="Total" readonly>
-            <button type="button" onclick="removeItem(this)">Hapus</button>
-        `;
-        itemsContainer.appendChild(newItemRow);
-        attachEventListenersToNewItemRow(newItemRow); 
-    });
-
-    // Helper function to calculate total for a specific row and trigger grand total update
-    function calculateItemTotalForElement(inputElement) {
-        const row = inputElement.closest('.item-row');
-        const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
-        const price = parseFloat(row.querySelector('.item-price').value) || 0;
-        row.querySelector('.item-total').value = quantity * price; // Update the individual item total
-        updateGrandTotal(); // Update the overall grand total and terbilang
-    }
-
-    // Attach event listeners (input events) to quantity and price fields in a row
-    function attachEventListenersToNewItemRow(row) {
-        const quantityInput = row.querySelector('.item-quantity');
-        const priceInput = row.querySelector('.item-price');
-
-        quantityInput.addEventListener('input', () => calculateItemTotalForElement(quantityInput));
-        priceInput.addEventListener('input', () => calculateItemTotalForElement(priceInput));
-    }
-
-    // Calculates the sum of all item totals and updates the main total and terbilang fields.
-    function updateGrandTotal() {
-        let grandTotal = 0;
-        document.querySelectorAll('.item-total').forEach(totalInput => {
-            grandTotal += parseFloat(totalInput.value) || 0;
-        });
-        console.log("Grand Total Terhitung (Angka):", grandTotal); // DEBUG
-        jumlahUangInput.value = grandTotal; // Update the main numerical total input
-        terbilangInput.value = terbilang(grandTotal); // Update the "terbilang" text input
-        console.log("Terbilang Teks (Output):", terbilangInput.value); // DEBUG
-    }
-
-    // Remove item from list and update grand total
-    function removeItem(button) {
-        button.closest('.item-row').remove();
-        updateGrandTotal();
-    }
-
-    // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
-    document.querySelectorAll('.item-row').forEach(row => {
-        const quantityInput = row.querySelector('.item-quantity');
-        const priceInput = row.querySelector('.item-price');
-        const totalInput = row.querySelector('.item-total');
-
-        const initialQuantity = parseFloat(quantityInput.value) || 0;
-        const initialPrice = parseFloat(priceInput.value) || 0;
-        totalInput.value = initialQuantity * initialPrice; // Calculate initial total for each existing row
-        
-        attachEventListenersToNewItemRow(row); // Attach listeners for future changes
-    });
-
-    // Perform an initial grand total calculation and terbilang update on page load.
-    updateGrandTotal();
-
     // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
     function generateKwitansiHtml() {
         const nomorKwitansi = document.getElementById('nomorKwitansi').value;
@@ -437,4 +340,34 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <td style="text-align: right;">Rp. ${formatCurrency(jumlahUang)},-</td>
                             </tr>
                         </tfoot>
-                   
+                    </table>
+
+                    <div class="date-location">
+                        Kuamang Jaya, ${formatDate(tanggal)}
+                    </div>
+
+                    <div class="signatures">
+                        <div class="signature-box">
+                            <p>${bendaharaPamsimas}</p>
+                            <span class="role">Bendahara Pamsimas</span>
+                        </div>
+                        <div class="signature-box">
+                            <p>${penerimaUang}</p>
+                            <span class="role">Penerima Uang</span>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+    }
+
+    // Add event listener for print button
+    printKwitansiBtn.addEventListener('click', function() {
+        const kwitansiHtml = generateKwitansiHtml();
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(kwitansiHtml);
+        newWindow.document.close();
+        newWindow.print();
+    });
+});
