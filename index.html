@@ -35,23 +35,23 @@
             <div id="items-container">
                 <label>Rincian Item:</label>
                 <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Pipa PVC 4 inci">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="5">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="80000">
+                    <input type="text" class="item-name" placeholder="Item" value="Pipa PVC 4 inci" required>
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="5" required>
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="80000" required>
                     <input type="number" class="item-total" placeholder="Total" readonly>
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
                 <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Lem Pipa">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="25000">
+                    <input type="text" class="item-name" placeholder="Item" value="Lem Pipa" required>
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1" required>
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="25000" required>
                     <input type="number" class="item-total" placeholder="Total" readonly>
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
                 <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Ongkos transportasi">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="75000">
+                    <input type="text" class="item-name" placeholder="Item" value="Ongkos transportasi" required>
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1" required>
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="75000" required>
                     <input type="number" class="item-total" placeholder="Total" readonly>
                     <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
@@ -74,8 +74,7 @@
         </form>
     </div>
 
-       <script src="utils.js"></script>
-       <script src="main.js"></script>
-   
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
