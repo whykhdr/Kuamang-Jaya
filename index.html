@@ -1,523 +1,774 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<center>
-        <img src="https://tools.kobostore.my.id/uploads/rzstore/8897473206.jpg" alt="Logo" style="width:100px;height:auto;margin-bottom:20px;">
-</center>
-  <title>Verifikasi Nomor XL & AXIS</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <style type="text/css">
-        
-        @import url("https://fastly.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
-
-        * {
-            font-family: 'Arial', sans-serif;
-            user-select: none;
-        }
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pembuatan Kwitansi Pengeluaran PAMSIMAS</title>
+    <style>
         body {
-            background-color: #2196F3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            color: #333;
+            background-color: #f0f2f5;
         }
-
-        p {
-            margin: 0;
-            font-size: 12px
+        .container {
+            width: 800px;
+            margin: 40px auto;
+            border: 1px solid #dcdcdc;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            background-color: #ffffff;
+            border-radius: 8px;
         }
-
-        input {
-            border: none;
-            -webkit-transition: 0.5s;
-            transition: 0.5s;
-            outline: none;
-            width: 100%;
-            background-color: transparent;
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
-
-        a,
-        a:focus,
-        a:hover {
-            text-decoration: none;
-            color: inherit;
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        @-webkit-keyframes fadeEffect {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a4a4a;
         }
-
-        @keyframes fadeEffect {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .my-bg {
-            background-color: #2196F3
-        }
-
-        .my-color {
-            color: #2196F3
-        }
-
-        .my-border {
-            border: 1px solid #2196F3;
-        }
-
-        .borad-5 {
-            border-radius: 5px
-        }
-
-        .borad-10 {
-            border-radius: 10px
-        }
-
-        .borad-15 {
-            border-radius: 15px
-        }
-
-        .my-shadow {
-            box-shadow: rgba(0, 0, 0, 0.15) 0 0 5px 1px;
-        }
-
-        .bg-white {
-            background-color: #fff !important
-        }
-
-        .text-white {
-            color: #fff
-        }
-
-        .f-11 {
-            font-size: 11px !important
-        }
-
-        .f-12 {
-            font-size: 12px !important
-        }
-
-        .f-14 {
-            font-size: 14px !important
-        }
-
-        .f-16 {
-            font-size: 16px !important
-        }
-
-        .f-18 {
-            font-size: 18px !important
-        }
-
-        .f-20 {
-            font-size: 20px !important
-        }
-
-        .f-22 {
-            font-size: 22px !important
-        }
-
-        .f-24 {
-            font-size: 24px !important
-        }
-
-        .f-26 {
-            font-size: 26px !important
-        }
-
-        .f-28 {
-            font-size: 28px !important
-        }
-
-        .fwb-5 {
-            font-weight: 500
-        }
-
-        .fwb-6 {
-            font-weight: 600
-        }
-
-        .op-7 {
-            opacity: 0.7
-        }
-
-        .d-grid-1 {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 1rem;
-        }
-
-        .bg-head {
-            background-color: #2196F3;
-            height: rem;
-            border-bottom-left-radius: 50%;
-            border-bottom-right-radius: 50%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1
-        }
-
-        .app {
-            background-color: #fff;
-            box-shadow: rgba(0, 0, 0, 0.15) 0 0 5px 1px;
-            padding: 8px;
-            border-radius: 5px;
-            margin-top: -35px
-        }
-        .appp {
-            background-color: #fff;
-            box-shadow: rgba(0, 0, 0, 0.15) 0 0 5px 1px;
-            padding: 8px;
-            border-radius: 5px;
-            margin-top: -60px
-        }
-        
-        .red {
-            color: #2196F3;
-            text-align: justify;
-        }
-        .blue {
-            color: #2196F3;
-        }
-        #log {
-        	display: none;
-            margin-top: 2px;
-            border: 1px solid #ccc;
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            width: calc(100% - 22px); /* Adjust for padding and border */
             padding: 10px;
-            height: 150px;
-            overflow-y: scroll;
-            border-radius: 5px;
-        }        
-        
-.button {
-  position: relative;
-  padding: 10px 22px;
-  border-radius: 6px;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  background-color: #2196F3;
-  transition: all 0.2s ease;
-}
-
-.button:active {
-  transform: scale(0.96);
-}
-
-.button:before,
-.button:after {
-  position: absolute;
-  content: "";
-  width: 150%;
-  left: 50%;
-  height: 100%;
-  transform: translateX(-50%);
-  z-index: -1000;
-  background-repeat: no-repeat;
-}
-
-.button:hover:before {
-  top: -70%;
-  background-image: radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, transparent 20%, #42A5F5 20%, transparent 30%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #42A5F5 15%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-    10% 10%, 18% 18%;
-  background-position: 50% 120%;
-  animation: greentopBubbles 0.6s ease;
-}
-
-@keyframes greentopBubbles {
-  0% {
-    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-      40% 90%, 55% 90%, 70% 90%;
-  }
-
-  50% {
-    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-      50% 50%, 65% 20%, 90% 30%;
-  }
-
-  100% {
-    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-      50% 40%, 65% 10%, 90% 20%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-.button:hover::after {
-  bottom: -70%;
-  background-image: radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #42A5F5 15%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%),
-    radial-gradient(circle, #42A5F5 20%, transparent 20%);
-  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-  background-position: 50% 0%;
-  animation: greenbottomBubbles 0.6s ease;
-}
-
-@keyframes greenbottomBubbles {
-  0% {
-    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-      70% -10%, 70% 0%;
-  }
-
-  50% {
-    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-      105% 0%;
-  }
-
-  100% {
-    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-      110% 10%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }  
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
         }
-  .spinner-container {
-            display: none; /* Initially hidden */
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
         }
-        .cube-grid {
-            width: 40px;
-            height: 40px;
+        .item-row {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
         }
-        .cube {
-            width: 10px;
-            height: 10px;
-            background-color:#2196F3;
-            animation: cube-grid-scale 1.3s infinite ease-in-out;
+        .item-row input {
+            flex: 1;
         }
-        .cube:nth-child(1) { animation-delay: 0.2s; }
-        .cube:nth-child(2) { animation-delay: 0.3s; }
-        .cube:nth-child(3) { animation-delay: 0.4s; }
-        .cube:nth-child(4) { animation-delay: 0.1s; }
-        .cube:nth-child(5) { animation-delay: 0.2s; }
-        .cube:nth-child(6) { animation-delay: 0.3s; }
-        .cube:nth-child(7) { animation-delay: 0s; }
-        .cube:nth-child(8) { animation-delay: 0.1s; }
-        .cube:nth-child(9) { animation-delay: 0.2s; }
-
-        @keyframes cube-grid-scale {
-            0%, 70%, 100% {
-                transform: scale3D(1, 1, 1);
-            }
-            35% {
-                transform: scale3D(0, 0, 1);
-            }
+        .item-row .item-name {
+            flex: 2;
         }
-
+        .item-row button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .item-row button:hover {
+            background-color: #c0392b;
+        }
+        #items-container {
+            border: 1px dashed #cccccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        #add-item {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin-top: 10px;
+        }
+        #add-item:hover {
+            background-color: #218838;
+        }
+        .form-group button[type="submit"],
+        .form-group #printKwitansiBtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            margin-top: 20px;
+            display: block;
+        }
+        .form-group button[type="submit"]:hover,
+        .form-group #printKwitansiBtn:hover {
+            background-color: #0056b3;
+        }
+        #printKwitansiBtn {
+            background-color: #6c757d;
+            margin-top: 10px;
+        }
+        #printKwitansiBtn:hover {
+            background-color: #5a6268;
+        }
     </style>
+</head>
 <body>
-    <div class="spinner-container" id="spinner">
-        <div class="cube-grid">
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-            <div class="cube"></div>
-        </div>
-    </div>
-    <div id="cover-spin"></div>
-<section class="header">
-        <div class="bg-head"></div>
-    </section>
-<center>
-    <section class="p-5 sticky-top">
-        <div class="appp">
-         <div class="p-2 borad-5" style="border: 1px solid #ededed;">
-            <p class="fwb-6 f-18 blue">Verifikasi Nomor XL / AXIS</p>
-                        </div>
-                    </div>
+    <div class="container">
+        <h1>Form Pembuatan Kwitansi Pengeluaran PAMSIMAS KUAMANG JAYA</h1>
+
+        <form id="kwitansiForm">
+            <div class="form-group">
+                <label for="nomorKwitansi">Nomor Kwitansi:</label>
+                <input type="text" id="nomorKwitansi" value="KAS/KJ/001/VI/2025" required>
+            </div>
+            <div class="form-group">
+                <label for="tanggal">Tanggal:</label>
+                <input type="date" id="tanggal" value="2025-06-12" required>
+            </div>
+            <div class="form-group">
+                <label for="jumlahUang">Jumlah Uang (Angka):</label>
+                <input type="number" id="jumlahUang" required> <!-- Removed default value to ensure JS calculation -->
+            </div>
+            <div class="form-group">
+                <label for="terbilang">Terbilang (Teks - Otomatis):</label>
+                <input type="text" id="terbilang" readonly> <!-- Otomatis dan tidak bisa diedit -->
+            </div>
+            <div class="form-group">
+                <label for="untukPembayaran">Untuk Pembayaran:</label>
+                <textarea id="untukPembayaran" required>Pembelian material pipa PVC 4 inci untuk perbaikan kebocoran jaringan utama</textarea>
+            </div>
+
+            <div id="items-container">
+                <label>Rincian Item:</label>
+                <div class="item-row">
+                    <input type="text" class="item-name" placeholder="Item" value="Pipa PVC 4 inci">
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="5">
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="80000">
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <button type="button" onclick="removeItem(this)">Hapus</button>
+                </div>
+                <div class="item-row">
+                    <input type="text" class="item-name" placeholder="Item" value="Lem Pipa">
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="25000">
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <button type="button" onclick="removeItem(this)">Hapus</button>
+                </div>
+                <div class="item-row">
+                    <input type="text" class="item-name" placeholder="Item" value="Ongkos transportasi">
+                    <input type="number" class="item-quantity" placeholder="Jumlah" value="0">
+                    <input type="number" class="item-price" placeholder="Harga Satuan" value="0">
+                    <input type="number" class="item-total" placeholder="Total" readonly> <!-- Removed default value -->
+                    <button type="button" onclick="removeItem(this)">Hapus</button>
                 </div>
             </div>
-        </div>
-    </section>
+            <button type="button" id="add-item">Tambah Item</button>
 
-    <section class="p-2">
-        <div class="d-grid-1">
-
-            <div class="app">
-                    <div class="p-2 borad-5" style="border: 1px solid #ededed;">
-                          <div class="ms-2">
-                            <p class="fwb-5 f-20">📢INFORMASI</p>
-                            <p class="mt-2 fwb-5 f-14 red">1. Sebelum Melakukan Transaksi Silahkan Verifikasi Nomor Terlebih Dahulu.</p>
-                            <p class="mt-2 fwb-5 f-14 red">2. Langkah-Langkah Verifikasi Nomor Pembeli.</p>
-                            <p class="mt-2 fwb-5 f-14 red">3. Masukan Nomor Di Kolom Bawah Nomor XL Atau Axis Pembeli.</p>
-                            <p class="mt-2 fwb-5 f-14 red">4. Setelah Itu Klik Minta Kode Verifikasi Dan Cek Di Log Bawah, Jika Berhasil Silahkan Hubungi Pembeli Dan Suruh Mengecek SMS Kode OTP.</p>
-                            <p class="mt-2 fwb-5 f-14 red">5. Setelah OTP Di Kirim Sama Pembeli Silahkan Masukan Di Kolom No 2 Dan Klik Tombol Verifikasi.</p>
-                            <p class="mt-2 fwb-5 f-14 red">6. Jika Verifikasi Berhasil Langkah Selanjutnya</b> Untuk Proses Pengisian Kuota.</p>
-                        </div>
-                    </div>
-                </a>
+            <div class="form-group">
+                <label for="penerimaUang">Nama Lengkap Penerima Uang:</label>
+                <input type="text" id="penerimaUang" value="Nama Lengkap Penerima" required>
             </div>
+            <div class="form-group">
+                <label for="bendaharaPamsimas">Nama Lengkap Bendahara Pamsimas:</label>
+                <input type="text" id="bendaharaPamsimas" value="Reny Wulandari" readonly>
             </div>
-   <div class="app mt-3">
-    <div class="p-2 borad-5" style="border: 1px solid #ededed;">
-  <div class="form-group f-16">
-    <label for="msisdn">Nomor XL Atau Axis Kamu:</label>
-    <input type="number" class="form-control f-14" id="phone" placeholder="Nomor Tujuan: 0878xxx/62878xxx">
-  </div>
- 
-  <button class="button fwb-5 f-14 mt-3" id="requestOtpButton" onclick="minta_otp()">Minta Kode Verifikasi</button>
-  </div></div>
-  
-  <!-- PEMBATAS NOMOR DAN LOGIN OTP -->
-  
-   <div style="text-align: justify; height: 30px; background: #ededed;" id="log"></div>
-   
-  
-  <div class="app mt-3">
-    <div class="p-2 borad-5" style="border: 1px solid #ededed;">
-  <div class="form-group f-16">
-    <label for="msisdn">Masukan Kode Verifikasi</label>
-    <input type="number" class="form-control f-14" id="otp">
-  </div>
-  
-  <button class="button fwb-5 f-14 mt-3" onclick="login_otp()">Verifikasi</button>
-  </div></div>
-  
-  <!-- LOG ISI PAKET -->
-  <br>
-</section>
 
-<script>
-    const requestOtpButton = document.getElementById('requestOtpButton');
+            <div class="form-group">
+                <button type="submit">Buat Kwitansi</button>
+                <button type="button" id="printKwitansiBtn">Print Kwitansi</button>
+            </div>
+        </form>
+    </div>
 
-    function logMessage(message) {
-        const log = document.getElementById('log');
-        const newMessage = document.createElement('p');
-        newMessage.textContent = message;
-        log.appendChild(newMessage);
-        log.scrollTop = log.scrollHeight;
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const kwitansiForm = document.getElementById('kwitansiForm');
+            const itemsContainer = document.getElementById('items-container');
+            const addItemButton = document.getElementById('add-item');
+            const tanggalInput = document.getElementById('tanggal');
+            const nomorKwitansiInput = document.getElementById('nomorKwitansi');
+            const jumlahUangInput = document.getElementById('jumlahUang');
+            const terbilangInput = document.getElementById('terbilang');
+            const printKwitansiBtn = document.getElementById('printKwitansiBtn');
 
-    function disableButton(button, seconds) {
-        let remainingTime = seconds;
-        button.disabled = true;
-        button.textContent = `Tunggu ${remainingTime} detik`;
-        
-        const interval = setInterval(() => {
-            remainingTime -= 1;
-            button.textContent = `Tunggu ${remainingTime} detik`;
+            // Fungsi untuk mengonversi angka menjadi teks terbilang dalam bahasa Indonesia
+            function terbilang(number) {
+                if (typeof number !== 'number' || isNaN(number)) {
+                    return "Bukan Angka";
+                }
 
-            if (remainingTime <= 0) {
-                clearInterval(interval);
-                button.disabled = false;
-                button.textContent = "Minta Kode Verifikasi";
-            }
-        }, 1000);
-    }
+                const units = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan'];
+                const teens = ['sepuluh', 'sebelas', 'dua belas', 'tiga belas', 'empat belas', 'lima belas', 'enam belas', 'tujuh belas', 'delapan belas', 'sembilan belas'];
+                const tens = ['', '', 'dua puluh', 'tiga puluh', 'empat puluh', 'lima puluh', 'enam puluh', 'tujuh puluh', 'delapan puluh', 'sembilan puluh'];
+                const thousands = ['', 'ribu', 'juta', 'miliar', 'triliun'];
 
-    function minta_otp() {
-        var logDiv = document.getElementById('log');
-        logDiv.style.display = 'block';
-        const phone = document.getElementById('phone').value;
-        sessionStorage.setItem('msisdn', phone);
-        showSpinner();
+                function convertGroup(n) {
+                    let text = '';
+                    const hundred = Math.floor(n / 100);
+                    const remainder = n % 100;
 
-        const domain = atob('aHR0cHM6Ly9hcGkua2hmeS1zdG9yZS5jb206ODQ0Mw==');
+                    if (hundred === 1) {
+                        text += 'seratus';
+                    } else if (hundred > 0) {
+                        text += units[hundred] + ' ratus';
+                    }
 
-        fetch(`${domain}/api-xl-v7/custom_api_xl_v7?action=cek_msisdn&msisdn=${encodeURIComponent(phone)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === true) {
-                    logMessage("◀ >> Nomor Telah Tersimpan Di Server.. << ▶");
-                } else {
-                    fetch(`${domain}/api-xl-v7/login_msisdn?action=request_otp&msisdn=${encodeURIComponent(phone)}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === true) {
-                                logMessage(data.message);
-                                disableButton(requestOtpButton, 60);
-                            } else {
-                                logMessage(data.message);
+                    if (remainder > 0) {
+                        if (text !== '') text += ' ';
+                        if (remainder < 10) {
+                            text += units[remainder];
+                        } else if (remainder >= 10 && remainder < 20) {
+                            text += teens[remainder - 10];
+                        } else {
+                            text += tens[Math.floor(remainder / 10)];
+                            if (remainder % 10 > 0) {
+                                text += ' ' + units[remainder % 10];
                             }
+                        }
+                    }
+                    return text;
+                }
+
+                if (number === 0) return 'Nol';
+
+                let result = '';
+                let numStr = String(Math.floor(number));
+                let groups = [];
+
+                while (numStr.length > 0) {
+                    if (numStr.length <= 3) {
+                        groups.unshift(numStr);
+                        numStr = '';
+                    } else {
+                        groups.unshift(numStr.slice(-3));
+                        numStr = numStr.slice(0, -3);
+                    }
+                }
+
+                for (let i = 0; i < groups.length; i++) {
+                    const groupNum = parseInt(groups[i], 10);
+                    if (groupNum === 0) continue;
+
+                    let groupText = convertGroup(groupNum);
+                    if (groupText !== '') {
+                        if (i === groups.length - 2 && groupNum === 1 && groups.length > 1) {
+                             groupText = "seribu";
+                        } else {
+                             groupText += ' ' + thousands[groups.length - 1 - i];
+                        }
+                    }
+
+                    if (result !== '') result += ' ';
+                    result += groupText;
+                }
+
+                result = result.trim();
+                if (result.length > 0) {
+                    result = result.charAt(0).toUpperCase() + result.slice(1);
+                }
+
+                return result + " Rupiah";
+            }
+
+            // Set default date to current date
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            tanggalInput.value = `${yyyy}-${mm}-${dd}`;
+            
+            // Generate a simple default receipt number based on date and time
+            const hours = String(today.getHours()).padStart(2, '0');
+            const minutes = String(today.getMinutes()).padStart(2, '0');
+            const seconds = String(today.getSeconds()).padStart(2, '0');
+            nomorKwitansiInput.value = `KAS/KJ/${dd}${mm}/${yyyy}/${hours}${minutes}${seconds}`;
+
+
+            addItemButton.addEventListener('click', function() {
+                const newItemRow = document.createElement('div');
+                newItemRow.classList.add('item-row');
+                newItemRow.innerHTML = `
+                    <input type="text" class="item-name" placeholder="Item">
+                    <input type="number" class="item-quantity" placeholder="Jumlah">
+                    <input type="number" class="item-price" placeholder="Harga Satuan">
+                    <input type="number" class="item-total" placeholder="Total" readonly>
+                    <button type="button" onclick="removeItem(this)">Hapus</button>
+                `;
+                itemsContainer.appendChild(newItemRow);
+                attachEventListenersToNewItemRow(newItemRow);
+                // No explicit call to updateGrandTotal needed here, as the new row's input event listeners will trigger it.
+                // However, an initial calculation for this new row's total is good practice:
+                const newlyAddedItemTotalInput = newItemRow.querySelector('.item-total');
+                const newlyAddedItemQty = parseFloat(newItemRow.querySelector('.item-quantity').value) || 0;
+                const newlyAddedItemPrice = parseFloat(newItemRow.querySelector('.item-price').value) || 0;
+                newlyAddedItemTotalInput.value = newlyAddedItemQty * newlyAddedItemPrice; // Calculate total for newly added row
+                updateGrandTotal(); // Then update overall total
+            });
+
+            function attachEventListenersToNewItemRow(row) {
+                const quantityInput = row.querySelector('.item-quantity');
+                const priceInput = row.querySelector('.item-price');
+                const totalInput = row.querySelector('.item-total');
+
+                const calculateItemTotal = () => {
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    const price = parseFloat(priceInput.value) || 0;
+                    totalInput.value = quantity * price; // Update the individual item total
+                    updateGrandTotal(); // Then update the overall grand total and terbilang
+                };
+
+                quantityInput.addEventListener('input', calculateItemTotal);
+                priceInput.addEventListener('input', calculateItemTotal);
+            }
+
+            // This function calculates the sum of all item totals and updates the main total and terbilang fields.
+            function updateGrandTotal() {
+                let grandTotal = 0;
+                document.querySelectorAll('.item-total').forEach(totalInput => {
+                    grandTotal += parseFloat(totalInput.value) || 0;
+                });
+                jumlahUangInput.value = grandTotal; // Update the main numerical total input
+                terbilangInput.value = terbilang(grandTotal); // Update the "terbilang" text input
+            }
+
+            // Attach event listeners to all existing item rows when the page loads.
+            // Also, immediately calculate initial totals.
+            document.querySelectorAll('.item-row').forEach(row => {
+                const quantityInput = row.querySelector('.item-quantity');
+                const priceInput = row.querySelector('.item-price');
+                const totalInput = row.querySelector('.item-total');
+
+                const initialQuantity = parseFloat(quantityInput.value) || 0;
+                const initialPrice = parseFloat(priceInput.value) || 0;
+                totalInput.value = initialQuantity * initialPrice; // Calculate initial total for each existing row
+
+                attachEventListenersToNewItemRow(row); // Attach listeners for future changes
+            });
+
+            // Perform an initial grand total calculation and terbilang update on page load.
+            // This is crucial to ensure the fields are populated correctly from the start.
+            updateGrandTotal();
+
+
+            function generateKwitansiHtml() {
+                const nomorKwitansi = document.getElementById('nomorKwitansi').value;
+                const tanggal = document.getElementById('tanggal').value;
+                const jumlahUang = parseFloat(document.getElementById('jumlahUang').value) || 0; // Ensure numerical
+                const terbilangText = document.getElementById('terbilang').value; // Get the already calculated terbilang text
+                const untukPembayaran = document.getElementById('untukPembayaran').value;
+                const penerimaUang = document.getElementById('penerimaUang').value;
+                const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
+
+                const items = [];
+                document.querySelectorAll('#items-container .item-row').forEach(row => {
+                    const itemName = row.querySelector('.item-name').value;
+                    const itemQuantity = row.querySelector('.item-quantity').value;
+                    const itemPrice = row.querySelector('.item-price').value;
+                    const itemTotal = parseFloat(row.querySelector('.item-total').value) || 0; // Ensure numerical
+                    if (itemName) {
+                        items.push({
+                            name: itemName,
+                            quantity: itemQuantity,
+                            price: itemPrice,
+                            total: itemTotal
                         });
-                }
-                hideSpinner();
-            })
-            .catch(error => {
-                logMessage("Error: " + error.message);
-                hideSpinner();
+                    }
+                });
+
+                // Construct the kwitansi HTML based on form inputs
+                return `
+                    <!DOCTYPE html>
+                    <html lang="id">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Kwitansi Pengeluaran Uang Kas - Pamsimas Kuamang Jaya</title>
+                        <style>
+                            /* Embed all kwitansi styles directly for consistent printing */
+                            body {
+                                margin: 0;
+                                padding: 0;
+                                font-family: 'Poppins', sans-serif;
+                                color: #333;
+                                background-color: #fff; /* Ensure white background for print */
+                            }
+                            .kwitansi-print-container {
+                                width: 20cm;
+                                margin: 0.5cm auto;
+                                padding: 1cm;
+                                box-shadow: none;
+                                border: none;
+                                position: relative;
+                                overflow: hidden;
+                            }
+                            .kwitansi-print-container::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 3px;
+                                background: linear-gradient(to right, #4CAF50, #2196F3);
+                            }
+                            h1, h2 {
+                                text-align: center;
+                                color: #2c3e50;
+                                margin-bottom: 3px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                line-height: 1.1;
+                            }
+                            h1 {
+                                font-size: 20px;
+                                font-weight: 700;
+                                margin-top: 10px;
+                                color: #34495e;
+                            }
+                            h2 {
+                                font-size: 14px;
+                                margin-top: 0;
+                                margin-bottom: 15px;
+                                color: #555;
+                                font-weight: 500;
+                                position: relative;
+                                padding-bottom: 5px;
+                            }
+                            h2::after {
+                                content: '';
+                                position: absolute;
+                                left: 50%;
+                                bottom: 0;
+                                transform: translateX(-50%);
+                                width: 40px;
+                                height: 1px;
+                                background-color: #2196F3;
+                                border-radius: 1px;
+                            }
+                            .info-header {
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 10px;
+                                border-bottom: 1px solid #dee2e6;
+                                padding-bottom: 5px;
+                                font-size: 10px;
+                                font-weight: 600;
+                                color: #666;
+                            }
+                            .detail-row {
+                                display: flex;
+                                margin-bottom: 5px;
+                                line-height: 1.2;
+                                font-size: 10px;
+                                align-items: baseline;
+                            }
+                            .detail-row .label {
+                                width: 100px;
+                                font-weight: 600;
+                                color: #4a4a4a;
+                                flex-shrink: 0;
+                            }
+                            .amount-text {
+                                font-style: italic;
+                                border: 1px dashed #a2d9ab;
+                                padding: 6px 10px;
+                                margin-top: 15px;
+                                margin-bottom: 15px;
+                                background-color: #eafbea;
+                                font-size: 12px;
+                                font-weight: 600;
+                                text-align: center;
+                                color: #28a745;
+                                border-radius: 4px;
+                                box-shadow: none;
+                            }
+                            .section-label {
+                                font-weight: 700;
+                                margin-top: 15px;
+                                margin-bottom: 8px;
+                                border-bottom: 1px solid #dee2e6;
+                                padding-bottom: 5px;
+                                color: #34495e;
+                                font-size: 11px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.2px;
+                            }
+                            .rincian-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 10px;
+                                margin-bottom: 15px;
+                                border-radius: 4px;
+                                overflow: hidden;
+                                border: 1px solid #e0e0e0;
+                            }
+                            .rincian-table th, .rincian-table td {
+                                border: 1px solid #e0e0e0;
+                                padding: 5px 8px;
+                                text-align: left;
+                                font-size: 9px;
+                            }
+                            .rincian-table th {
+                                background-color: #f2f2f2;
+                                font-weight: 600;
+                                color: #555;
+                                text-transform: uppercase;
+                                font-size: 9px;
+                            }
+                            tfoot td {
+                                background-color: #e9ecef;
+                                font-weight: 700;
+                                color: #2c3e50;
+                                border-top: 2px solid #ced4da;
+                                font-size: 10px;
+                            }
+                            .rincian-table td:last-child,
+                            .rincian-table th:last-child {
+                                text-align: right;
+                            }
+                            .rincian-table td:nth-child(2),
+                            .rincian-table th:nth-child(2),
+                            .rincian-table td:nth-child(3),
+                            .rincian-table th:nth-child(3) {
+                                text-align: center;
+                            }
+                            .date-location {
+                                text-align: right;
+                                margin-top: 20px;
+                                margin-bottom: 15px;
+                                font-size: 10px;
+                                font-weight: 600;
+                                color: #555;
+                                padding-right: 0px;
+                            }
+                            .signatures {
+                                display: flex;
+                                justify-content: space-around;
+                                margin-top: 30px;
+                                text-align: center;
+                                align-items: flex-end;
+                                font-size: 10px;
+                            }
+                            .signature-box {
+                                width: 48%;
+                                padding: 2px;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: flex-end;
+                                min-height: 70px;
+                            }
+                            .signature-box p {
+                                margin-top: auto;
+                                margin-bottom: 3px;
+                                border-bottom: 1px solid #444;
+                                padding-bottom: 3px;
+                                display: inline-block;
+                                min-width: 100px;
+                                font-weight: 700;
+                                color: #333;
+                                font-size: 10px;
+                                line-height: 1.2;
+                            }
+                            .signature-box .role {
+                                font-size: 9px;
+                                color: #666;
+                                font-weight: 500;
+                                text-transform: uppercase;
+                                letter-spacing: 0.1px;
+                                margin-bottom: 0;
+                            }
+
+                            /* Media query for printing */
+                            @media print {
+                                body {
+                                    margin: 0;
+                                    padding: 0;
+                                    background-color: #fff;
+                                    font-size: 8pt;
+                                }
+                                .kwitansi-print-container {
+                                    display: block;
+                                    width: 100%;
+                                    max-width: none;
+                                    margin: 0;
+                                    padding: 0.5cm;
+                                    box-shadow: none;
+                                    border: none;
+                                    position: static;
+                                    overflow: visible;
+                                    box-sizing: border-box;
+                                }
+                                .kwitansi-print-container::before {
+                                    display: none;
+                                }
+
+                                .kwitansi-print-container h1 { font-size: 16pt; margin-top: 0; margin-bottom: 5pt; }
+                                .kwitansi-print-container h2 { font-size: 10pt; margin-bottom: 10pt; padding-bottom: 3pt; }
+                                .kwitansi-print-container h2::after { display: none; }
+
+                                .kwitansi-print-container .info-header { font-size: 8pt; margin-bottom: 8pt; padding-bottom: 4pt; }
+                                .kwitansi-print-container .detail-row { font-size: 8pt; margin-bottom: 3pt; line-height: 1.1; }
+                                .kwitansi-print-container .detail-row .label { width: 80px; }
+                                .kwitansi-print-container .amount-text { font-size: 10pt; padding: 4pt 8pt; margin-top: 10pt; margin-bottom: 10pt; }
+
+                                .kwitansi-print-container .section-label { font-size: 9pt; margin-top: 10pt; margin-bottom: 5pt; padding-bottom: 3pt; }
+
+                                .kwitansi-print-container .rincian-table { margin-top: 5pt; margin-bottom: 10pt; }
+                                .kwitansi-print-container .rincian-table th, .kwitansi-print-container .rincian-table td {
+                                    padding: 3pt 5pt;
+                                    font-size: 7.5pt;
+                                }
+                                .kwitansi-print-container tfoot td { font-size: 8pt; }
+
+                                .kwitansi-print-container .date-location { font-size: 8pt; margin-top: 15pt; margin-bottom: 10pt; }
+
+                                .kwitansi-print-container .signatures { margin-top: 20pt; }
+                                .kwitansi-print-container .signature-box { min-height: 60px; }
+                                .kwitansi-print-container .signature-box p { font-size: 8pt; margin-bottom: 2pt; padding-bottom: 2pt; min-width: 90px; }
+                                .kwitansi-print-container .signature-box .role { font-size: 7pt; }
+
+                                @page {
+                                    size: 21.59cm 16.51cm; /* Half F4: 8.5 x 6.5 inches */
+                                    margin: 0.5cm; /* Minimal margins for the page itself */
+                                }
+                            }
+                        </style>
+                        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    </head>
+                    <body>
+                        <div class="kwitansi-print-container">
+                            <h1>KWITANSI PENGELUARAN UANG KAS</h1>
+                            <h2>PAMSIMAS KUAMANG JAYA</h2>
+
+                            <div class="info-header">
+                                <div>
+                                    Nomor Kwitansi: ${nomorKwitansi}
+                                </div>
+                                <div>
+                                    Tanggal: ${formatDate(tanggal)}
+                                </div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="label">Sudah Terima Dari</div>
+                                <div class="value">: Bendahara Pamsimas Kuamang Jaya</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="label">Jumlah Uang Sebesar</div>
+                                <div class="value">: Rp. ${formatCurrency(jumlahUang)},-</div>
+                            </div>
+
+                            <div class="amount-text">
+                                Terbilang: ${terbilangText}
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="label">Untuk Pembayaran</div>
+                                <div class="value">: ${untukPembayaran}</div>
+                            </div>
+
+                            <div class="section-label">Rincian Pengeluaran</div>
+                            <table class="rincian-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Jumlah</th>
+                                        <th>Harga Satuan</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${items.map(item => `
+                                        <tr>
+                                            <td>${item.name}</td>
+                                            <td style="text-align: center;">${item.quantity}</td>
+                                            <td style="text-align: center;">Rp. ${formatCurrency(item.price)},-</td>
+                                            <td style="text-align: right;">Rp. ${formatCurrency(item.total)},-</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="text-align:right;">TOTAL KESELURUHAN</td>
+                                        <td style="text-align: right;">Rp. ${formatCurrency(jumlahUang)},-</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <div class="date-location">
+                                Kuamang Jaya, ${formatDate(tanggal)}
+                            </div>
+
+                            <div class="signatures">
+                                <div class="signature-box">
+                                    <p>${bendaharaPamsimas}</p>
+                                    <span class="role">Bendahara Pamsimas</span>
+                                </div>
+                                <div class="signature-box">
+                                    <p>${penerimaUang}</p>
+                                    <span class="role">Penerima Uang</span>
+                                </div>
+                            </div>
+                            <!-- Catatan Penting telah dihilangkan -->
+                        </div>
+                    </body>
+                    </html>
+                `;
+            }
+
+
+            kwitansiForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Mencegah form submit default
+
+                const kwitansiHtml = generateKwitansiHtml();
+
+                // Buka di jendela baru
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(kwitansiHtml);
+                newWindow.document.close();
             });
-    }
 
-    function login_otp() {
-        const msisdn = sessionStorage.getItem('msisdn');
-        const otp = document.getElementById('otp').value;
-        showSpinner();
+            // Event listener untuk tombol Print Kwitansi
+            printKwitansiBtn.addEventListener('click', function() {
+                const kwitansiHtml = generateKwitansiHtml();
 
-        const domain = atob('aHR0cHM6Ly9hcGkua2hmeS1zdG9yZS5jb206ODQ0Mw==');
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(kwitansiHtml);
+                printWindow.document.close();
 
-        fetch(`${domain}/api-xl-v7/login_msisdn?action=login_otp&msisdn=${encodeURIComponent(msisdn)}&otp=${encodeURIComponent(otp)}`)
-            .then(response => {
-                if (!response.ok) {
-                    logMessage("gagal terhubung ke server");
-                }
-                hideSpinner();
-                return response.json();
-            })
-            .then(data => {
-                if (data.status === true) {
-                    logMessage("◀ >> Nomor Telah Tersimpan Di Server.. << ▶");
-                } else {
-                    logMessage(data.message);
-                }
-                hideSpinner();
+                // Tunggu konten dimuat sebelum print
+                printWindow.onload = function() {
+                    printWindow.focus(); // Fokus ke jendela baru
+                    printWindow.print(); // Trigger dialog print
+                };
             });
-    }
 
-    function showSpinner() {
-        document.getElementById('spinner').style.display = 'flex';
-    }
 
-    function hideSpinner() {
-        document.getElementById('spinner').style.display = 'none';
-    }
-          </script>
+            function removeItem(button) {
+                button.closest('.item-row').remove();
+                updateGrandTotal();
+            }
+
+            function formatCurrency(number) {
+                return new Intl.NumberFormat('id-ID').format(number);
+            }
+
+            function formatDate(dateString) {
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                return new Date(dateString).toLocaleDateString('id-ID', options);
+            }
+
+            // Expose removeItem to global scope so it can be called from onclick
+            window.removeItem = removeItem;
+            window.formatCurrency = formatCurrency;
+            window.formatDate = formatDate;
+        });
+    </script>
 </body>
 </html>
