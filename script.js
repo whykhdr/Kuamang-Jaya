@@ -388,12 +388,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 .detail-row { display: flex; margin-bottom: 7px; line-height: 1.3; font-size: 11px; align-items: baseline; }
                 .detail-row .label { width: 120px; font-weight: 600; color: #4a4a4a; flex-shrink: 0; }
                 .detail-row .value { flex-grow: 1; border-bottom: 1px dotted #ccc; padding-bottom: 2px; } /* Garis putus-putus */
+                
+                /* Gaya khusus untuk baris "Untuk Pembayaran" */
+                .detail-row.untuk-pembayaran .value {
+                    border-bottom: none; /* Hilangkan garis putus-putus */
+                    padding-bottom: 0;
+                    margin-top: 5px; /* Sedikit spasi di atas teks */
+                    margin-bottom: 5px; /* Sedikit spasi di bawah teks */
+                    line-height: 1.5; /* Spasi baris lebih longgar */
+                }
+
                 .amount-text { 
                     font-style: italic; 
                     border: 1px dashed #a2d9ab; 
                     padding: 8px 15px; 
                     margin-top: 20px; 
-                    margin-bottom: 20px; 
+                    margin-bottom: 25px; /* Sedikit lebih banyak spasi di bawah */
                     background-color: #eafbea; 
                     font-size: 13px; 
                     font-weight: 600; 
@@ -490,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         Terbilang: ${terbilangTextFinal}
                     </div>
 
-                    <div class="detail-row">
+                    <div class="detail-row untuk-pembayaran"> <!-- Menambahkan class baru di sini -->
                         <div class="label">Untuk Pembayaran</div>
                         <div class="value">: ${untukPembayaranFinal}</div> <!-- Menggunakan nilai yang sudah digabungkan -->
                     </div>
