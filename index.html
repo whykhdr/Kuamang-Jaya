@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pembuatan Kwitansi Pengeluaran PAMSIMAS</title>
     <!-- Link ke file CSS eksternal -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -29,10 +29,27 @@
                 <label for="terbilang">Terbilang (Teks - Otomatis):</label>
                 <input type="text" id="terbilang" readonly>
             </div>
+
+            <!-- Bagian baru untuk pilihan Untuk Pembayaran -->
             <div class="form-group">
-                <label for="untukPembayaran">Untuk Pembayaran:</label>
-                <textarea id="untukPembayaran" placeholder="Masukkan tujuan pembayaran di sini..." required></textarea> <!-- Dikosongkan -->
+                <label for="jenisPembayaran">Jenis Pembayaran:</label>
+                <select id="jenisPembayaran" required>
+                    <option value="">-- Pilih Jenis Pembayaran --</option>
+                    <option value="pembelian_material">Pembelian Material</option>
+                    <option value="transportasi">Transportasi</option>
+                    <option value="peminjaman_uang">Peminjaman Uang</option> <!-- Digabung menjadi satu opsi -->
+                    <option value="lain_lain">Lain-lain</option>
+                </select>
             </div>
+
+            <div id="detailPembayaranGroup" class="form-group" style="display: none;">
+                <label for="namaPeminjam" id="namaPeminjamLabel" style="display: none;">Nama Peminjam:</label>
+                <input type="text" id="namaPeminjam" placeholder="Masukkan nama peminjam..." style="display: none;">
+
+                <label for="untukPembayaranTextarea" id="untukPembayaranTextareaLabel">Detail Pembayaran:</label>
+                <textarea id="untukPembayaranTextarea" placeholder="Masukkan detail pembayaran/tujuan di sini..."></textarea>
+            </div>
+            <!-- End Bagian baru untuk pilihan Untuk Pembayaran -->
 
             <div id="items-container">
                 <label>Rincian Item:</label>
