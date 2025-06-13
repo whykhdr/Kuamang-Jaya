@@ -369,32 +369,67 @@ document.addEventListener('DOMContentLoaded', function() {
         const kwitansiPrintStyle = `
             <style>
                 body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; color: #333; background-color: #fff; }
-                .kwitansi-print-container { width: 20cm; margin: 0.5cm auto; padding: 1cm; box-shadow: none; border: none; position: relative; overflow: hidden; }
+                .kwitansi-print-container {
+                    width: 20cm;
+                    margin: 0.5cm auto;
+                    padding: 1cm;
+                    box-shadow: none;
+                    border: 1px solid #ddd; /* Menambahkan border tipis */
+                    position: relative;
+                    overflow: hidden;
+                    box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
+                }
                 .kwitansi-print-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, #4CAF50, #2196F3); }
                 h1, h2 { text-align: center; color: #2c3e50; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
                 h1 { font-size: 20px; font-weight: 700; margin-top: 10px; color: #34495e; }
                 h2 { font-size: 14px; margin-top: 0; margin-bottom: 15px; color: #555; font-weight: 500; position: relative; padding-bottom: 5px; }
                 h2::after { content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 40px; height: 1px; background-color: #2196F3; border-radius: 1px; }
-                .info-header { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #dee2e6; padding-bottom: 5px; font-size: 10px; font-weight: 600; color: #666; }
-                .detail-row { display: flex; margin-bottom: 5px; line-height: 1.2; font-size: 10px; align-items: baseline; }
-                .detail-row .label { width: 100px; font-weight: 600; color: #4a4a4a; flex-shrink: 0; }
-                .amount-text { font-style: italic; border: 1px dashed #a2d9ab; padding: 6px 10px; margin-top: 15px; margin-bottom: 15px; background-color: #eafbea; font-size: 12px; font-weight: 600; text-align: center; color: #28a745; border-radius: 4px; box-shadow: none; }
-                .section-label { font-weight: 700; margin-top: 15px; margin-bottom: 8px; border-bottom: 1px solid #dee2e6; padding-bottom: 5px; color: #34495e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2px; }
-                .rincian-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; border-radius: 4px; overflow: hidden; border: 1px solid #e0e0e0; }
-                .rincian-table th, .rincian-table td { border: 1px solid #e0e0e0; padding: 5px 8px; text-align: left; font-size: 9px; }
-                .rincian-table th { background-color: #f2f2f2; font-weight: 600; color: #555; text-transform: uppercase; font-size: 9px; }
-                tfoot td { background-color: #e9ecef; font-weight: 700; color: #2c3e50; border-top: 2px solid #ced4da; font-size: 10px; }
+                .info-header { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 8px; font-size: 10px; font-weight: 600; color: #666; }
+                .detail-row { display: flex; margin-bottom: 7px; line-height: 1.3; font-size: 11px; align-items: baseline; }
+                .detail-row .label { width: 120px; font-weight: 600; color: #4a4a4a; flex-shrink: 0; }
+                .detail-row .value { flex-grow: 1; border-bottom: 1px dotted #ccc; padding-bottom: 2px; } /* Garis putus-putus */
+                .amount-text { 
+                    font-style: italic; 
+                    border: 1px dashed #a2d9ab; 
+                    padding: 8px 15px; 
+                    margin-top: 20px; 
+                    margin-bottom: 20px; 
+                    background-color: #eafbea; 
+                    font-size: 13px; 
+                    font-weight: 600; 
+                    text-align: center; 
+                    color: #28a745; 
+                    border-radius: 4px; 
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sedikit bayangan */
+                }
+                .section-label { font-weight: 700; margin-top: 20px; margin-bottom: 10px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; color: #34495e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2px; }
+                .rincian-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; border-radius: 4px; overflow: hidden; border: 1px solid #e0e0e0; }
+                .rincian-table th, .rincian-table td { border: 1px solid #e0e0e0; padding: 7px 10px; text-align: left; font-size: 10px; }
+                .rincian-table th { background-color: #f8f8f8; font-weight: 600; color: #555; text-transform: uppercase; font-size: 9.5px; }
+                tfoot td { background-color: #e9ecef; font-weight: 700; color: #2c3e50; border-top: 2px solid #ced4da; font-size: 11px; }
                 .rincian-table td:last-child, .rincian-table th:last-child { text-align: right; }
                 .rincian-table td:nth-child(2), .rincian-table th:nth-child(2), .rincian-table td:nth-child(3), .rincian-table th:nth-child(3) { text-align: center; }
-                .date-location { text-align: right; margin-top: 20px; margin-bottom: 15px; font-size: 10px; font-weight: 600; color: #555; padding-right: 0px; }
-                .signatures { display: flex; justify-content: space-around; margin-top: 30px; text-align: center; align-items: flex-end; font-size: 10px; }
-                .signature-box { width: 48%; padding: 2px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 70px; }
-                .signature-box p { margin-top: auto; margin-bottom: 3px; border-bottom: 1px solid #444; padding-bottom: 3px; display: inline-block; min-width: 100px; font-weight: 700; color: #333; font-size: 10px; line-height: 1.2; }
-                .signature-box .role { font-size: 9px; color: #666; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1px; margin-bottom: 0; }
+                .date-location { text-align: right; margin-top: 25px; margin-bottom: 20px; font-size: 11px; font-weight: 600; color: #555; padding-right: 0px; }
+                .signatures { display: flex; justify-content: space-around; margin-top: 40px; text-align: center; align-items: flex-end; font-size: 11px; }
+                .signature-box { width: 48%; padding: 5px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 80px; }
+                .signature-box p { margin-top: auto; margin-bottom: 5px; border-bottom: 1px solid #444; padding-bottom: 4px; display: inline-block; min-width: 120px; font-weight: 700; color: #333; font-size: 11px; line-height: 1.3; }
+                .signature-box .role { font-size: 10px; color: #666; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1px; margin-bottom: 0; }
 
+                /* Print specific styles */
                 @media print {
                     body { margin: 0; padding: 0; background-color: #fff; font-size: 8pt; }
-                    .kwitansi-print-container { display: block; width: 100%; max-width: none; margin: 0; padding: 0.5cm; box-shadow: none; border: none; position: static; overflow: visible; box-sizing: border-box; }
+                    .kwitansi-print-container {
+                        display: block;
+                        width: 100%;
+                        max-width: none;
+                        margin: 0;
+                        padding: 0.5cm;
+                        box-shadow: none;
+                        border: none;
+                        position: static;
+                        overflow: visible;
+                        box-sizing: border-box;
+                    }
                     .kwitansi-print-container::before { display: none; }
                     .kwitansi-print-container h1 { font-size: 16pt; margin-top: 0; margin-bottom: 5pt; }
                     .kwitansi-print-container h2 { font-size: 10pt; margin-bottom: 10pt; padding-bottom: 3pt; }
