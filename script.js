@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
         const price = parseFloat(row.querySelector('.item-price').value) || 0;
         row.querySelector('.item-total').value = quantity * price;
-        updateGrandTotal();
+        updateGrandTotal(); // Recalculate grand total after item change
     }
 
     function attachEventListenersToNewItemRow(row) {
@@ -111,17 +111,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateGrandTotal() {
+        const jenis = jenisPembayaranSelect.value;
         let grandTotal = 0;
-        document.querySelectorAll('.item-total').forEach(totalInput => {
-            grandTotal += parseFloat(totalInput.value) || 0;
-        });
-        console.log("DEBUG: updateGrandTotal - Grand Total Terhitung (Angka):", grandTotal);
-        jumlahUangInput.value = grandTotal;
-        
-        const calculatedTerbilang = terbilang(grandTotal); // Hitung terbilang
-        terbilangInput.value = calculatedTerbilang; // Set ke input terbilang
-        
-        console.log("DEBUG: updateGrandTotal - Terbilang Teks (Set ke Input):", calculatedTerbilang);
+
+        if (jenis === 'peminjaman_uang') {
+            // Jika Peminjaman Uang, izinkan input manual untuk jumlahUang dan perbarui terbilang dari itu
+            jumlahUangInput.readOnly = false; // Bisa diketik
+            itemsContainer.style.display = 'none'; // Sembunyikan rincian item
+            addItemButton.style.display = 'none'; // Sembunyikan tombol tambah item
+
+            const amountFromInput = parseFloat(jumlahUangInput.value.replace(/[^0-9.]/g, '')) || 0;
+            terbilangInput.value = terbilang(amountFromInput);
+            console.log("DEBUG: updateGrandTotal (Peminjaman Uang) - Jumlah dari input:", amountFromInput, "Terbilang:", terbilangInput.value);
+            // Tidak perlu set jumlahUangInput.value di sini karena pengguna langsung mengetiknya
+        } else {
+            // Untuk jenis pembayaran lain, hitung dari rincian item
+            jumlahUangInput.readOnly = true; // Kembali ke readonly
+            itemsContainer.style.display = 'block'; // Tampilkan rincian item
+            addItemButton.style.display = 'block'; // Tampilkan tombol tambah item
+
+            document.querySelectorAll('.item-total').forEach(totalInput => {
+                grandTotal += parseFloat(totalInput.value) || 0;
+            });
+            jumlahUangInput.value = grandTotal;
+            terbilangInput.value = terbilang(grandTotal);
+            console.log("DEBUG: updateGrandTotal (Rincian Item) - Grand Total:", grandTotal, "Terbilang:", terbilangInput.value);
+        }
         console.log("DEBUG: updateGrandTotal - Nilai Terbilang di Input (Saat Ini):", terbilangInput.value);
     }
 
@@ -131,7 +146,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
-    document.querySelectorAll('.item-row').forEach(row => {
+    // Loop ini memasang listener ke item awal jika ada, dan menghitung totalnya.
+    // Jika items-container kosong, grandTotal akan 0.
+    document.querySelectorAll('#items-container .item-row').forEach(row => {
         const quantityInput = row.querySelector('.item-quantity');
         const priceInput = row.querySelector('.item-price');
         const totalInput = row.querySelector('.item-total');
@@ -143,8 +160,18 @@ document.addEventListener('DOMContentLoaded', function() {
         attachEventListenersToNewItemRow(row);
         console.log(`DEBUG: Initial item total for '${row.querySelector('.item-name').value}': ${totalInput.value}`);
     });
+    
+    // Panggil saat memuat untuk inisialisasi awal (termasuk status readonly dan visibilitas item-container)
+    updateGrandTotal();
 
-    updateGrandTotal(); // Panggil saat memuat untuk inisialisasi awal (akan menghasilkan "Nol Rupiah" jika tidak ada item)
+    // Tambahkan event listener untuk input manual pada jumlahUang saat bisa diedit (untuk peminjaman)
+    jumlahUangInput.addEventListener('input', function() {
+        if (!jumlahUangInput.readOnly) { // Hanya perbarui terbilang jika bisa diedit
+            const amount = parseFloat(jumlahUangInput.value.replace(/[^0-9.]/g, '')) || 0;
+            terbilangInput.value = terbilang(amount);
+            console.log("DEBUG: jumlahUangInput manual input - Terbilang diperbarui:", terbilangInput.value);
+        }
+    });
 
 
     // --- FUNGSI UNTUK MENGELOLA LOGIKA JENIS PEMBAYARAN ---
@@ -158,12 +185,16 @@ document.addEventListener('DOMContentLoaded', function() {
             detailPembayaranGroup.style.display = 'none';
             untukPembayaranTextarea.value = ""; // Kosongkan saat tidak ada pilihan
             namaPeminjamInput.value = ""; // Kosongkan nama peminjam
+            namaPeminjamLabel.style.display = 'none';
+            namaPeminjamInput.style.display = 'none';
+            namaPeminjamInput.required = false;
+
         } else {
             detailPembayaranGroup.style.display = 'block';
         }
 
-        // Atur visibilitas input nama peminjam
-        if (jenis === "peminjaman_anggota" || jenis === "peminjaman_lain") {
+        // Atur visibilitas input nama peminjam dan teks label/placeholder
+        if (jenis === "peminjaman_uang") { // Perubahan di sini
             namaPeminjamLabel.style.display = 'block';
             namaPeminjamInput.style.display = 'block';
             namaPeminjamInput.required = true;
@@ -182,10 +213,8 @@ document.addEventListener('DOMContentLoaded', function() {
             finalUntukPembayaranText = "Pembelian Material";
         } else if (jenis === "transportasi") {
             finalUntukPembayaranText = "Biaya Transportasi";
-        } else if (jenis === "peminjaman_anggota") {
-            finalUntukPembayaranText = `Peminjaman Uang (Anggota${namaPeminjam ? ': ' + namaPeminjam : ''})`;
-        } else if (jenis === "peminjaman_lain") {
-            finalUntukPembayaranText = `Peminjaman Uang (Lain-lain${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "peminjaman_uang") { // Perubahan di sini
+            finalUntukPembayaranText = `Peminjaman Uang${namaPeminjam ? ': ' + namaPeminjam : ''}`;
         } else if (jenis === "lain_lain") {
             finalUntukPembayaranText = "Lain-lain";
         }
@@ -194,9 +223,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (untukPembayaranTextarea.value.trim() !== "") {
             finalUntukPembayaranText += (finalUntukPembayaranText ? ": " : "") + untukPembayaranTextarea.value.trim();
         }
-
-        // Set teks yang dibangun ke textarea untukPembayaranTextarea, atau Anda bisa menyimpannya di variabel untuk kwitansi.
-        // Untuk tujuan pengiriman ke kwitansi, kita akan langsung ambil dari nilai-nilai ini.
+        
+        // Panggil updateGrandTotal untuk menyesuaikan status readonly dan visibilitas item
+        updateGrandTotal();
     }
 
     // Event listener untuk perubahan jenis pembayaran
@@ -204,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     namaPeminjamInput.addEventListener('input', updateUntukPembayaranField);
     untukPembayaranTextarea.addEventListener('input', updateUntukPembayaranField);
 
-    // Panggil saat load untuk inisialisasi awal (menyembunyikan detail)
+    // Panggil saat load untuk inisialisasi awal
     updateUntukPembayaranField();
 
 
@@ -216,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nomorKwitansi = document.getElementById('nomorKwitansi').value;
         const tanggal = document.getElementById('tanggal').value;
         
-        // Dapatkan teks "Untuk Pembayaran" yang sudah digabungkan dari fungsi updateUntukPembayaranField
+        // Dapatkan teks "Untuk Pembayaran" yang sudah digabungkan
         const jenis = jenisPembayaranSelect.value;
         const namaPeminjam = namaPeminjamInput.value.trim();
         let untukPembayaranFinal = "";
@@ -225,10 +254,8 @@ document.addEventListener('DOMContentLoaded', function() {
             untukPembayaranFinal = "Pembelian Material";
         } else if (jenis === "transportasi") {
             untukPembayaranFinal = "Biaya Transportasi";
-        } else if (jenis === "peminjaman_anggota") {
-            untukPembayaranFinal = `Peminjaman Uang (Anggota${namaPeminjam ? ': ' + namaPeminjam : ''})`;
-        } else if (jenis === "peminjaman_lain") {
-            untukPembayaranFinal = `Peminjaman Uang (Lain-lain${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "peminjaman_uang") {
+            untukPembayaranFinal = `Peminjaman Uang${namaPeminjam ? ': ' + namaPeminjam : ''}`;
         } else if (jenis === "lain_lain") {
             untukPembayaranFinal = "Lain-lain";
         }
@@ -237,27 +264,61 @@ document.addEventListener('DOMContentLoaded', function() {
             untukPembayaranFinal += (untukPembayaranFinal ? ": " : "") + untukPembayaranTextarea.value.trim();
         }
 
-
         const penerimaUang = document.getElementById('penerimaUang').value;
         const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
 
         const items = [];
-        document.querySelectorAll('#items-container .item-row').forEach(row => {
-            const itemName = row.querySelector('.item-name').value;
-            const itemQuantity = row.querySelector('.item-quantity').value;
-            const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
-            const itemTotal = parseFloat(row.querySelector('.item-total').value) || 0;
-            if (itemName) {
-                items.push({
-                    name: itemName,
-                    quantity: itemQuantity,
-                    price: itemPrice,
-                    total: itemTotal
-                });
-            }
-        });
+        // Hanya tambahkan item jika jenis pembayaran BUKAN peminjaman uang
+        if (jenis !== 'peminjaman_uang') {
+            document.querySelectorAll('#items-container .item-row').forEach(row => {
+                const itemName = row.querySelector('.item-name').value;
+                const itemQuantity = row.querySelector('.item-quantity').value;
+                const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
+                const itemTotal = parseFloat(row.querySelector('.item-total').value) || 0;
+                if (itemName) {
+                    items.push({
+                        name: itemName,
+                        quantity: itemQuantity,
+                        price: itemPrice,
+                        total: itemTotal
+                    });
+                }
+            });
+        }
+        
+        // Rendering kondisional untuk tabel item di HTML kwitansi
+        const itemsTableHtml = items.length > 0 ? `
+            <div class="section-label">Rincian Pengeluaran</div>
+            <table class="rincian-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Jumlah</th>
+                        <th>Harga Satuan</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${items.map(item => `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td style="text-align: center;">${item.quantity}</td>
+                            <td style="text-align: center;">Rp. ${formatCurrency(item.price)},-</td>
+                            <td style="text-align: right;">Rp. ${formatCurrency(item.total)},-</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align:right;">TOTAL KESELURUHAN</td>
+                        <td style="text-align: right;">Rp. ${formatCurrency(jumlahUangFinal)},-</td>
+                    </tr>
+                </tfoot>
+            </table>
+        ` : '';
 
-        // --- Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung) ---
+
+        // Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung)
         const kwitansiPrintHelperFunctions = `
             <script>
                 function terbilang(number) {
@@ -398,33 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="value">: ${untukPembayaranFinal}</div> <!-- Menggunakan nilai yang sudah digabungkan -->
                     </div>
 
-                    <div class="section-label">Rincian Pengeluaran</div>
-                    <table class="rincian-table">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Jumlah</th>
-                                <th>Harga Satuan</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${items.map(item => `
-                                <tr>
-                                    <td>${item.name}</td>
-                                    <td style="text-align: center;">${item.quantity}</td>
-                                    <td style="text-align: center;">Rp. ${formatCurrency(item.price)},-</td>
-                                    <td style="text-align: right;">Rp. ${formatCurrency(item.total)},-</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3" style="text-align:right;">TOTAL KESELURUHAN</td>
-                                <td style="text-align: right;">Rp. ${formatCurrency(jumlahUangFinal)},-</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    ${itemsTableHtml} <!-- Hanya tampilkan jika ada item -->
 
                     <div class="date-location">
                         Kuamang Jaya, ${formatDate(tanggal)}
