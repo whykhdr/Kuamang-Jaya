@@ -61,11 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const dd = String(today.getDate()).padStart(2, '0');
     tanggalInput.value = `${currentYear}-${mm}-${dd}`;
     
-    // Generate a simple default receipt number based on date and time
-    const hours = String(today.getHours()).padStart(2, '0');
-    const minutes = String(today.getMinutes()).padStart(2, '0');
-    const seconds = String(today.getSeconds()).padStart(2, '0');
-    nomorKwitansiInput.value = `KAS/KJ/${dd}${mm}/${currentYear}/${hours}${minutes}${seconds}`;
+    // Rubah nomor Kwitansi Menjadi KAS/PKJ/001/VI/2025
+    nomorKwitansiInput.value = 'KAS/PKJ/001/VI/2025';
 
 
     // --- FUNGSI UNTUK MENGELOLA ITEM DAN TOTAL DI FORM UTAMA ---
