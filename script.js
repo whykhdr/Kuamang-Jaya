@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tanggal = document.getElementById('tanggal').value;
         
         const jenis = jenisPembayaranSelect.value;
-        const keteranganDetail = untukPembayaranTextarea.value.trim(); // Ambil langsung keterangan detail
+        const keteranganDetail = untukPembayaranTextarea.value.trim();
 
         let mainPurposeText = "";
         if (jenis === "pembelian_material") {
@@ -308,8 +308,14 @@ document.addEventListener('DOMContentLoaded', function() {
             </table>
         ` : '';
 
-        // HTML untuk keterangan tambahan, hanya jika ada dan digabung dalam satu baris dengan pemisah "-"
-        const fullPurposeWithDetail = keteranganDetail ? `${mainPurposeText} - ${keteranganDetail}` : mainPurposeText;
+        // HTML untuk keterangan tambahan, ditampilkan di baris terpisah jika ada
+        const keteranganTambahanHtml = keteranganDetail ? `
+            <div class="detail-row detail-sub-row">
+                <div class="label"></div> <!-- Label kosong untuk menjaga alignment -->
+                <div class="value">${keteranganDetail}</div>
+            </div>
+        ` : '';
+
 
         // Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung)
         const kwitansiPrintHelperFunctions = `
@@ -366,10 +372,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     margin: 0.5cm auto;
                     padding: 1cm;
                     box-shadow: none;
-                    border: 1px solid #ddd; /* Menambahkan border tipis */
+                    border: 1px solid #ddd;
                     position: relative;
                     overflow: hidden;
-                    box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
+                    box-sizing: border-box;
                 }
                 .kwitansi-print-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, #4CAF50, #2196F3); }
                 h1, h2 { text-align: center; color: #2c3e50; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
@@ -383,10 +389,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     flex-grow: 1;
                     border-bottom: 1px dotted #ccc;
                     padding-bottom: 2px;
-                    word-wrap: break-word; /* Memastikan teks panjang pecah baris */
-                    white-space: pre-wrap; /* Mempertahankan spasi dan baris baru dari input */
+                    word-wrap: break-word;
+                    white-space: pre-wrap;
                 }
                 
+                /* Gaya khusus untuk baris keterangan tambahan */
+                .detail-row.detail-sub-row {
+                    margin-top: -5px; /* Tarik sedikit ke atas agar lebih dekat dengan baris di atasnya */
+                    margin-bottom: 7px;
+                }
+                .detail-row.detail-sub-row .label {
+                    width: 120px; /* Pertahankan lebar yang sama untuk alignment */
+                    visibility: hidden; /* Sembunyikan labelnya */
+                    flex-shrink: 0;
+                }
+                .detail-row.detail-sub-row .value {
+                    border-bottom: none; /* Hilangkan garis putus-putus untuk keterangan */
+                    padding-bottom: 0;
+                    margin-left: -1px; /* Geser sedikit ke kiri agar sejajar dengan titik dua di atasnya */
+                    font-size: 10.5px; /* Ukuran font sedikit lebih kecil */
+                    color: #555; /* Warna teks sedikit lebih gelap */
+                    line-height: 1.5; /* Berikan spasi baris yang lebih nyaman */
+                }
+
                 .amount-text { 
                     font-style: italic; 
                     border: 1px dashed #a2d9ab; 
@@ -440,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     .kwitansi-print-container .section-label { font-size: 9pt; margin-top: 10pt; margin-bottom: 5pt; padding-bottom: 3pt; }
                     .kwitansi-print-container .rincian-table { margin-top: 5pt; margin-bottom: 10pt; }
                     .kwitansi-print-container .rincian-table th, .kwitansi-print-container .rincian-table td { padding: 3pt 5pt; font-size: 7.5pt; }
-                    .kwitansi-print-container tfoot td { font-size: 8pt; }
+                    tfoot td { font-size: 8pt; }
                     .kwitansi-print-container .date-location { font-size: 8pt; margin-top: 15pt; margin-bottom: 10pt; }
                     .kwitansi-print-container .signatures { margin-top: 20pt; }
                     .kwitansi-print-container .signature-box { min-height: 60px; }
@@ -491,8 +516,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="detail-row">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${fullPurposeWithDetail}</div>
+                        <div class="value">: ${mainPurposeText}</div> <!-- Hanya tujuan utama di baris ini -->
                     </div>
+                    ${keteranganTambahanHtml} <!-- Keterangan tambahan di baris terpisah -->
 
                     ${itemsTableHtml} <!-- Hanya tampilkan jika ada item -->
 
