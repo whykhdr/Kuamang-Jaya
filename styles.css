@@ -21,7 +21,7 @@ body {
     margin: 40px auto; /* Center the container horizontally, add vertical margin */
     border: 1px solid #c2c9d1; /* Slightly softer border */
     padding: 40px; /* Increased padding */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18); /* More prominent and softer shadow */
     background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%); /* Subtle gradient background */
     border-radius: 16px; /* More rounded corners */
     position: relative; /* For decorative elements if needed */
@@ -104,7 +104,7 @@ h1::after {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #e9ecef;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07); /* Slightly softer shadow for rows */
 }
 
 .item-row input {
@@ -138,6 +138,11 @@ h1::after {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+.item-row button:active { /* Added active state for removal button */
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 /* Items Container Styling */
 #items-container {
     border: 2px dashed #a2d9ab; /* More distinct dashed border */
@@ -145,12 +150,12 @@ h1::after {
     margin-bottom: 30px;
     border-radius: 10px;
     background-color: #f7fefc; /* Lighter background */
-    box-shadow: inset 0 0 10px rgba(162, 217, 171, 0.1); /* Subtle inner shadow */
+    box-shadow: inset 0 0 12px rgba(162, 217, 171, 0.15); /* Slightly more prominent inner shadow */
 }
 
 /* Add Item Button */
 #add-item {
-    background: linear-gradient(to right, #28a745, #218838); /* Gradient for add button */
+    background: linear-gradient(to right, #2abf4a, #239c3e); /* Slightly adjusted green gradient */
     color: white;
     border: none;
     padding: 14px 25px;
@@ -162,20 +167,25 @@ h1::after {
     width: 100%; /* Full width button */
     margin-top: 20px;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    box-shadow: 0 5px 15px rgba(42, 191, 74, 0.3); /* Adjusted shadow color */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
 }
 
 #add-item:hover {
-    background: linear-gradient(to right, #218838, #1a712f);
+    background: linear-gradient(to right, #239c3e, #1d8234); /* Darker green on hover */
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+    box-shadow: 0 8px 20px rgba(42, 191, 74, 0.45); /* More prominent shadow on hover */
+}
+
+#add-item:active { /* Added active state for add button */
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Submit and Print Buttons */
 .form-group button[type="submit"],
 .form-group #printKwitansiBtn {
-    background: linear-gradient(to right, #007bff, #0056b3); /* Gradient for primary button */
+    background: linear-gradient(to right, #007bff, #0056b3); /* Primary blue gradient */
     color: white;
     border: none;
     padding: 16px 30px; /* Increased padding */
@@ -196,6 +206,12 @@ h1::after {
     background: linear-gradient(to right, #0056b3, #004085);
     transform: translateY(-3px);
     box-shadow: 0 9px 25px rgba(0, 123, 255, 0.35);
+}
+
+.form-group button[type="submit"]:active, /* Added active state for submit button */
+.form-group #printKwitansiBtn:active { /* Added active state for print button */
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #printKwitansiBtn {
