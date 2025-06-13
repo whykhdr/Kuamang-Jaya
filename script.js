@@ -142,24 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
-    function generateKwitansiHtml() {
-        // --- DEBUG: LOG NILAI LANGSUNG DARI INPUT SEBELUM PARSING ---
-        console.log("DEBUG: generateKwitansiHtml - Raw jumlahUangInput.value:", jumlahUangInput.value);
+    // Menerima nilai jumlahUang dan terbilangText langsung sebagai argumen
+    function generateKwitansiHtml(jumlahUangFinal, terbilangTextFinal) { // Perubahan di sini
+        // --- DEBUG: LOG NILAI YANG DITERIMA ---
+        console.log("DEBUG: generateKwitansiHtml - JumlahUang yang Diterima:", jumlahUangFinal);
+        console.log("DEBUG: generateKwitansiHtml - TerbilangText yang Diterima:", terbilangTextFinal);
 
         const nomorKwitansi = document.getElementById('nomorKwitansi').value;
-        // Gunakan parseFloat dengan hati-hati atau pastikan nilainya selalu bersih.
-        // Jika ada koma sebagai pemisah desimal di beberapa browser, parseFloat bisa salah.
-        // Namun karena ini type="number" dan kita set angka bulat, seharusnya aman.
-        const jumlahUang = parseFloat(document.getElementById('jumlahUang').value) || 0;
-        console.log("DEBUG: generateKwitansiHtml - Parsed jumlahUang (Angka):", jumlahUang); // Log nilai setelah parseFloat
-
         const tanggal = document.getElementById('tanggal').value;
-        const terbilangText = document.getElementById('terbilang').value;
         const untukPembayaran = document.getElementById('untukPembayaran').value;
         const penerimaUang = document.getElementById('penerimaUang').value;
         const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
-
-        console.log("DEBUG: generateKwitansiHtml - TerbilangText dari Input:", terbilangText);
 
         const items = [];
         document.querySelectorAll('#items-container .item-row').forEach(row => {
@@ -306,11 +299,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="detail-row">
                         <div class="label">Jumlah Uang Sebesar</div>
-                        <div class="value">: Rp. ${formatCurrency(jumlahUang)},-</div>
+                        <div class="value">: Rp. ${formatCurrency(jumlahUangFinal)},-</div>
                     </div>
 
                     <div class="amount-text">
-                        Terbilang: ${terbilangText}
+                        Terbilang: ${terbilangTextFinal}
                     </div>
 
                     <div class="detail-row">
@@ -341,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <tfoot>
                             <tr>
                                 <td colspan="3" style="text-align:right;">TOTAL KESELURUHAN</td>
-                                <td style="text-align: right;">Rp. ${formatCurrency(jumlahUang)},-</td>
+                                <td style="text-align: right;">Rp. ${formatCurrency(jumlahUangFinal)},-</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -371,7 +364,11 @@ document.addEventListener('DOMContentLoaded', function() {
     kwitansiForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Mencegah form submit default
 
-        const kwitansiHtml = generateKwitansiHtml();
+        // Ambil nilai yang sudah di-update dari input di form utama
+        const currentJumlahUang = parseFloat(jumlahUangInput.value) || 0;
+        const currentTerbilangText = terbilangInput.value;
+
+        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText); // Lewatkan sebagai argumen
 
         // Buka di jendela baru
         const newWindow = window.open('', '_blank');
@@ -381,7 +378,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener untuk tombol Print Kwitansi
     printKwitansiBtn.addEventListener('click', function() {
-        const kwitansiHtml = generateKwitansiHtml();
+        // Ambil nilai yang sudah di-update dari input di form utama
+        const currentJumlahUang = parseFloat(jumlahUangInput.value) || 0;
+        const currentTerbilangText = terbilangInput.value;
+
+        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText); // Lewatkan sebagai argumen
 
         const printWindow = window.open('', '_blank');
         printWindow.document.write(kwitansiHtml);
