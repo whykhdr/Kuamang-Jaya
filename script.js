@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.item-total').forEach(totalInput => {
             grandTotal += parseFloat(totalInput.value) || 0;
         });
-        console.log("DEBUG: Grand Total Terhitung (Angka):", grandTotal);
+        console.log("DEBUG: updateGrandTotal - Grand Total Terhitung (Angka):", grandTotal);
         jumlahUangInput.value = grandTotal;
         
         const calculatedTerbilang = terbilang(grandTotal); // Hitung terbilang
         terbilangInput.value = calculatedTerbilang; // Set ke input terbilang
         
-        console.log("DEBUG: Terbilang Teks (Set ke Input):", calculatedTerbilang); // Log nilai yang di-set
-        console.log("DEBUG: Nilai Terbilang di Input (Saat Ini):", terbilangInput.value); // Log nilai yang benar-benar ada di input
+        console.log("DEBUG: updateGrandTotal - Terbilang Teks (Set ke Input):", calculatedTerbilang);
+        console.log("DEBUG: updateGrandTotal - Nilai Terbilang di Input (Saat Ini):", terbilangInput.value);
     }
 
     function removeItem(button) {
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         totalInput.value = initialQuantity * initialPrice;
         
         attachEventListenersToNewItemRow(row);
-        console.log(`Initial item total for '${row.querySelector('.item-name').value}': ${totalInput.value}`);
+        console.log(`DEBUG: Initial item total for '${row.querySelector('.item-name').value}': ${totalInput.value}`);
     });
 
     updateGrandTotal(); // Panggil saat memuat untuk inisialisasi awal
@@ -143,15 +143,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
     function generateKwitansiHtml() {
+        // --- DEBUG: LOG NILAI LANGSUNG DARI INPUT SEBELUM PARSING ---
+        console.log("DEBUG: generateKwitansiHtml - Raw jumlahUangInput.value:", jumlahUangInput.value);
+
         const nomorKwitansi = document.getElementById('nomorKwitansi').value;
-        const tanggal = document.getElementById('tanggal').value;
+        // Gunakan parseFloat dengan hati-hati atau pastikan nilainya selalu bersih.
+        // Jika ada koma sebagai pemisah desimal di beberapa browser, parseFloat bisa salah.
+        // Namun karena ini type="number" dan kita set angka bulat, seharusnya aman.
         const jumlahUang = parseFloat(document.getElementById('jumlahUang').value) || 0;
+        console.log("DEBUG: generateKwitansiHtml - Parsed jumlahUang (Angka):", jumlahUang); // Log nilai setelah parseFloat
+
+        const tanggal = document.getElementById('tanggal').value;
         const terbilangText = document.getElementById('terbilang').value;
         const untukPembayaran = document.getElementById('untukPembayaran').value;
         const penerimaUang = document.getElementById('penerimaUang').value;
         const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
 
-        console.log("Generating Kwitansi HTML - JumlahUang:", jumlahUang, "TerbilangText:", terbilangText);
+        console.log("DEBUG: generateKwitansiHtml - TerbilangText dari Input:", terbilangText);
 
         const items = [];
         document.querySelectorAll('#items-container .item-row').forEach(row => {
@@ -170,7 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // --- Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung) ---
-        // Fungsi-fungsi ini didefinisikan ulang di sini agar tersedia di scope jendela baru.
         const kwitansiPrintHelperFunctions = `
             <script>
                 function terbilang(number) {
@@ -194,7 +201,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     for (let i = 0; i < groups.length; i++) {
                         const groupNum = parseInt(groups[i], 10); if (groupNum === 0) continue;
                         let groupText = convertGroup(groupNum);
-                        if (groupText !== '') { if (i === groups.length - 2 && groupNum === 1 && groups.length > 1) { groupText = "seribu"; } else { groupText += ' ' + thousands[groups.length - 1 - i]; } }
+                        if (groupText !== '') {
+                            if (i === groups.length - 2 && groupNum === 1 && groups.length > 1) { groupText = "seribu"; } else { groupText += ' ' + thousands[groups.length - 1 - i]; }
+                        }
                         if (result !== '') result += ' '; result += groupText;
                     }
                     result = result.trim(); if (result.length > 0) { result = result.charAt(0).toUpperCase() + result.slice(1); }
