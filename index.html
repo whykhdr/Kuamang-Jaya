@@ -15,15 +15,15 @@
         <form id="kwitansiForm">
             <div class="form-group">
                 <label for="nomorKwitansi">Nomor Kwitansi:</label>
-                <input type="text" id="nomorKwitansi" value="KAS/KJ/001/VI/2025" required>
+                <input type="text" id="nomorKwitansi" required> <!-- Nilai akan diisi oleh JS -->
             </div>
             <div class="form-group">
                 <label for="tanggal">Tanggal:</label>
-                <input type="date" id="tanggal" value="2025-06-12" required>
+                <input type="date" id="tanggal" required> <!-- Nilai akan diisi oleh JS -->
             </div>
             <div class="form-group">
                 <label for="jumlahUang">Jumlah Uang (Angka):</label>
-                <input type="number" id="jumlahUang" readonly required> <!-- Ditambahkan 'readonly' di sini -->
+                <input type="number" id="jumlahUang" readonly required>
             </div>
             <div class="form-group">
                 <label for="terbilang">Terbilang (Teks - Otomatis):</label>
@@ -31,38 +31,18 @@
             </div>
             <div class="form-group">
                 <label for="untukPembayaran">Untuk Pembayaran:</label>
-                <textarea id="untukPembayaran" required>Pembelian material pipa PVC 4 inci untuk perbaikan kebocoran jaringan utama</textarea>
+                <textarea id="untukPembayaran" placeholder="Masukkan tujuan pembayaran di sini..." required></textarea> <!-- Dikosongkan -->
             </div>
 
             <div id="items-container">
                 <label>Rincian Item:</label>
-                <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Pipa PVC 4 inci">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="5">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="80000">
-                    <input type="number" class="item-total" placeholder="Total" readonly>
-                    <button type="button" onclick="removeItem(this)">Hapus</button>
-                </div>
-                <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Lem Pipa">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="25000">
-                    <input type="number" class="item-total" placeholder="Total" readonly>
-                    <button type="button" onclick="removeItem(this)">Hapus</button>
-                </div>
-                <div class="item-row">
-                    <input type="text" class="item-name" placeholder="Item" value="Ongkos transportasi">
-                    <input type="number" class="item-quantity" placeholder="Jumlah" value="1">
-                    <input type="number" class="item-price" placeholder="Harga Satuan" value="75000">
-                    <input type="number" class="item-total" placeholder="Total" readonly>
-                    <button type="button" onclick="removeItem(this)">Hapus</button>
-                </div>
+                <!-- Semua item awal telah dihapus. Item akan ditambahkan melalui JavaScript. -->
             </div>
             <button type="button" id="add-item">Tambah Item</button>
 
             <div class="form-group">
                 <label for="penerimaUang">Nama Lengkap Penerima Uang:</label>
-                <input type="text" id="penerimaUang" value="Nama Lengkap Penerima" required>
+                <input type="text" id="penerimaUang" placeholder="Masukkan nama penerima..." required> <!-- Dikosongkan -->
             </div>
             <div class="form-group">
                 <label for="bendaharaPamsimas">Nama Lengkap Bendahara Pamsimas:</label>
