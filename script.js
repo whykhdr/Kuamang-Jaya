@@ -177,8 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FUNGSI UNTUK MENGELOLA LOGIKA JENIS PEMBAYARAN ---
     function updateUntukPembayaranField() {
         const jenis = jenisPembayaranSelect.value;
-        // namaPeminjam tidak lagi relevan untuk string final, namun tetap ada untuk visibilitas
-        const namaPeminjam = namaPeminjamInput.value.trim();
+        const namaPeminjam = namaPeminjamInput.value.trim(); // Tetap ada variabel ini, meskipun input disembunyikan
         let finalUntukPembayaranText = "";
 
         // Tampilkan/sembunyikan grup detail pembayaran
@@ -220,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
             finalUntukPembayaranText = "Lain-lain";
         }
 
-        // Tambahkan detail dari textarea jika ada
+        // Tambahkan detail dari textarea jika ada (dengan pemisah :)
         if (untukPembayaranTextarea.value.trim() !== "") {
             finalUntukPembayaranText += (finalUntukPembayaranText ? ": " : "") + untukPembayaranTextarea.value.trim();
         }
@@ -231,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener untuk perubahan jenis pembayaran
     jenisPembayaranSelect.addEventListener('change', updateUntukPembayaranField);
-    namaPeminjamInput.addEventListener('input', updateUntukPembayaranField); // Tetap pasang jika nanti diperlukan logika lain
+    namaPeminjamInput.addEventListener('input', updateUntukPembayaranField);
     untukPembayaranTextarea.addEventListener('input', updateUntukPembayaranField);
 
     // Panggil saat load untuk inisialisasi awal
@@ -250,15 +249,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const jenis = jenisPembayaranSelect.value;
         const keteranganDetail = untukPembayaranTextarea.value.trim(); // Ambil langsung keterangan detail
 
-        let mainPurposeText = "";
+        let untukPembayaranFinal = ""; // Menggunakan variabel ini untuk teks akhir
+
         if (jenis === "pembelian_material") {
-            mainPurposeText = "Pembelian Material";
+            untukPembayaranFinal = "Pembelian Material";
         } else if (jenis === "transportasi") {
-            mainPurposeText = "Biaya Transportasi";
+            untukPembayaranFinal = "Biaya Transportasi";
         } else if (jenis === "peminjaman_uang") {
-            mainPurposeText = "Peminjaman Uang";
+            untukPembayaranFinal = "Peminjaman Uang"; // Hanya "Peminjaman Uang"
         } else if (jenis === "lain_lain") {
-            mainPurposeText = "Lain-lain";
+            untukPembayaranFinal = "Lain-lain";
+        }
+
+        // Tambahkan keterangan detail dengan pemisah tanda hubung jika ada
+        if (keteranganDetail) {
+            untukPembayaranFinal += ` - ${keteranganDetail}`;
         }
 
         const penerimaUang = document.getElementById('penerimaUang').value;
@@ -314,13 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </table>
         ` : '';
 
-        // HTML untuk keterangan tambahan, hanya jika ada
-        const keteranganTambahanHtml = keteranganDetail ? `
-            <div class="detail-row keterangan-row">
-                <div class="label" style="width: 120px;"></div> <!-- Label kosong untuk menjaga alignment -->
-                <div class="value" style="border-bottom: none; line-height: 1.5; padding-bottom: 0;">: ${keteranganDetail}</div>
-            </div>
-        ` : '';
+        // HTML untuk keterangan tambahan dihapus karena sudah digabung ke untukPembayaranFinal
+        // const keteranganTambahanHtml = keteranganDetail ? `...` : '';
 
         // Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung)
         const kwitansiPrintHelperFunctions = `
@@ -390,31 +390,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 .info-header { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 8px; font-size: 10px; font-weight: 600; color: #666; }
                 .detail-row { display: flex; margin-bottom: 7px; line-height: 1.3; font-size: 11px; align-items: baseline; }
                 .detail-row .label { width: 120px; font-weight: 600; color: #4a4a4a; flex-shrink: 0; }
-                .detail-row .value { flex-grow: 1; border-bottom: 1px dotted #ccc; padding-bottom: 2px; } /* Garis putus-putus */
-                
-                /* Gaya khusus untuk baris "Untuk Pembayaran" */
-                .detail-row.untuk-pembayaran .value {
-                    border-bottom: 1px dotted #ccc; /* Tetap pertahankan garis putus-putus untuk main purpose */
-                    padding-bottom: 2px;
-                    margin-top: 0;
-                    margin-bottom: 0;
-                    line-height: 1.3;
-                }
-                .detail-row.keterangan-row .label {
-                    width: 120px; /* Lebar yang sama dengan label lain untuk alignment */
-                    flex-shrink: 0;
-                    visibility: hidden; /* Sembunyikan label "Keterangan" */
-                }
-                .detail-row.keterangan-row .value {
-                    border-bottom: none; /* Hilangkan garis putus-putus untuk keterangan */
-                    padding-bottom: 0;
-                    line-height: 1.5;
-                    margin-top: -5px; /* Sesuaikan spasi ke atas */
-                    margin-left: -1px; /* Sedikit geser ke kiri agar sejajar dengan titik dua di atasnya */
+                .detail-row .value {
                     flex-grow: 1;
+                    border-bottom: 1px dotted #ccc;
+                    padding-bottom: 2px;
                     word-wrap: break-word; /* Memastikan teks panjang pecah baris */
-                    white-space: pre-wrap; /* Mempertahankan spasi dan baris baru */
+                    white-space: pre-wrap; /* Mempertahankan spasi dan baris baru dari input */
                 }
+                
+                /* Menghapus gaya khusus untuk baris "Untuk Pembayaran" dan "Keterangan" yang terpisah */
+                .detail-row.untuk-pembayaran .value {
+                    /* Gaya ini sekarang akan ditangani oleh .detail-row .value umum */
+                    /* Untuk memastikan teks tidak terlalu ketat, cukup atur line-height pada .detail-row */
+                }
+                .detail-row.keterangan-row .label,
+                .detail-row.keterangan-row .value {
+                    /* Gaya ini tidak lagi diperlukan karena baris keterangan digabung */
+                }
+
 
                 .amount-text { 
                     font-style: italic; 
@@ -520,9 +513,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="detail-row untuk-pembayaran">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${mainPurposeText}</div>
+                        <div class="value">: ${untukPembayaranFinal}</div> <!-- Menggunakan nilai yang sudah digabungkan -->
                     </div>
-                    ${keteranganTambahanHtml} <!-- Baris keterangan tambahan akan muncul di sini jika ada -->
+                    <!-- Baris keterangan tambahan dihapus dari sini karena sudah digabung -->
 
                     ${itemsTableHtml} <!-- Hanya tampilkan jika ada item -->
 
