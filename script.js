@@ -74,9 +74,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const newItemRow = document.createElement('div');
         newItemRow.classList.add('item-row');
         newItemRow.innerHTML = `
-            <input type="text" class="item-name" placeholder="Item">
-            <input type="number" class="item-quantity" placeholder="Jumlah">
-            <input type="number" class="item-price" placeholder="Harga Satuan">
+            <input type="text" class="item-name" placeholder="Nama Item"> <!-- Placeholder diperbarui -->
+            <input type="number" class="item-quantity" placeholder="Kuantitas" value="0"> <!-- Placeholder diperbarui -->
+            <input type="number" class="item-price" placeholder="Harga Satuan (Rp)" value="0"> <!-- Placeholder diperbarui -->
             <input type="number" class="item-total" placeholder="Total" readonly>
             <button type="button" onclick="removeItem(this)">Hapus</button>
         `;
@@ -125,6 +125,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
+    // Karena item awal sudah dikosongkan di index.html, bagian ini tidak akan menemukan item.
+    // Namun, kita tetap membiarkannya untuk berjaga-jaga jika ada item yang ditambahkan secara statis di HTML.
     document.querySelectorAll('.item-row').forEach(row => {
         const quantityInput = row.querySelector('.item-quantity');
         const priceInput = row.querySelector('.item-price');
@@ -138,13 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`DEBUG: Initial item total for '${row.querySelector('.item-name').value}': ${totalInput.value}`);
     });
 
-    updateGrandTotal(); // Panggil saat memuat untuk inisialisasi awal
+    updateGrandTotal(); // Panggil saat memuat untuk inisialisasi awal (akan menghasilkan "Nol Rupiah" jika tidak ada item)
 
 
     // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
     // Menerima nilai jumlahUang dan terbilangText langsung sebagai argumen
-    function generateKwitansiHtml(jumlahUangFinal, terbilangTextFinal) { // Perubahan di sini
-        // --- DEBUG: LOG NILAI YANG DITERIMA ---
+    function generateKwitansiHtml(jumlahUangFinal, terbilangTextFinal) {
         console.log("DEBUG: generateKwitansiHtml - JumlahUang yang Diterima:", jumlahUangFinal);
         console.log("DEBUG: generateKwitansiHtml - TerbilangText yang Diterima:", terbilangTextFinal);
 
