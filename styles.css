@@ -1,112 +1,217 @@
+/* General Body and Container Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
     color: #333;
     background-color: #f0f2f5;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
 .container {
-    width: 800px;
-    margin: 40px auto;
+    max-width: 800px; /* Use max-width for responsiveness */
+    width: 95%; /* Adjust width for smaller screens */
+    margin: 40px auto; /* Center the container horizontally */
     border: 1px solid #dcdcdc;
     padding: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px; /* More rounded corners */
 }
+
+/* Header Styles */
 h1 {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Increased margin for spacing */
+    font-size: 2em; /* Larger heading */
+    font-weight: 700;
 }
+
+/* Form Group Styles */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Increased margin between form groups */
 }
+
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px; /* Adjusted margin below label */
     font-weight: bold;
     color: #4a4a4a;
+    font-size: 1.05em; /* Slightly larger label font */
 }
+
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="date"],
 .form-group textarea {
-    width: calc(100% - 22px); /* Adjust for padding and border */
-    padding: 10px;
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px; /* Increased padding */
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 6px; /* Slightly more rounded inputs */
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
 }
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="date"]:focus,
+.form-group textarea:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Subtle shadow on focus */
+    outline: none; /* Remove default outline */
+}
+
 .form-group textarea {
     resize: vertical;
-    min-height: 60px;
+    min-height: 80px; /* Increased min-height for textarea */
 }
+
+/* Item Row Styles */
 .item-row {
     display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     align-items: center;
 }
+
 .item-row input {
     flex: 1;
+    min-width: 100px; /* Ensure inputs don't become too small */
 }
+
 .item-row .item-name {
     flex: 2;
+    min-width: 150px; /* Ensure item name input is wider */
 }
+
 .item-row button {
     background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .item-row button:hover {
     background-color: #c0392b;
+    transform: translateY(-1px); /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+/* Items Container Styling */
 #items-container {
-    border: 1px dashed #cccccc;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    background-color: #fafafa;
+    border: 1px dashed #a8d6b9; /* Greenish dashed border */
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    background-color: #f7fcf9; /* Lighter background */
 }
+
+/* Add Item Button */
 #add-item {
     background-color: #28a745;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
+    padding: 12px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
     display: block;
-    margin-top: 10px;
+    width: 100%; /* Full width button */
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
 #add-item:hover {
     background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* Submit and Print Buttons */
 .form-group button[type="submit"],
 .form-group #printKwitansiBtn {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 12px 20px;
-    border-radius: 4px;
+    padding: 14px 25px; /* Increased padding */
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.1em; /* Slightly larger font */
     width: 100%;
-    margin-top: 20px;
+    margin-top: 25px; /* Increased margin */
     display: block;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
 .form-group button[type="submit"]:hover,
 .form-group #printKwitansiBtn:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
 #printKwitansiBtn {
-    background-color: #6c757d;
-    margin-top: 10px;
+    background-color: #6c757d; /* Different color for print button */
+    margin-top: 15px; /* Spacing between submit and print */
 }
+
 #printKwitansiBtn:hover {
     background-color: #5a6268;
+}
+
+/* Responsive Adjustments for smaller screens */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        width: 98%;
+    }
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        font-size: 1em;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="date"],
+    .form-group textarea {
+        width: calc(100% - 20px); /* Adjust for smaller padding */
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    .item-row {
+        flex-direction: column; /* Stack items vertically */
+        align-items: stretch; /* Stretch to full width */
+    }
+    .item-row input {
+        width: 100%; /* Full width for stacked inputs */
+        margin-bottom: 8px; /* Add margin between stacked inputs */
+    }
+    .item-row .item-name {
+        width: 100%;
+    }
+    .item-row button {
+        width: 100%; /* Full width for remove button */
+        margin-top: 5px;
+    }
+    #add-item,
+    .form-group button[type="submit"],
+    .form-group #printKwitansiBtn {
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
 }
