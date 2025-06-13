@@ -31,7 +31,7 @@ h1 {
 .form-group input[type="number"],
 .form-group input[type="date"],
 .form-group textarea {
-    width: calc(100% - 22px);
+    width: calc(100% - 22px); /* Adjust for padding and border */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
