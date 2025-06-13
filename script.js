@@ -395,21 +395,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 /* Gaya khusus untuk baris keterangan tambahan */
                 .detail-row.detail-sub-row {
-                    margin-top: -5px; /* Tarik sedikit ke atas agar lebih dekat dengan baris di atasnya */
+                    margin-top: -5px;
                     margin-bottom: 7px;
                 }
                 .detail-row.detail-sub-row .label {
-                    width: 120px; /* Pertahankan lebar yang sama untuk alignment */
-                    visibility: hidden; /* Sembunyikan labelnya */
+                    width: 120px;
+                    visibility: hidden;
                     flex-shrink: 0;
                 }
                 .detail-row.detail-sub-row .value {
-                    border-bottom: none; /* Hilangkan garis putus-putus untuk keterangan */
+                    border-bottom: none;
                     padding-bottom: 0;
-                    margin-left: -1px; /* Geser sedikit ke kiri agar sejajar dengan titik dua di atasnya */
-                    font-size: 10.5px; /* Ukuran font sedikit lebih kecil */
-                    color: #555; /* Warna teks sedikit lebih gelap */
-                    line-height: 1.5; /* Berikan spasi baris yang lebih nyaman */
+                    margin-left: -1px;
+                    font-size: 10.5px;
+                    color: #555;
+                    line-height: 1.5;
                 }
 
                 .amount-text { 
@@ -455,23 +455,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         box-sizing: border-box;
                     }
                     .kwitansi-print-container::before { display: none; }
-                    .kwitansi-print-container h1 { font-size: 16pt; margin-top: 0; margin-bottom: 5pt; }
-                    .kwitansi-print-container h2 { font-size: 10pt; margin-bottom: 10pt; padding-bottom: 3pt; }
-                    .kwitansi-print-container h2::after { display: none; }
-                    .kwitansi-print-container .info-header { font-size: 8pt; margin-bottom: 8pt; padding-bottom: 4pt; }
+                    .kwitansi-print-container h1 { font-size: 14pt; margin-top: 0; margin-bottom: 5pt; } /* Reduced font size for print */
+                    .kwitansi-print-container h2 { font-size: 9pt; margin-bottom: 10pt; padding-bottom: 3pt; } /* Reduced font size for print */
+                    .kwitansi-print-container .info-header { font-size: 7.5pt; margin-bottom: 8pt; padding-bottom: 4pt; } /* Reduced font size for print */
                     .kwitansi-print-container .detail-row { font-size: 8pt; margin-bottom: 3pt; line-height: 1.1; }
                     .kwitansi-print-container .detail-row .label { width: 80px; }
-                    .kwitansi-print-container .amount-text { font-size: 10pt; padding: 4pt 8pt; margin-top: 10pt; margin-bottom: 10pt; }
-                    .kwitansi-print-container .section-label { font-size: 9pt; margin-top: 10pt; margin-bottom: 5pt; padding-bottom: 3pt; }
+                    .kwitansi-print-container .amount-text { font-size: 11pt; padding: 4pt 8pt; margin-top: 10pt; margin-bottom: 10pt; } /* Reduced font size for print */
+                    .kwitansi-print-container .section-label { font-size: 9pt; margin-top: 10pt; margin-bottom: 5pt; padding-bottom: 3pt; } /* Reduced font size for print */
                     .kwitansi-print-container .rincian-table { margin-top: 5pt; margin-bottom: 10pt; }
-                    .kwitansi-print-container .rincian-table th, .kwitansi-print-container .rincian-table td { padding: 3pt 5pt; font-size: 7.5pt; }
+                    .kwitansi-print-container .rincian-table th, .kwitansi-print-container .rincian-table td { padding: 3pt 5pt; font-size: 7pt; } /* Reduced font size for print */
                     tfoot td { font-size: 8pt; }
-                    .kwitansi-print-container .date-location { font-size: 8pt; margin-top: 15pt; margin-bottom: 10pt; }
-                    .kwitansi-print-container .signatures { margin-top: 20pt; }
-                    .kwitansi-print-container .signature-box { min-height: 60px; }
-                    .kwitansi-print-container .signature-box p { font-size: 8pt; margin-bottom: 2pt; padding-bottom: 2pt; min-width: 90px; }
-                    .kwitansi-print-container .role { font-size: 7pt; }
-                    @page { size: 21.59cm 16.51cm; margin: 0.5cm; }
+                    .kwitansi-print-container .date-location { font-size: 7.5pt; margin-top: 15pt; margin-bottom: 10pt; } /* Reduced font size for print */
+                    .kwitansi-print-container .signatures { margin-top: 15pt; } /* Reduced margin for print */
+                    .kwitansi-print-container .signature-box { min-height: 50px; } /* Reduced min-height for print */
+                    .kwitansi-print-container .signature-box p { font-size: 7.5pt; margin-bottom: 2pt; padding-bottom: 2pt; min-width: 90px; } /* Reduced font size for print */
+                    .kwitansi-print-container .role { font-size: 6.5pt; } /* Reduced font size for print */
+                    
+                    /* New page size for half F4 portrait */
+                    @page { 
+                        size: 21.5cm 16.5cm portrait; /* Lebar F4 x Setengah Tinggi F4, orientasi portrait */
+                        margin: 0.5cm; /* Margin yang rapi di semua sisi */
+                    }
                 }
             </style>
         `;
@@ -516,11 +520,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="detail-row">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${mainPurposeText}</div> <!-- Hanya tujuan utama di baris ini -->
+                        <div class="value">: ${mainPurposeText}</div>
                     </div>
-                    ${keteranganTambahanHtml} <!-- Keterangan tambahan di baris terpisah -->
+                    ${keteranganTambahanHtml}
 
-                    ${itemsTableHtml} <!-- Hanya tampilkan jika ada item -->
+                    ${itemsTableHtml}
 
                     <div class="date-location">
                         Kuamang Jaya, ${formatDate(tanggal)}
@@ -537,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                 </div>
-                ${kwitansiPrintHelperFunctions} <!-- Inject the helper functions here -->
+                ${kwitansiPrintHelperFunctions}
             </body>
             </html>
         `;
@@ -545,40 +549,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     kwitansiForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Mencegah form submit default
+        event.preventDefault();
 
-        // Ambil nilai yang sudah di-update dari input di form utama
         const currentJumlahUang = parseFloat(jumlahUangInput.value) || 0;
         const currentTerbilangText = terbilangInput.value;
 
-        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText); // Lewatkan sebagai argumen
+        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText);
 
-        // Buka di jendela baru
         const newWindow = window.open('', '_blank');
         newWindow.document.write(kwitansiHtml);
         newWindow.document.close();
     });
 
-    // Event listener untuk tombol Print Kwitansi
     printKwitansiBtn.addEventListener('click', function() {
-        // Ambil nilai yang sudah di-update dari input di form utama
         const currentJumlahUang = parseFloat(jumlahUangInput.value) || 0;
         const currentTerbilangText = terbilangInput.value;
 
-        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText); // Lewatkan sebagai argumen
+        const kwitansiHtml = generateKwitansiHtml(currentJumlahUang, currentTerbilangText);
 
         const printWindow = window.open('', '_blank');
         printWindow.document.write(kwitansiHtml);
         printWindow.document.close();
 
-        // Tunggu konten dimuat sebelum print
         printWindow.onload = function() {
-            printWindow.focus(); // Fokus ke jendela baru
-            printWindow.print(); // Trigger dialog print
+            printWindow.focus();
+            printWindow.print();
         };
     });
 
-
-    // Expose removeItem to global scope so it can be called from onclick
     window.removeItem = removeItem;
-}); // END OF DOMContentLoaded LISTENER
+});
