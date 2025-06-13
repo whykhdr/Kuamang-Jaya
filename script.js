@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FUNGSI UNTUK MENGELOLA LOGIKA JENIS PEMBAYARAN ---
     function updateUntukPembayaranField() {
         const jenis = jenisPembayaranSelect.value;
+        // namaPeminjam tidak lagi relevan untuk string final, namun tetap ada untuk visibilitas
         const namaPeminjam = namaPeminjamInput.value.trim();
         let finalUntukPembayaranText = "";
 
@@ -194,15 +195,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Atur visibilitas input nama peminjam dan teks label/placeholder
-        if (jenis === "peminjaman_uang") { // Perubahan di sini
-            namaPeminjamLabel.style.display = 'block';
-            namaPeminjamInput.style.display = 'block';
-            namaPeminjamInput.required = true;
-            untukPembayaranTextareaLabel.textContent = "Tujuan Peminjaman:";
-            untukPembayaranTextarea.placeholder = "Masukkan tujuan peminjaman...";
+        if (jenis === "peminjaman_uang") {
+            namaPeminjamLabel.style.display = 'none'; // Sembunyikan nama peminjam
+            namaPeminjamInput.style.display = 'none'; // Sembunyikan nama peminjam
+            namaPeminjamInput.required = false; // Tidak lagi wajib
+            untukPembayaranTextareaLabel.textContent = "Keterangan Peminjaman:"; // Ubah label
+            untukPembayaranTextarea.placeholder = "Masukkan keterangan peminjaman di sini..."; // Ubah placeholder
         } else {
-            namaPeminjamLabel.style.display = 'none';
-            namaPeminjamInput.style.display = 'none';
+            namaPeminjamLabel.style.display = 'none'; // Pastikan tersembunyi untuk jenis lain
+            namaPeminjamInput.style.display = 'none'; // Pastikan tersembunyi untuk jenis lain
             namaPeminjamInput.required = false;
             untukPembayaranTextareaLabel.textContent = "Detail Pembayaran:";
             untukPembayaranTextarea.placeholder = "Masukkan detail pembayaran di sini...";
@@ -213,8 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
             finalUntukPembayaranText = "Pembelian Material";
         } else if (jenis === "transportasi") {
             finalUntukPembayaranText = "Biaya Transportasi";
-        } else if (jenis === "peminjaman_uang") { // Perubahan di sini
-            finalUntukPembayaranText = `Peminjaman Uang${namaPeminjam ? ': ' + namaPeminjam : ''}`;
+        } else if (jenis === "peminjaman_uang") {
+            finalUntukPembayaranText = "Peminjaman Uang"; // Hanya "Peminjaman Uang" tanpa tambahan
         } else if (jenis === "lain_lain") {
             finalUntukPembayaranText = "Lain-lain";
         }
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener untuk perubahan jenis pembayaran
     jenisPembayaranSelect.addEventListener('change', updateUntukPembayaranField);
-    namaPeminjamInput.addEventListener('input', updateUntukPembayaranField);
+    namaPeminjamInput.addEventListener('input', updateUntukPembayaranField); // Tetap pasang jika nanti diperlukan logika lain
     untukPembayaranTextarea.addEventListener('input', updateUntukPembayaranField);
 
     // Panggil saat load untuk inisialisasi awal
@@ -247,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Dapatkan teks "Untuk Pembayaran" yang sudah digabungkan
         const jenis = jenisPembayaranSelect.value;
-        const namaPeminjam = namaPeminjamInput.value.trim();
+        const namaPeminjam = namaPeminjamInput.value.trim(); // Tetap ambil jika nanti ada kebutuhan
         let untukPembayaranFinal = "";
 
         if (jenis === "pembelian_material") {
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (jenis === "transportasi") {
             untukPembayaranFinal = "Biaya Transportasi";
         } else if (jenis === "peminjaman_uang") {
-            untukPembayaranFinal = `Peminjaman Uang${namaPeminjam ? ': ' + namaPeminjam : ''}`;
+            untukPembayaranFinal = "Peminjaman Uang"; // Hanya "Peminjaman Uang"
         } else if (jenis === "lain_lain") {
             untukPembayaranFinal = "Lain-lain";
         }
