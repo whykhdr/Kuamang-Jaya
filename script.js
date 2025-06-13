@@ -248,21 +248,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Dapatkan teks "Untuk Pembayaran" yang sudah digabungkan
         const jenis = jenisPembayaranSelect.value;
-        const namaPeminjam = namaPeminjamInput.value.trim(); // Tetap ambil jika nanti ada kebutuhan
-        let untukPembayaranFinal = "";
+        const keteranganDetail = untukPembayaranTextarea.value.trim(); // Ambil langsung keterangan detail
 
+        let mainPurposeText = "";
         if (jenis === "pembelian_material") {
-            untukPembayaranFinal = "Pembelian Material";
+            mainPurposeText = "Pembelian Material";
         } else if (jenis === "transportasi") {
-            untukPembayaranFinal = "Biaya Transportasi";
+            mainPurposeText = "Biaya Transportasi";
         } else if (jenis === "peminjaman_uang") {
-            untukPembayaranFinal = "Peminjaman Uang"; // Hanya "Peminjaman Uang"
+            mainPurposeText = "Peminjaman Uang";
         } else if (jenis === "lain_lain") {
-            untukPembayaranFinal = "Lain-lain";
-        }
-
-        if (untukPembayaranTextarea.value.trim() !== "") {
-            untukPembayaranFinal += (untukPembayaranFinal ? ": " : "") + untukPembayaranTextarea.value.trim();
+            mainPurposeText = "Lain-lain";
         }
 
         const penerimaUang = document.getElementById('penerimaUang').value;
@@ -318,6 +314,13 @@ document.addEventListener('DOMContentLoaded', function() {
             </table>
         ` : '';
 
+        // HTML untuk keterangan tambahan, hanya jika ada
+        const keteranganTambahanHtml = keteranganDetail ? `
+            <div class="detail-row keterangan-row">
+                <div class="label" style="width: 120px;"></div> <!-- Label kosong untuk menjaga alignment -->
+                <div class="value" style="border-bottom: none; line-height: 1.5; padding-bottom: 0;">: ${keteranganDetail}</div>
+            </div>
+        ` : '';
 
         // Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung)
         const kwitansiPrintHelperFunctions = `
@@ -391,11 +394,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 /* Gaya khusus untuk baris "Untuk Pembayaran" */
                 .detail-row.untuk-pembayaran .value {
-                    border-bottom: none; /* Hilangkan garis putus-putus */
+                    border-bottom: 1px dotted #ccc; /* Tetap pertahankan garis putus-putus untuk main purpose */
+                    padding-bottom: 2px;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    line-height: 1.3;
+                }
+                .detail-row.keterangan-row .label {
+                    width: 120px; /* Lebar yang sama dengan label lain untuk alignment */
+                    flex-shrink: 0;
+                    visibility: hidden; /* Sembunyikan label "Keterangan" */
+                }
+                .detail-row.keterangan-row .value {
+                    border-bottom: none; /* Hilangkan garis putus-putus untuk keterangan */
                     padding-bottom: 0;
-                    margin-top: 5px; /* Sedikit spasi di atas teks */
-                    margin-bottom: 5px; /* Sedikit spasi di bawah teks */
-                    line-height: 1.5; /* Spasi baris lebih longgar */
+                    line-height: 1.5;
+                    margin-top: -5px; /* Sesuaikan spasi ke atas */
+                    margin-left: -1px; /* Sedikit geser ke kiri agar sejajar dengan titik dua di atasnya */
+                    flex-grow: 1;
+                    word-wrap: break-word; /* Memastikan teks panjang pecah baris */
+                    white-space: pre-wrap; /* Mempertahankan spasi dan baris baru */
                 }
 
                 .amount-text { 
@@ -500,10 +518,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         Terbilang: ${terbilangTextFinal}
                     </div>
 
-                    <div class="detail-row untuk-pembayaran"> <!-- Menambahkan class baru di sini -->
+                    <div class="detail-row untuk-pembayaran">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${untukPembayaranFinal}</div> <!-- Menggunakan nilai yang sudah digabungkan -->
+                        <div class="value">: ${mainPurposeText}</div>
                     </div>
+                    ${keteranganTambahanHtml} <!-- Baris keterangan tambahan akan muncul di sini jika ada -->
 
                     ${itemsTableHtml} <!-- Hanya tampilkan jika ada item -->
 
