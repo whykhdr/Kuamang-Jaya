@@ -109,10 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.item-total').forEach(totalInput => {
             grandTotal += parseFloat(totalInput.value) || 0;
         });
-        console.log("Grand Total Terhitung (Angka):", grandTotal);
+        console.log("DEBUG: Grand Total Terhitung (Angka):", grandTotal);
         jumlahUangInput.value = grandTotal;
-        terbilangInput.value = terbilang(grandTotal);
-        console.log("Terbilang Teks (Output):", terbilangInput.value);
+        
+        const calculatedTerbilang = terbilang(grandTotal); // Hitung terbilang
+        terbilangInput.value = calculatedTerbilang; // Set ke input terbilang
+        
+        console.log("DEBUG: Terbilang Teks (Set ke Input):", calculatedTerbilang); // Log nilai yang di-set
+        console.log("DEBUG: Nilai Terbilang di Input (Saat Ini):", terbilangInput.value); // Log nilai yang benar-benar ada di input
     }
 
     function removeItem(button) {
@@ -166,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // --- Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung) ---
-        // Ini adalah metode paling aman untuk memastikan fungsi tersedia di jendela baru.
+        // Fungsi-fungsi ini didefinisikan ulang di sini agar tersedia di scope jendela baru.
         const kwitansiPrintHelperFunctions = `
             <script>
                 function terbilang(number) {
