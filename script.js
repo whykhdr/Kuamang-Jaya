@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const terbilangInput = document.getElementById('terbilang');
     const printKwitansiBtn = document.getElementById('printKwitansiBtn');
 
+    // Referensi elemen baru
+    const jenisPembayaranSelect = document.getElementById('jenisPembayaran');
+    const detailPembayaranGroup = document.getElementById('detailPembayaranGroup');
+    const namaPeminjamInput = document.getElementById('namaPeminjam');
+    const namaPeminjamLabel = document.getElementById('namaPeminjamLabel');
+    const untukPembayaranTextarea = document.getElementById('untukPembayaranTextarea');
+    const untukPembayaranTextareaLabel = document.getElementById('untukPembayaranTextareaLabel');
+
+
     // --- FUNGSI HELPER YANG DIBUTUHKAN DI WINDOW UTAMA DAN WINDOW CETAK ---
     // Fungsi terbilang (akan di-string-ify dan di-inject ke HTML yang dihasilkan)
     function terbilang(number) {
@@ -71,9 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const newItemRow = document.createElement('div');
         newItemRow.classList.add('item-row');
         newItemRow.innerHTML = `
-            <input type="text" class="item-name" placeholder="Nama Item"> <!-- Placeholder diperbarui -->
-            <input type="number" class="item-quantity" placeholder="Kuantitas" value="0"> <!-- Placeholder diperbarui -->
-            <input type="number" class="item-price" placeholder="Harga Satuan (Rp)" value="0"> <!-- Placeholder diperbarui -->
+            <input type="text" class="item-name" placeholder="Nama Item">
+            <input type="number" class="item-quantity" placeholder="Kuantitas" value="0">
+            <input type="number" class="item-price" placeholder="Harga Satuan (Rp)" value="0">
             <input type="number" class="item-total" placeholder="Total" readonly>
             <button type="button" onclick="removeItem(this)">Hapus</button>
         `;
@@ -122,8 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- INISIALISASI AWAL ITEM DAN TOTAL PADA LOAD HALAMAN ---
-    // Karena item awal sudah dikosongkan di index.html, bagian ini tidak akan menemukan item.
-    // Namun, kita tetap membiarkannya untuk berjaga-jaga jika ada item yang ditambahkan secara statis di HTML.
     document.querySelectorAll('.item-row').forEach(row => {
         const quantityInput = row.querySelector('.item-quantity');
         const priceInput = row.querySelector('.item-price');
@@ -140,15 +147,97 @@ document.addEventListener('DOMContentLoaded', function() {
     updateGrandTotal(); // Panggil saat memuat untuk inisialisasi awal (akan menghasilkan "Nol Rupiah" jika tidak ada item)
 
 
+    // --- FUNGSI UNTUK MENGELOLA LOGIKA JENIS PEMBAYARAN ---
+    function updateUntukPembayaranField() {
+        const jenis = jenisPembayaranSelect.value;
+        const namaPeminjam = namaPeminjamInput.value.trim();
+        let finalUntukPembayaranText = "";
+
+        // Tampilkan/sembunyikan grup detail pembayaran
+        if (jenis === "") {
+            detailPembayaranGroup.style.display = 'none';
+            untukPembayaranTextarea.value = ""; // Kosongkan saat tidak ada pilihan
+            namaPeminjamInput.value = ""; // Kosongkan nama peminjam
+        } else {
+            detailPembayaranGroup.style.display = 'block';
+        }
+
+        // Atur visibilitas input nama peminjam
+        if (jenis === "peminjaman_anggota" || jenis === "peminjaman_lain") {
+            namaPeminjamLabel.style.display = 'block';
+            namaPeminjamInput.style.display = 'block';
+            namaPeminjamInput.required = true;
+            untukPembayaranTextareaLabel.textContent = "Tujuan Peminjaman:";
+            untukPembayaranTextarea.placeholder = "Masukkan tujuan peminjaman...";
+        } else {
+            namaPeminjamLabel.style.display = 'none';
+            namaPeminjamInput.style.display = 'none';
+            namaPeminjamInput.required = false;
+            untukPembayaranTextareaLabel.textContent = "Detail Pembayaran:";
+            untukPembayaranTextarea.placeholder = "Masukkan detail pembayaran di sini...";
+        }
+
+        // Bangun teks untuk 'Untuk Pembayaran'
+        if (jenis === "pembelian_material") {
+            finalUntukPembayaranText = "Pembelian Material";
+        } else if (jenis === "transportasi") {
+            finalUntukPembayaranText = "Biaya Transportasi";
+        } else if (jenis === "peminjaman_anggota") {
+            finalUntukPembayaranText = `Peminjaman Uang (Anggota${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "peminjaman_lain") {
+            finalUntukPembayaranText = `Peminjaman Uang (Lain-lain${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "lain_lain") {
+            finalUntukPembayaranText = "Lain-lain";
+        }
+
+        // Tambahkan detail dari textarea jika ada
+        if (untukPembayaranTextarea.value.trim() !== "") {
+            finalUntukPembayaranText += (finalUntukPembayaranText ? ": " : "") + untukPembayaranTextarea.value.trim();
+        }
+
+        // Set teks yang dibangun ke textarea untukPembayaranTextarea, atau Anda bisa menyimpannya di variabel untuk kwitansi.
+        // Untuk tujuan pengiriman ke kwitansi, kita akan langsung ambil dari nilai-nilai ini.
+    }
+
+    // Event listener untuk perubahan jenis pembayaran
+    jenisPembayaranSelect.addEventListener('change', updateUntukPembayaranField);
+    namaPeminjamInput.addEventListener('input', updateUntukPembayaranField);
+    untukPembayaranTextarea.addEventListener('input', updateUntukPembayaranField);
+
+    // Panggil saat load untuk inisialisasi awal (menyembunyikan detail)
+    updateUntukPembayaranField();
+
+
     // --- FUNGSI UNTUK GENERATE KWITANSI HTML UNTUK PRINT/PREVIEW ---
-    // Menerima nilai jumlahUang dan terbilangText langsung sebagai argumen
     function generateKwitansiHtml(jumlahUangFinal, terbilangTextFinal) {
         console.log("DEBUG: generateKwitansiHtml - JumlahUang yang Diterima:", jumlahUangFinal);
         console.log("DEBUG: generateKwitansiHtml - TerbilangText yang Diterima:", terbilangTextFinal);
 
         const nomorKwitansi = document.getElementById('nomorKwitansi').value;
         const tanggal = document.getElementById('tanggal').value;
-        const untukPembayaran = document.getElementById('untukPembayaran').value;
+        
+        // Dapatkan teks "Untuk Pembayaran" yang sudah digabungkan dari fungsi updateUntukPembayaranField
+        const jenis = jenisPembayaranSelect.value;
+        const namaPeminjam = namaPeminjamInput.value.trim();
+        let untukPembayaranFinal = "";
+
+        if (jenis === "pembelian_material") {
+            untukPembayaranFinal = "Pembelian Material";
+        } else if (jenis === "transportasi") {
+            untukPembayaranFinal = "Biaya Transportasi";
+        } else if (jenis === "peminjaman_anggota") {
+            untukPembayaranFinal = `Peminjaman Uang (Anggota${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "peminjaman_lain") {
+            untukPembayaranFinal = `Peminjaman Uang (Lain-lain${namaPeminjam ? ': ' + namaPeminjam : ''})`;
+        } else if (jenis === "lain_lain") {
+            untukPembayaranFinal = "Lain-lain";
+        }
+
+        if (untukPembayaranTextarea.value.trim() !== "") {
+            untukPembayaranFinal += (untukPembayaranFinal ? ": " : "") + untukPembayaranTextarea.value.trim();
+        }
+
+
         const penerimaUang = document.getElementById('penerimaUang').value;
         const bendaharaPamsimas = document.getElementById('bendaharaPamsimas').value;
 
@@ -306,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="detail-row">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${untukPembayaran}</div>
+                        <div class="value">: ${untukPembayaranFinal}</div> <!-- Menggunakan nilai yang sudah digabungkan -->
                     </div>
 
                     <div class="section-label">Rincian Pengeluaran</div>
