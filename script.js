@@ -309,13 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ` : '';
 
         // HTML untuk keterangan tambahan, ditampilkan di baris terpisah jika ada
-        const keteranganTambahanHtml = keteranganDetail ? `
-            <div class="detail-row detail-sub-row">
-                <div class="label"></div> <!-- Label kosong untuk menjaga alignment -->
-                <div class="value">${keteranganDetail}</div>
-            </div>
-        ` : '';
-
+        const fullPurposeWithDetail = keteranganDetail ? `${mainPurposeText} - ${keteranganDetail}` : mainPurposeText;
 
         // Definisi Fungsi Helper untuk Jendela Cetak (didefinisikan secara langsung)
         const kwitansiPrintHelperFunctions = `
@@ -520,9 +514,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="detail-row">
                         <div class="label">Untuk Pembayaran</div>
-                        <div class="value">: ${mainPurposeText}</div>
+                        <div class="value">: ${fullPurposeWithDetail}</div>
                     </div>
-                    ${keteranganTambahanHtml}
 
                     ${itemsTableHtml}
 
