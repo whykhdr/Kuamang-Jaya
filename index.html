@@ -1,17 +1,63 @@
-<div class="container">
-    <h2>Input Tagihan PAMSIMAS</h2>
-    
-    <label for="pelanggan">Nama Pelanggan:</label>
-    <input type="text" id="pelanggan" value="Bpk. John Doe"><br>
-    
-    <label for="no_samb">Nomor Sambungan:</label>
-    <input type="text" id="no_samb" value="01/0045"><br>
-    
-    <label for="pemakaian">Pemakaian (M3):</label>
-    <input type="number" id="pemakaian" value="15"><br>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kwitansi PAMSIMAS PDF</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <label for="total">Total Bayar (Rp):</label>
-    <input type="number" id="total" value="52500"><br>
+    <div class="no-print" style="margin-bottom: 20px; text-align: center;">
+        <h2>Input Data Tagihan</h2>
+        <input type="text" id="nama" placeholder="Nama Pelanggan"><br><br>
+        <input type="number" id="pokok" placeholder="Tagihan Pokok (Rp)" value="50000"><br><br>
+        <input type="number" id="denda" placeholder="Denda (Rp)" value="2500"><br><br>
+        <button onclick="updateReceipt()">Tampilkan Kuitansi</button>
+        <button onclick="window.print()">Cetak ke PDF</button>
+        <hr>
+    </div>
 
-    <button onclick="requestBluetoothDevice()">Hubungkan & Cetak Kuitansi</button>
-</div>
+    <div id="receipt-output" class="receipt-container" style="display: none;">
+        </div>
+
+    <script>
+        function updateReceipt() {
+            const nama = document.getElementById('nama').value || "Pelanggan Yth.";
+            const pokok = parseInt(document.getElementById('pokok').value) || 0;
+            const denda = parseInt(document.getElementById('denda').value) || 0;
+            const total = pokok + denda;
+            const tanggal = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+
+            const output = document.getElementById('receipt-output');
+            
+            output.innerHTML = `
+                <div class="header">
+                    BADAN PENGELOLA SPAMS<br>
+                    PAMSIMAS DESA SUKA MAJU
+                </div>
+                <div class="divider"></div>
+                
+                <div class="detail-row"><span>Tgl/Waktu:</span><span>${tanggal}</span></div>
+                <div class="detail-row"><span>Pelanggan:</span><span>${nama}</span></div>
+                <div class="divider"></div>
+
+                <div class="detail-row"><span>Tagihan Pokok:</span><span>Rp ${pokok.toLocaleString('id-ID')}</span></div>
+                <div class="detail-row"><span>Denda:</span><span>Rp ${denda.toLocaleString('id-ID')}</span></div>
+                <div class="divider"></div>
+
+                <div class="detail-row total-row"><span>TOTAL BAYAR:</span><span>Rp ${total.toLocaleString('id-ID')}</span></div>
+                <div class="divider"></div>
+
+                <div class="footer">
+                    TERIMA KASIH
+                </div>
+            `;
+            output.style.display = 'block';
+        }
+
+        // Panggil saat halaman dimuat untuk tampilan awal
+        updateReceipt(); 
+    </script>
+
+</body>
+</html>
