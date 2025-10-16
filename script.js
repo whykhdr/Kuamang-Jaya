@@ -44,16 +44,17 @@ function updateReceipt() {
 
     // Fungsi pembantu untuk baris dengan garis putus-putus
     const dottedValue = (value) => {
-        // Menggunakan value-col untuk nilai
+        // Menggunakan value-col untuk nilai, di-align ke kanan
         return `<span class="value-col" style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right;">${value}</span>`;
     };
 
-    // FUNGSI BARU: Template baris menggunakan struktur kolom CSS
+    // FUNGSI INI KUNCI UNTUK PERATAAN TITIK DUA: Menggunakan 3 kolom terpisah.
     const createAlignedRow = (label, value) => {
         return `
             <div class="info-row">
-                <span class="label-col">${label}:</span>
-                <span class="value-col">${value}</span>
+                <span class="label-col">${label}</span>
+                <span class="colon-col">:</span>
+                <span class="value-col" style="text-align: left;">${value}</span>
             </div>
         `;
     };
@@ -85,13 +86,13 @@ function updateReceipt() {
 
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
 
-        <!-- RINCIAN BIAYA (Menggunakan format Rupiah dan dottedValue) -->
+        <!-- RINCIAN BIAYA (Menggunakan 2 kolom Flexbox untuk kanan-kiri) -->
         <div class="info-row">
-            <span class="label-col" style="min-width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m:</span>
+            <span class="label-col" style="min-width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
             ${dottedValue(formatRupiah(iuranBiaya))}
         </div>
         <div class="info-row">
-            <span class="label-col" style="min-width: 50%;">Pokok Beban:</span>
+            <span class="label-col" style="min-width: 50%;">Pokok Beban</span>
             ${dottedValue(formatRupiah(pokokBeban))}
         </div>
         
