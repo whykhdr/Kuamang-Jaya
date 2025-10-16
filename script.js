@@ -44,17 +44,16 @@ function updateReceipt() {
 
     // Fungsi pembantu untuk baris dengan garis putus-putus
     const dottedValue = (value) => {
-        return `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; flex-grow: 1; text-align: right;">${value}</span>`;
+        // Menggunakan value-col untuk nilai
+        return `<span class="value-col" style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right;">${value}</span>`;
     };
 
-    // FUNGSI BARU: Template baris dengan titik dua sejajar
+    // FUNGSI BARU: Template baris menggunakan struktur kolom CSS
     const createAlignedRow = (label, value) => {
-        // Style untuk label: lebar tetap 110px dan titik dua sejajar.
         return `
             <div class="info-row">
-                <span style="min-width: 110px;">${label}</span>
-                <span style="margin-right: 5px;">:</span>
-                <span style="flex-grow: 1;">${value}</span>
+                <span class="label-col">${label}:</span>
+                <span class="value-col">${value}</span>
             </div>
         `;
     };
@@ -88,16 +87,16 @@ function updateReceipt() {
 
         <!-- RINCIAN BIAYA (Menggunakan format Rupiah dan dottedValue) -->
         <div class="info-row">
-            <span style="width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
+            <span class="label-col" style="min-width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m:</span>
             ${dottedValue(formatRupiah(iuranBiaya))}
         </div>
         <div class="info-row">
-            <span style="width: 50%;">Pokok Beban</span>
+            <span class="label-col" style="min-width: 50%;">Pokok Beban:</span>
             ${dottedValue(formatRupiah(pokokBeban))}
         </div>
         
         <!-- JUMLAH BAYAR (TOTAL) -->
-        <div class="info-row total-row">
+        <div class="info-row total-row" style="display: flex; justify-content: space-between;">
             <span>Jumlah Bayar:</span>
             <span>${formatRupiah(jumlahBayar)}</span>
         </div>
