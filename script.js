@@ -5,14 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Fungsi PENTING untuk mengatasi masalah timing cetak.
- * Memastikan konten diperbarui, lalu memberi jeda singkat sebelum mencetak.
  */
 function handlePrint() {
     // 1. Pastikan DOM diperbarui sebelum mencetak
     updateReceipt(); 
     
     // 2. Jeda singkat (50ms) agar browser selesai me-render konten baru.
-    // Ini adalah solusi umum untuk mengatasi hasil cetak kosong.
     setTimeout(() => {
         window.print();
     }, 50); 
@@ -24,8 +22,8 @@ function handlePrint() {
 function updateReceipt() {
     // 1. Ambil Nilai Input
     const periode = document.getElementById('periode').value.toUpperCase() || "BULAN";
-    const tglPeriksaInput = document.getElementById('tgl_periksa').value;
-    const tglBayarInput = document.getElementById('tgl_bayar').value;
+    // Tanggal Periksa dan Bayar DIHAPUS
+
     const nama = document.getElementById('nama').value.toUpperCase() || "PELANGGAN";
     const noPelanggan = document.getElementById('no_pelanggan').value || "0";
     const alamat = document.getElementById('alamat').value.toUpperCase() || "ALAMAT";
@@ -39,20 +37,16 @@ function updateReceipt() {
     const iuranBiaya = jumlahPemakaian * hargaPerM;
     const jumlahBayar = iuranBiaya + pokokBeban;
     
-    // Format Tanggal ke DD/MM/YYYY
-    const formatTanggal = (dateString) => {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        // Format YYYY-MM-DD ke DD/MM/YYYY
-        return date.toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
-    };
+    // Gunakan tanggal saat ini untuk tanggal cetak
+    const tglCetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
+
 
     // 3. Fungsi Pembantu Format Rupiah
     const formatRupiah = (angka) => {
         return 'Rp' + angka.toLocaleString('id-ID');
     };
 
-    // 4. Buat dan Tampilkan Konten Kuitansi
+    // 4. Buat dan Tampilkan Konten Kuitansi (MENGHILANGKAN TANGGAL PERIKSA/BAYAR)
     const output = document.getElementById('receipt-output');
     
     output.innerHTML = `
@@ -61,16 +55,16 @@ function updateReceipt() {
             <p style="margin: 0; font-size: 10pt;">PAMSIMAS DESA [NAMA DESA]</p>
         </div>
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
+        
+        <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
 
         <div class="receipt-grid">
             <div class="left-col">
                 <div class="info-row"><span class="label">Periode Bulan</span> &nbsp;: &nbsp; ${periode}</div>
-                <div class="info-row"><span class="label">Tanggal Periksa</span> &nbsp;: &nbsp; ${formatTanggal(tglPeriksaInput)}</div>
                 <div class="info-row"><span class="label">Nama Pelanggan</span> &nbsp;: &nbsp; <b>${nama}</b></div>
                 <div class="info-row"><span class="label">No Pelanggan</span> &nbsp;: &nbsp; ${noPelanggan}</div>
                 <div class="info-row"><span class="label">Alamat Rumah</span> &nbsp;: &nbsp; ${alamat}</div>
-                <div class="info-row"><span class="label">Tanggal Pembayaran</span> &nbsp;: &nbsp; ${formatTanggal(tglBayarInput)}</div>
-            </div>
+                </div>
 
             <div class="right-col">
                 <div class="info-row"><span class="label">Stand Awal</span> &nbsp;: &nbsp;<span class="right-value">${standAwal}<span style="font-style: italic;">M</span></span></div>
