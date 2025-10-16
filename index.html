@@ -9,7 +9,7 @@
 <body>
 
     <div class="no-print">
-        <h1>🧾 Generator Kwitansi</h1>
+        <h1>🧾 Generator Kwitansi PAMSIMAS</h1>
         <div class="input-grid">
             <label for="periode">Periode Bulan:</label>
             <input type="text" id="periode" value="AGUSTUS" oninput="updateReceipt()">
@@ -42,13 +42,13 @@
             <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()">
         </div>
         
-        <button onclick="window.print()">
+        <button onclick="handlePrint()">
             Cetak Kuitansi ke PDF (Print)
         </button>
         <hr>
     </div>
 
-    <div id="receipt-output" class="receipt-container" style="display: none;">
+    <div id="receipt-output" class="receipt-container">
         </div>
 
     <script src="script.js"></script>
