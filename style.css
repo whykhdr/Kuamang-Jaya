@@ -1,50 +1,123 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi PAMSIMAS V2</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
+/* ======================================= */
+body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
 
-    <div class="no-print">
-        <h1>🧾 Generator Kwitansi PAMSIMAS</h1>
-        <div class="input-grid">
-            <label for="periode">Periode Bulan:</label>
-            <input type="text" id="periode" value="AGUSTUS" oninput="updateReceipt()">
-            
-            <label for="nama">Nama Pelanggan:</label>
-            <input type="text" id="nama" value="WARDOYO 3" oninput="updateReceipt()">
-            
-            <label for="no_pelanggan">No Pelanggan:</label>
-            <input type="text" id="no_pelanggan" value="85" oninput="updateReceipt()">
-            
-            <label for="alamat">Alamat Rumah:</label>
-            <input type="text" id="alamat" value="JL. BIMA" oninput="updateReceipt()">
-            
-            <label for="stand_awal">Stand Awal (M3):</label>
-            <input type="number" id="stand_awal" value="0" oninput="updateReceipt()">
-            
-            <label for="stand_akhir">Stand Akhir (M3):</label>
-            <input type="number" id="stand_akhir" value="0" oninput="updateReceipt()">
-            
-            <label for="harga_per_m">Iuran/m (Rp):</label>
-            <input type="number" id="harga_per_m" value="2000" oninput="updateReceipt()">
-            
-            <label for="pokok_beban">Pokok Beban (Rp):</label>
-            <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()">
-        </div>
-        
-        <button onclick="handlePrint()">
-            Cetak Kuitansi ke PDF (Print)
-        </button>
-        <hr>
-    </div>
+.no-print {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
 
-    <div id="receipt-output" class="receipt-container">
-        </div>
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    padding: 8px;
+    width: 95%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* ======================================= */
+/* 2. AREA KWITANSI (Simulasi Thermal)     */
+/* ======================================= */
+.receipt-container {
+    width: 58mm; 
+    max-width: 300px; 
+    margin: 0 auto;
+    padding: 5px 3px; 
+    /* Font wajib: Monospace untuk perataan karakter */
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 9.5pt; 
+    line-height: 1.2;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: block; 
+}
+
+/* Hapus semua aturan Grid */
+.receipt-grid, .left-col, .right-col {
+    display: block !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+
+/* Kunci: Baris informasi menggunakan Flex untuk Justify Content */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 10pt;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px dashed #000;
+}
+
+
+/* ======================================= */
+/* 3. MERAPIKAN HASIL CETAK (@media print) */
+/* ======================================= */
+@media print {
+    /* Margin nol untuk kertas thermal */
+    @page {
+        margin: 0; 
+    }
+    
+    .no-print {
+        display: none; 
+    }
+    
+    .receipt-container {
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        width: 58mm; /* Lebar kerta fisik */
+        padding: 4px 1px; /* Padding minimal */
+        font-size: 8.5pt; /* Font kecil agar muat */
+        line-height: 1.1; 
+    }
+    
+    .info-row {
+        margin-bottom: 0;
+    }
+
+    .info-row span {
+        white-space: pre-wrap; /* Pastikan pembungkus kata bekerja jika teks terlalu panjang */
+    }
+}
