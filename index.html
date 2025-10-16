@@ -8,20 +8,30 @@
 </head>
 <body>
 
-    <div class="no-print" style="margin-bottom: 20px; text-align: center; padding: 15px;">
-        <h2>Input Data Tagihan PAMSIMAS</h2>
+    <div class="no-print">
+        <h1>🧾 PAMSIMAS PDF Generator</h1>
+        <div class="input-grid">
+            <label for="nama">Nama Pelanggan:</label>
+            <input type="text" id="nama" placeholder="Cth: Bpk. Budianto" value="Bpk. John Doe" oninput="updateReceipt()">
+            
+            <label for="no_sambungan">No. Sambungan:</label>
+            <input type="text" id="no_sambungan" placeholder="Cth: 01/0045" value="01/0045" oninput="updateReceipt()">
+            
+            <label for="bulan_tagihan">Bulan Tagihan:</label>
+            <input type="text" id="bulan_tagihan" placeholder="Cth: Okt 2025" value="Okt 2025" oninput="updateReceipt()">
+            
+            <label for="pokok">Tagihan Pokok (Rp):</label>
+            <input type="number" id="pokok" placeholder="50000" value="50000" oninput="updateReceipt()">
+            
+            <label for="denda">Denda (Rp):</label>
+            <input type="number" id="denda" placeholder="2500" value="2500" oninput="updateReceipt()">
+            
+            <label for="bayar_tunai">Bayar Tunai (Rp):</label>
+            <input type="number" id="bayar_tunai" placeholder="55000" value="55000" oninput="updateReceipt()">
+        </div>
         
-        <label for="nama">Nama Pelanggan:</label>
-        <input type="text" id="nama" placeholder="Cth: Bpk. Budianto" value="Bpk. John Doe" oninput="updateReceipt()"><br><br>
-        
-        <label for="pokok">Tagihan Pokok (Rp):</label>
-        <input type="number" id="pokok" placeholder="50000" value="50000" oninput="updateReceipt()"><br><br>
-        
-        <label for="denda">Denda (Rp):</label>
-        <input type="number" id="denda" placeholder="2500" value="2500" oninput="updateReceipt()"><br><br>
-        
-        <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px;">
-            Cetak ke PDF (Print)
+        <button onclick="window.print()">
+            Cetak Kuitansi ke PDF (Print)
         </button>
         <hr>
     </div>
@@ -30,6 +40,5 @@
         </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
