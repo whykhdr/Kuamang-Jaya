@@ -1,4 +1,4 @@
-/* Styling untuk Tampilan Input (Bagian 'no-print') */
+/* Styling untuk Tampilan Input */
 body {
     margin: 20px;
     font-family: Arial, sans-serif;
@@ -21,11 +21,6 @@ body {
     gap: 10px;
     margin-bottom: 20px;
     text-align: left;
-}
-
-.input-grid label {
-    font-weight: bold;
-    align-self: center;
 }
 
 /* ... (Input dan Button styling sama seperti sebelumnya) ... */
@@ -55,41 +50,36 @@ button {
     max-width: 300px; 
     margin: 0 auto;
     padding: 10px 5px; 
-    font-family: 'Times New Roman', Times, serif; /* Menggunakan Times New Roman sesuai gambar */
-    font-size: 11pt; /* Font sedikit lebih besar */
+    font-family: 'Times New Roman', Times, serif; 
+    font-size: 11pt; 
     line-height: 1.4;
     color: #000;
     background-color: #fff;
     border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Kunci: Menggunakan Grid untuk Struktur Utama */
 .receipt-grid {
     display: grid;
-    /* Dua kolom: Kiri 45%, Kanan 55% */
     grid-template-columns: 45% 55%; 
 }
 
-.left-col {
-    padding-right: 5px;
-}
-
-.right-col {
-    padding-left: 5px;
+.left-col, .right-col {
+    /* Margin kecil untuk memisahkan dua kolom */
+    margin: 0 2px; 
 }
 
 .info-row {
     display: flex;
     justify-content: flex-start;
-    gap: 5px; /* Jarak antara label dan nilai */
+    gap: 5px; 
 }
 
 .info-row .label {
-    width: 100px; /* Lebar tetap untuk label */
+    width: 100px; 
 }
 
 .right-value {
-    /* Gaya untuk nilai di kolom kanan agar mirip gambar */
     border-bottom: 1px dotted #000; 
     display: flex;
     justify-content: space-between;
@@ -111,16 +101,19 @@ button {
     width: 100%;
 }
 
-/* MEDIA CETAK sama seperti sebelumnya */
+/* ======================================= */
+/* MEDIA CETAK (Fokus Pencegahan Kosong)   */
+/* ======================================= */
 @media print {
+    /* Hanya sembunyikan input. Jangan sentuh receipt-container. */
+    .no-print {
+        display: none; 
+    }
     .receipt-container {
         border: none;
         box-shadow: none;
         margin: 0;
         width: 58mm;
-    }
-    .no-print {
-        display: none;
     }
     @page {
         margin: 0;
