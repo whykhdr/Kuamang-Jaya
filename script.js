@@ -39,20 +39,19 @@ function updateReceipt() {
 
     // 3. Fungsi Pembantu Format Rupiah
     const formatRupiah = (angka) => {
-        // Menggunakan toLocaleString untuk pemisah ribuan
         return 'Rp' + angka.toLocaleString('id-ID');
     };
-    
-    // Fungsi Pembantu Garis Bawah Dotted (untuk nilai)
-    const dottedValue = (value) => {
-        return `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px;">${value}</span>`;
-    };
 
-    // 4. Buat dan Tampilkan Konten Kuitansi
+    // Fungsi pembantu untuk baris dengan garis putus-putus
+    const dottedValue = (value) => {
+        return `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; flex-grow: 1; text-align: right;">${value}</span>`;
+    };
+    
+    // 4. Buat dan Tampilkan Konten Kuitansi (Mode Flex/Block)
     const output = document.getElementById('receipt-output');
     
     output.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">
+        <div style="text-align: center; font-weight: bold;">
             <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
             <p style="margin: 0; font-size: 8pt;">PAMSIMAS DESA [NAMA DESA]</p>
         </div>
@@ -60,31 +59,33 @@ function updateReceipt() {
         
         <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
 
-        <div class="receipt-grid">
-            
-            <div class="info-row"><span class="label">Periode Bulan</span>: <span class="value">${periode}</span></div>
-            <div class="info-row"><span class="label">Stand Awal</span>: <span class="value">${standAwal} M</span></div>
-            <div class="info-row"><span class="label">Nama Pelanggan</span>: <span class="value"><b>${nama}</b></span></div>
-            <div class="info-row"><span class="label">Stand Akhir</span>: <span class="value">${standAkhir} M</span></div>
-            <div class="info-row"><span class="label">No Pelanggan</span>: <span class="value">${noPelanggan}</span></div>
-            <div class="info-row"><span class="label">Jumlah Pemakaian</span>: <span class="value">${jumlahPemakaian} M</span></div>
-            <div class="info-row"><span class="label">Alamat Rumah</span>: <span class="value">${alamat}</span></div>
+        <div class="info-row"><span style="width: 110px;">Periode Bulan</span>: <span>${periode}</span></div>
+        <div class="info-row"><span style="width: 110px;">Nama Pelanggan</span>: <span><b>${nama}</b></span></div>
+        <div class="info-row"><span style="width: 110px;">No Pelanggan</span>: <span>${noPelanggan}</span></div>
+        <div class="info-row"><span style="width: 110px;">Alamat Rumah</span>: <span>${alamat}</span></div>
 
-            <hr style="border: 0; border-top: 1px dotted #000; grid-column: 1 / 3; margin: 2px 0;">
-            
-            <div class="info-row" style="grid-column: 1 / 3;">
-                <span class="label">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>: <span class="value">${dottedValue(formatRupiah(iuranBiaya))}</span>
-            </div>
-            <div class="info-row" style="grid-column: 1 / 3;">
-                <span class="label">Pokok Beban</span>: <span class="value">${dottedValue(formatRupiah(pokokBeban))}</span>
-            </div>
-            
-            <hr style="border: 0; border-top: 1px dotted #000; grid-column: 1 / 3; margin: 2px 0;">
-            <div class="info-row" style="font-weight: bold; font-size: 1.1em; grid-column: 1 / 3;">
-                <span class="label">Jumlah Bayar</span>: <span class="value">${formatRupiah(jumlahBayar)}</span>
-            </div>
-            
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
+
+        <div class="info-row"><span style="width: 110px;">Stand Awal</span>: <span>${standAwal} M</span></div>
+        <div class="info-row"><span style="width: 110px;">Stand Akhir</span>: <span>${standAkhir} M</span></div>
+        <div class="info-row"><span style="width: 110px;">Jumlah Pemakaian</span>: <span>${jumlahPemakaian} M</span></div>
+
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
+
+        <div class="info-row">
+            <span style="width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
+            ${dottedValue(formatRupiah(iuranBiaya))}
         </div>
+        <div class="info-row">
+            <span style="width: 50%;">Pokok Beban</span>
+            ${dottedValue(formatRupiah(pokokBeban))}
+        </div>
+        
+        <div class="info-row total-row">
+            <span>Jumlah Bayar:</span>
+            <span>${formatRupiah(jumlahBayar)}</span>
+        </div>
+        
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
         <div style="text-align: center; font-size: 8pt; font-weight: bold;">
             TERIMA KASIH
