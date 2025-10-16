@@ -1,7 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Panggil fungsi sekali saat halaman dimuat
+    // Pastikan kuitansi terisi segera setelah DOM dimuat
     updateReceipt(); 
 });
+
+/**
+ * Fungsi PENTING untuk mengatasi masalah timing cetak.
+ * Memastikan konten diperbarui, lalu memberi jeda singkat sebelum mencetak.
+ */
+function handlePrint() {
+    // 1. Pastikan DOM diperbarui sebelum mencetak
+    updateReceipt(); 
+    
+    // 2. Jeda singkat (50ms) agar browser selesai me-render konten baru.
+    // Ini adalah solusi umum untuk mengatasi hasil cetak kosong.
+    setTimeout(() => {
+        window.print();
+    }, 50); 
+}
 
 /**
  * Fungsi utama untuk mengambil input, menghitung total, dan memperbarui tampilan kuitansi.
@@ -20,7 +35,7 @@ function updateReceipt() {
     const pokokBeban = parseInt(document.getElementById('pokok_beban').value) || 0;
 
     // 2. Lakukan Perhitungan
-    const jumlahPemakaian = standAkhir - standAwal;
+    const jumlahPemakaian = Math.max(0, standAkhir - standAwal); // Pastikan tidak negatif
     const iuranBiaya = jumlahPemakaian * hargaPerM;
     const jumlahBayar = iuranBiaya + pokokBeban;
     
@@ -28,6 +43,7 @@ function updateReceipt() {
     const formatTanggal = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
+        // Format YYYY-MM-DD ke DD/MM/YYYY
         return date.toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
     };
 
@@ -40,6 +56,12 @@ function updateReceipt() {
     const output = document.getElementById('receipt-output');
     
     output.innerHTML = `
+        <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">
+            <p style="margin: 0; font-size: 14pt;">KWITANSI PEMBAYARAN AIR</p>
+            <p style="margin: 0; font-size: 10pt;">PAMSIMAS DESA [NAMA DESA]</p>
+        </div>
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
+
         <div class="receipt-grid">
             <div class="left-col">
                 <div class="info-row"><span class="label">Periode Bulan</span> &nbsp;: &nbsp; ${periode}</div>
@@ -55,13 +77,18 @@ function updateReceipt() {
                 <div class="info-row"><span class="label">Stand Akhir</span> &nbsp;: &nbsp;<span class="right-value">${standAkhir}<span style="font-style: italic;">M</span></span></div>
                 <div class="info-row"><span class="label">Jumlah Pemakaian</span> &nbsp;: &nbsp;<span class="right-value">${jumlahPemakaian}<span style="font-style: italic;">M</span></span></div>
                 
-                <div class="info-row"><span class="label">Iuran ${formatRupiah(hargaPerM)}/m</span> &nbsp;: &nbsp;<span class="right-value"><span class="rp-label">${formatRupiah(iuranBiaya)}</span></span></div>
+                <div class="info-row"><span class="label">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span> &nbsp;: &nbsp;<span class="right-value"><span class="rp-label">${formatRupiah(iuranBiaya)}</span></span></div>
                 <div class="info-row"><span class="label">Pokok Beban</span> &nbsp;: &nbsp;<span class="right-value"><span class="rp-label">${formatRupiah(pokokBeban)}</span></span></div>
                 
-                <div class="info-row"><span class="label">Jumlah Bayar</span> &nbsp;: &nbsp;<span class="total-display">${formatRupiah(jumlahBayar)}</span></div>
+                <div class="info-row"><span class="label">Jumlah Bayar</span> &nbsp;: &nbsp;<span class="total-display">${formatRupiah(jumlahBayar).replace('Rp', '')}</span></div>
             </div>
         </div>
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
+        <div style="text-align: center; font-size: 9pt; font-weight: bold;">
+            TERIMA KASIH
+        </div>
     `;
-
-    output.style.display = 'grid'; // Menggunakan grid untuk layout utama
+    
+    // Pastikan area kuitansi selalu terlihat
+    output.style.display = 'grid'; 
 }
