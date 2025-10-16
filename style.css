@@ -42,70 +42,67 @@ button {
     margin-top: 15px;
 }
 
+/* ... (Bagian styling input .no-print tetap sama) ... */
+
 /* ======================================= */
 /* AREA KWITANSI (Simulasi Kertas Thermal) */
 /* ======================================= */
 .receipt-container {
+    /* Lebar STANDAR PRINTER MINI */
     width: 58mm; 
     max-width: 300px; 
     margin: 0 auto;
-    padding: 10px 5px; 
-    font-family: 'Times New Roman', Times, serif; 
-    font-size: 11pt; 
-    line-height: 1.4;
+    padding: 5px 3px; /* Kurangi padding agar lebih banyak ruang untuk teks */
+    font-family: 'Courier New', Courier, monospace; /* Font Monospace lebih baik untuk perataan */
+    font-size: 9pt; /* Ukuran font lebih kecil agar muat */
+    line-height: 1.2;
     color: #000;
     background-color: #fff;
     border: 1px solid #ccc; 
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Kunci: Menggunakan Grid untuk Struktur Utama */
 .receipt-grid {
     display: grid;
-    grid-template-columns: 45% 55%; 
+    /* Persempit kolom kiri (informasi label) untuk memberi ruang pada kolom kanan (nilai) */
+    grid-template-columns: 40% 60%; 
 }
 
 .left-col, .right-col {
-    /* Margin kecil untuk memisahkan dua kolom */
-    margin: 0 2px; 
+    /* Hapus margin agar kolom tidak terlalu jauh */
+    margin: 0; 
 }
 
+/* Kunci: Label disederhanakan dan Nilai diatur ke kanan */
 .info-row {
     display: flex;
     justify-content: flex-start;
-    gap: 5px; 
+    gap: 3px; /* Kurangi jarak */
 }
 
 .info-row .label {
-    width: 100px; 
+    width: 90px; /* Lebar tetap untuk label di kolom kiri */
+    font-size: 9pt;
 }
 
 .right-value {
-    border-bottom: 1px dotted #000; 
-    display: flex;
-    justify-content: space-between;
+    /* Pastikan nilai di kolom kanan memiliki ruang maksimal */
     width: 100%;
-}
-
-.rp-label {
-    text-align: right;
-    width: 100%;
-    margin-right: 5px;
+    /* ... (Gaya garis putus-putus tetap sama) ... */
 }
 
 .total-display {
-    text-align: right;
-    font-size: 12pt;
+    font-size: 10pt; /* Total agak besar */
     font-weight: bold;
-    padding-top: 5px;
-    border-top: 1px dotted #000;
-    width: 100%;
+    /* ... (Garis putus-putus tetap sama) ... */
 }
 
+
 /* ======================================= */
-/* MEDIA CETAK (Fokus Pencegahan Kosong)   */
+/* MEDIA CETAK (Wajib untuk Printer Thermal)*/
 /* ======================================= */
 @media print {
-    /* Hanya sembunyikan input. Jangan sentuh receipt-container. */
     .no-print {
         display: none; 
     }
@@ -113,9 +110,16 @@ button {
         border: none;
         box-shadow: none;
         margin: 0;
-        width: 58mm;
+        /* SET ULANG LEBAR DAN FONT KHUSUS UNTUK CETAK */
+        width: 58mm; 
+        font-size: 8.5pt; /* JANGAN LEBIH DARI INI */
+        font-family: 'Courier New', Courier, monospace;
+        padding: 5px 2px;
+    }
+    .info-row .label {
+        width: 80px; /* Lebih sempit saat dicetak */
     }
     @page {
-        margin: 0;
+        margin: 0; /* Margin nol agar tidak terpotong */
     }
 }
