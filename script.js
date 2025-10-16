@@ -48,12 +48,14 @@ function updateReceipt() {
         return `<span class="value-col" style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right;">${value}</span>`;
     };
 
-    // FUNGSI INI KUNCI UNTUK PERATAAN TITIK DUA: Menggunakan 3 kolom terpisah.
+    // FUNGSI INI KUNCI UNTUK PERATAAN TITIK DUA: Label dan Titik Dua dipisahkan di dalam label-col.
     const createAlignedRow = (label, value) => {
         return `
             <div class="info-row">
-                <span class="label-col">${label}</span>
-                <span class="colon-col">:</span>
+                <span class="label-col">
+                    <span>${label}</span>
+                    <span>:</span>
+                </span>
                 <span class="value-col" style="text-align: left;">${value}</span>
             </div>
         `;
@@ -88,11 +90,11 @@ function updateReceipt() {
 
         <!-- RINCIAN BIAYA (Menggunakan 2 kolom Flexbox untuk kanan-kiri) -->
         <div class="info-row">
-            <span class="label-col" style="min-width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
+            <span class="label-col" style="min-width: 50%; justify-content: flex-start;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
             ${dottedValue(formatRupiah(iuranBiaya))}
         </div>
         <div class="info-row">
-            <span class="label-col" style="min-width: 50%;">Pokok Beban</span>
+            <span class="label-col" style="min-width: 50%; justify-content: flex-start;">Pokok Beban</span>
             ${dottedValue(formatRupiah(pokokBeban))}
         </div>
         
