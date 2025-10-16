@@ -46,6 +46,18 @@ function updateReceipt() {
     const dottedValue = (value) => {
         return `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; flex-grow: 1; text-align: right;">${value}</span>`;
     };
+
+    // FUNGSI BARU: Template baris dengan titik dua sejajar
+    const createAlignedRow = (label, value) => {
+        // Style untuk label: lebar tetap 110px dan titik dua sejajar.
+        return `
+            <div class="info-row">
+                <span style="min-width: 110px;">${label}</span>
+                <span style="margin-right: 5px;">:</span>
+                <span style="flex-grow: 1;">${value}</span>
+            </div>
+        `;
+    };
     
     // 4. Buat dan Tampilkan Konten Kuitansi (Mode Flex/Block)
     const output = document.getElementById('receipt-output');
@@ -59,19 +71,22 @@ function updateReceipt() {
         
         <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
 
-        <div class="info-row"><span style="width: 110px;">Periode Bulan</span>: <span>${periode}</span></div>
-        <div class="info-row"><span style="width: 110px;">Nama Pelanggan</span>: <span><b>${nama}</b></span></div>
-        <div class="info-row"><span style="width: 110px;">No Pelanggan</span>: <span>${noPelanggan}</span></div>
-        <div class="info-row"><span style="width: 110px;">Alamat Rumah</span>: <span>${alamat}</span></div>
+        <!-- INFORMASI UMUM (MENGGUNAKAN ALIGNED ROW) -->
+        ${createAlignedRow("Periode Bulan", periode)}
+        ${createAlignedRow("Nama Pelanggan", `<b>${nama}</b>`)}
+        ${createAlignedRow("No Pelanggan", noPelanggan)}
+        ${createAlignedRow("Alamat Rumah", alamat)}
 
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
 
-        <div class="info-row"><span style="width: 110px;">Stand Awal</span>: <span>${standAwal} M</span></div>
-        <div class="info-row"><span style="width: 110px;">Stand Akhir</span>: <span>${standAkhir} M</span></div>
-        <div class="info-row"><span style="width: 110px;">Jumlah Pemakaian</span>: <span>${jumlahPemakaian} M</span></div>
+        <!-- DETAIL METER (MENGGUNAKAN ALIGNED ROW) -->
+        ${createAlignedRow("Stand Awal", `${standAwal} M`)}
+        ${createAlignedRow("Stand Akhir", `${standAkhir} M`)}
+        ${createAlignedRow("Jumlah Pemakaian", `${jumlahPemakaian} M`)}
 
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
 
+        <!-- RINCIAN BIAYA (Menggunakan format Rupiah dan dottedValue) -->
         <div class="info-row">
             <span style="width: 50%;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
             ${dottedValue(formatRupiah(iuranBiaya))}
@@ -81,6 +96,7 @@ function updateReceipt() {
             ${dottedValue(formatRupiah(pokokBeban))}
         </div>
         
+        <!-- JUMLAH BAYAR (TOTAL) -->
         <div class="info-row total-row">
             <span>Jumlah Bayar:</span>
             <span>${formatRupiah(jumlahBayar)}</span>
