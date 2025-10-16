@@ -3,37 +3,79 @@ body {
     margin: 20px;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    text-align: center;
+}
+
+.no-print {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
 }
 
 input[type="text"], input[type="number"] {
     padding: 8px;
-    width: 250px;
+    width: 95%;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
 
 /* ======================================= */
 /* AREA KWITANSI (Simulasi Kertas Thermal) */
 /* ======================================= */
 .receipt-container {
-    /* Lebar standar kertas 58mm */
     width: 58mm; 
     max-width: 300px; 
     margin: 0 auto;
-    padding: 5px;
-    /* Font Monospace wajib agar spasi/perataan rapi */
+    padding: 10px 5px; /* Sedikit padding atas/bawah */
     font-family: 'Courier New', Courier, monospace; 
-    font-size: 10pt;
-    line-height: 1.2;
+    font-size: 9.5pt;
+    line-height: 1.3;
     color: #000;
-    /* Border hanya untuk visualisasi di layar */
     border: 1px solid #ccc; 
     background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.kop-art {
+    white-space: pre; /* Mempertahankan format ASCII art */
+    font-size: 8pt;
+    margin-bottom: 5px;
+    line-height: 1;
 }
 
 .header, .footer {
     text-align: center;
-    margin-bottom: 5px;
     font-weight: bold;
 }
 
@@ -51,25 +93,23 @@ input[type="text"], input[type="number"] {
     font-size: 11pt;
     font-weight: bold;
     margin: 8px 0;
+    border-top: 1px dashed #000;
+    padding-top: 5px;
 }
 
 /* ======================================= */
 /* MEDIA CETAK (Khusus saat di-Print ke PDF)*/
 /* ======================================= */
 @media print {
-    /* Hapus border dan background saat dicetak */
     .receipt-container {
         border: none;
         box-shadow: none;
-        background-color: transparent;
         margin: 0;
-        width: 58mm; /* Pastikan lebar tetap sempit */
+        width: 58mm;
     }
-    /* Sembunyikan elemen input/tombol */
     .no-print {
         display: none;
     }
-    /* Set margin halaman ke nol untuk cetakan thermal */
     @page {
         margin: 0;
     }
