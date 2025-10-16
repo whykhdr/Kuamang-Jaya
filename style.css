@@ -1,4 +1,6 @@
-/* Styling untuk Tampilan Input */
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
+/* ======================================= */
 body {
     margin: 20px;
     font-family: Arial, sans-serif;
@@ -23,7 +25,11 @@ body {
     text-align: left;
 }
 
-/* ... (Input dan Button styling sama seperti sebelumnya) ... */
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
+}
+
 input[type="text"], input[type="number"], input[type="date"] {
     padding: 8px;
     width: 95%;
@@ -40,21 +46,23 @@ button {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 15px;
+    transition: background-color 0.3s;
 }
 
-/* ... (Bagian styling input .no-print tetap sama) ... */
+button:hover {
+    background-color: #0056b3;
+}
 
 /* ======================================= */
-/* AREA KWITANSI (Simulasi Kertas Thermal) */
+/* 2. AREA KWITANSI (Simulasi Thermal)     */
 /* ======================================= */
 .receipt-container {
-    /* Lebar STANDAR PRINTER MINI */
     width: 58mm; 
     max-width: 300px; 
     margin: 0 auto;
-    padding: 5px 3px; /* Kurangi padding agar lebih banyak ruang untuk teks */
-    font-family: 'Courier New', Courier, monospace; /* Font Monospace lebih baik untuk perataan */
-    font-size: 9pt; /* Ukuran font lebih kecil agar muat */
+    padding: 5px 3px; 
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 9.5pt; 
     line-height: 1.2;
     color: #000;
     background-color: #fff;
@@ -62,64 +70,92 @@ button {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Kunci: Menggunakan Grid untuk Struktur Utama */
 .receipt-grid {
     display: grid;
-    /* Persempit kolom kiri (informasi label) untuk memberi ruang pada kolom kanan (nilai) */
+    /* Grid 40:60 untuk mengakomodasi nilai panjang */
     grid-template-columns: 40% 60%; 
-}
-
-.left-col, .right-col {
-    /* Hapus margin agar kolom tidak terlalu jauh */
     margin: 0; 
 }
 
-/* Kunci: Label disederhanakan dan Nilai diatur ke kanan */
 .info-row {
     display: flex;
     justify-content: flex-start;
-    gap: 3px; /* Kurangi jarak */
+    gap: 3px; 
+    margin-bottom: 1px; 
 }
 
 .info-row .label {
-    width: 90px; /* Lebar tetap untuk label di kolom kiri */
-    font-size: 9pt;
+    width: 90px;
+    font-weight: bold;
 }
 
 .right-value {
-    /* Pastikan nilai di kolom kanan memiliki ruang maksimal */
+    border-bottom: 1px dotted #000; 
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    /* ... (Gaya garis putus-putus tetap sama) ... */
+}
+
+.rp-label {
+    text-align: right;
+    width: 100%;
+    margin-right: 5px;
+    font-weight: normal;
 }
 
 .total-display {
-    font-size: 10pt; /* Total agak besar */
+    font-size: 10pt;
     font-weight: bold;
-    /* ... (Garis putus-putus tetap sama) ... */
+    padding-top: 5px;
+    border-top: 1px dotted #000;
+    width: 100%;
 }
 
+.header, .footer {
+    text-align: center;
+    line-height: 1;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
 
 /* ======================================= */
-/* MEDIA CETAK (Wajib untuk Printer Thermal)*/
+/* 3. MERAPIKAN HASIL CETAK (@media print) */
 /* ======================================= */
 @media print {
+    /* Margin nol untuk kertas thermal */
+    @page {
+        margin: 0; 
+    }
+    
+    /* Sembunyikan formulir input */
     .no-print {
         display: none; 
     }
+    
+    /* Aturan Khusus untuk Kuitansi */
     .receipt-container {
         border: none;
         box-shadow: none;
         margin: 0;
-        /* SET ULANG LEBAR DAN FONT KHUSUS UNTUK CETAK */
-        width: 58mm; 
-        font-size: 8.5pt; /* JANGAN LEBIH DARI INI */
-        font-family: 'Courier New', Courier, monospace;
-        padding: 5px 2px;
+        width: 58mm; /* Lebar kerta fisik */
+        padding: 4px 1px; /* Padding minimal */
+        font-size: 8pt; /* Font sangat kecil */
+        line-height: 1.1; /* Jarak baris rapat */
+        overflow: hidden; /* Mencegah elemen keluar batas */
     }
+
+    /* Optimasi Grid Cetak */
+    .receipt-grid {
+        grid-template-columns: 35% 65%; 
+    }
+
     .info-row .label {
-        width: 80px; /* Lebih sempit saat dicetak */
+        width: 75px; 
+        font-weight: normal; 
     }
-    @page {
-        margin: 0; /* Margin nol agar tidak terpotong */
+    
+    .total-display {
+        font-size: 9pt;
     }
 }
