@@ -3,31 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi PAMSIMAS PDF Generator</title>
+    <title>Kwitansi PAMSIMAS V2</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="no-print">
-        <h1>🧾 PAMSIMAS PDF Generator</h1>
+        <h1>🧾 Generator Kwitansi</h1>
         <div class="input-grid">
+            <label for="periode">Periode Bulan:</label>
+            <input type="text" id="periode" value="AGUSTUS" oninput="updateReceipt()">
+            
+            <label for="tgl_periksa">Tanggal Periksa:</label>
+            <input type="date" id="tgl_periksa" value="2025-08-20" oninput="updateReceipt()">
+            
             <label for="nama">Nama Pelanggan:</label>
-            <input type="text" id="nama" placeholder="Cth: Bpk. Budianto" value="Bpk. John Doe" oninput="updateReceipt()">
+            <input type="text" id="nama" value="WARDOYO 3" oninput="updateReceipt()">
             
-            <label for="no_sambungan">No. Sambungan:</label>
-            <input type="text" id="no_sambungan" placeholder="Cth: 01/0045" value="01/0045" oninput="updateReceipt()">
+            <label for="no_pelanggan">No Pelanggan:</label>
+            <input type="text" id="no_pelanggan" value="85" oninput="updateReceipt()">
             
-            <label for="bulan_tagihan">Bulan Tagihan:</label>
-            <input type="text" id="bulan_tagihan" placeholder="Cth: Okt 2025" value="Okt 2025" oninput="updateReceipt()">
+            <label for="alamat">Alamat Rumah:</label>
+            <input type="text" id="alamat" value="JL. BIMA" oninput="updateReceipt()">
             
-            <label for="pokok">Tagihan Pokok (Rp):</label>
-            <input type="number" id="pokok" placeholder="50000" value="50000" oninput="updateReceipt()">
+            <label for="tgl_bayar">Tanggal Pembayaran:</label>
+            <input type="date" id="tgl_bayar" value="2025-09-20" oninput="updateReceipt()">
             
-            <label for="denda">Denda (Rp):</label>
-            <input type="number" id="denda" placeholder="2500" value="2500" oninput="updateReceipt()">
+            <label for="stand_awal">Stand Awal (M3):</label>
+            <input type="number" id="stand_awal" value="0" oninput="updateReceipt()">
             
-            <label for="bayar_tunai">Bayar Tunai (Rp):</label>
-            <input type="number" id="bayar_tunai" placeholder="55000" value="55000" oninput="updateReceipt()">
+            <label for="stand_akhir">Stand Akhir (M3):</label>
+            <input type="number" id="stand_akhir" value="0" oninput="updateReceipt()">
+            
+            <label for="harga_per_m">Iuran/m (Rp):</label>
+            <input type="number" id="harga_per_m" value="2000" oninput="updateReceipt()">
+            
+            <label for="pokok_beban">Pokok Beban (Rp):</label>
+            <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()">
         </div>
         
         <button onclick="window.print()">
