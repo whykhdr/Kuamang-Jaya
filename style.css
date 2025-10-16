@@ -81,18 +81,17 @@ button {
     margin-bottom: 2px;
 }
 
-/* KUNCI ALIGNMENT: Kolom Label memiliki lebar tetap. */
+/* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
 .label-col {
-    /* Lebar kaku, sudah disesuaikan agar semua label muat */
-    min-width: 120px; 
+    /* Lebar kaku, pastikan cukup untuk label terpanjang */
+    min-width: 130px; 
     text-align: left;
     white-space: nowrap; 
-}
-
-.colon-col {
-    /* Kolom kaku untuk Titik Dua saja, sangat penting untuk perataan. */
-    width: 8px; 
-    text-align: left;
+    
+    /* PENTING: Gunakan Flex untuk menyejajarkan titik dua ke ujung kolom label */
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px; /* Jarak antara titik dua dan nilai */
 }
 
 .value-col {
@@ -137,7 +136,7 @@ button {
         margin-bottom: 0;
     }
     
-    /* Kurangi lebar saat cetak untuk memberi ruang pada nilai */
+    /* Kurangi lebar saat cetak */
     .label-col {
         min-width: 110px; 
     }
