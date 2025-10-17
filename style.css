@@ -1,107 +1,183 @@
-/* style.css - Tidak Ada Perubahan */
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Desain Elegan)       */
+/* ======================================= */
+:root {
+    --color-primary: #007bff;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-text-light: #f8f9fa;
+    --color-text-dark: #212529;
+    --color-bg-dark: #343a40; /* Warna latar gelap untuk form */
+    --color-bg-light: #ffffff;
+    --color-border-subtle: #495057; /* Border gelap halus */
+    --color-input-bg: #495057;
+}
 
-/* ======================================= */
-/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
-/* ======================================= */
 body {
-    margin: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef; /* Latar belakang body terang */
     text-align: center;
+    padding: 20px;
 }
 
 .no-print {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto 30px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 30px;
+    background: var(--color-bg-dark); /* Latar belakang form gelap */
+    color: var(--color-text-light); /* Teks terang */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Shadow lebih menonjol */
+    transition: box-shadow 0.3s ease;
 }
 
+.no-print:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+h1, h2 {
+    color: var(--color-text-light);
+    font-weight: 300; /* Font lebih tipis */
+    margin-bottom: 10px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    margin: 25px 0;
+}
+
+/* --- Input dan Tombol --- */
 .input-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
     text-align: left;
 }
 
-/* Gaya untuk input harga tetap yang lebih ringkas */
 .fixed-prices {
     grid-template-columns: 1fr 2fr 1fr 2fr;
-    max-width: 600px;
-    margin: 10px auto;
+    max-width: 700px;
+    margin: 10px auto 20px;
 }
 
 .input-grid label {
-    font-weight: bold;
+    font-weight: 400;
     align-self: center;
+    color: #ced4da;
 }
 
 input[type="text"], input[type="number"] {
-    padding: 8px;
+    padding: 10px;
     width: 95%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 6px;
+    background-color: var(--color-input-bg); /* Latar belakang input gelap */
+    color: var(--color-text-light);
+    transition: border-color 0.3s;
 }
 
-/* Kunci: Gaya untuk input yang readonly */
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
 input[readonly] {
-    background-color: #e9ecef;
+    background-color: #343a40; 
     cursor: not-allowed;
-    border: 1px solid #ced4da;
+    border: 1px solid #495057;
+    color: #adb5bd;
 }
 
 button {
-    padding: 12px 25px;
+    padding: 12px 30px;
     font-size: 16px;
-    background-color: #007bff;
-    color: white;
+    font-weight: 600;
+    color: var(--color-text-light);
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     margin-top: 15px;
-    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
-/* Gaya Tabel Input */
+button:hover {
+    transform: translateY(-1px);
+}
+
+button[onclick="addRow()"] {
+    background-color: var(--color-primary);
+}
+button[onclick="addRow()"]:hover {
+    background-color: #0056b3;
+}
+
+button[onclick="handlePrintMassal()"] {
+    background-color: var(--color-success);
+}
+button[onclick="handlePrintMassal()"]:hover {
+    background-color: #1e7e34;
+}
+
+
+/* --- Gaya Tabel Input --- */
 .table-container {
     max-width: 95%;
     overflow-x: auto;
-    margin: 20px auto;
+    margin: 30px auto;
+    background-color: #495057; /* Latar belakang tabel */
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 #data-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 10pt;
+    color: var(--color-text-light);
 }
 
 #data-table th, #data-table td {
-    border: 1px solid #ccc;
-    padding: 5px;
+    padding: 10px 5px;
     text-align: center;
     white-space: nowrap;
+    border-bottom: 1px solid #6c757d;
 }
 
 #data-table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
+    background-color: #212529; /* Header tabel lebih gelap */
+    font-weight: 600;
+    color: #ffffff;
+}
+
+#data-table tr:hover td {
+    background-color: #343a40; /* Hover baris */
 }
 
 #data-table input {
-    width: 90%;
-    padding: 3px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+    width: 95%;
+    padding: 6px;
+    border: 1px solid #343a40;
+    background-color: #6c757d; /* Input di tabel abu-abu */
+    color: #f8f9fa;
+}
+#data-table input:focus {
+     background-color: #868e96;
+     color: #212529;
 }
 
+
 #data-table button {
-    padding: 3px 5px;
+    padding: 5px 8px;
     font-size: 10pt;
     margin: 0;
-    background-color: #dc3545;
+    background-color: var(--color-danger);
+}
+#data-table button:hover {
+    background-color: #bd2130;
 }
 
 
@@ -116,10 +192,11 @@ button {
     font-family: 'Courier New', Courier, monospace; 
     font-size: 9.5pt; 
     line-height: 1.2;
-    color: #000;
-    background-color: #fff;
-    border: 1px solid #ccc; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-light);
+    /* Hapus border/shadow di pratinjau agar lebih fokus ke konten cetak */
+    border: none; 
+    box-shadow: none;
     display: block; 
 }
 
@@ -186,7 +263,6 @@ button {
     
     /* KUNCI: Untuk Cetak Massal */
     .receipt-item {
-        /* Memastikan setiap item kuitansi dicetak sebagai potongan terpisah */
         page-break-after: always;
     }
     
