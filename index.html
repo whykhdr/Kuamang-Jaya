@@ -30,10 +30,10 @@
             <input type="number" id="stand_akhir" value="0" oninput="updateReceipt()">
             
             <label for="harga_per_m">Iuran/m (Rp):</label>
-            <input type="number" id="harga_per_m" value="2000" oninput="updateReceipt()">
+            <input type="number" id="harga_per_m" value="2000" oninput="updateReceipt()" readonly>
             
             <label for="pokok_beban">Pokok Beban (Rp):</label>
-            <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()">
+            <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()" readonly>
         </div>
         
         <button onclick="handlePrint()">
