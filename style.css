@@ -1,15 +1,71 @@
-/* style.css - Tambahkan di bagian manapun yang sesuai */
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
+/* ======================================= */
+body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.no-print {
+    max-width: 1000px;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
 
 /* Gaya untuk input harga tetap yang lebih ringkas */
 .fixed-prices {
-    grid-template-columns: 1fr 1fr;
-    max-width: 400px;
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+    max-width: 600px;
     margin: 10px auto;
+}
+
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 8px;
+    width: 95%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Kunci: Gaya untuk input yang readonly */
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    border: 1px solid #ced4da;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-right: 10px;
 }
 
 /* Gaya Tabel Input */
 .table-container {
-    max-width: 1000px; /* Lebar maksimum untuk tabel */
+    max-width: 95%;
     overflow-x: auto;
     margin: 20px auto;
 }
@@ -46,9 +102,94 @@
     background-color: #dc3545;
 }
 
-/* Kunci: Sembunyikan pratinjau tunggal */
+
+/* ======================================= */
+/* 2. AREA KWITANSI (Simulasi Thermal)     */
+/* ======================================= */
 .receipt-container {
-    display: none !important;
+    width: 58mm; 
+    max-width: 300px; 
+    margin: 0 auto;
+    padding: 5px 3px; 
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 9.5pt; 
+    line-height: 1.2;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: block; 
 }
 
-/* @media print tetap sama seperti kode sebelumnya. */
+/* Kunci: Baris informasi menggunakan Flex */
+.info-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2px;
+}
+
+/* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
+.label-col {
+    min-width: 130px; 
+    text-align: left;
+    white-space: nowrap; 
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px; 
+}
+
+.value-col {
+    flex-grow: 1; 
+    text-align: left;
+    word-break: break-all;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+
+/* ======================================= */
+/* 3. MERAPIKAN HASIL CETAK (@media print) */
+/* ======================================= */
+@media print {
+    /* Margin nol untuk kertas thermal */
+    @page {
+        margin: 0; 
+    }
+    
+    /* SOLUSI KUNCI: Sembunyikan Area Input dengan ID */
+    #input-area {
+        display: none !important; 
+        visibility: hidden !important;
+    }
+    
+    /* Tampilkan Area Cetak dan hapus styling pratinjau */
+    .receipt-container {
+        display: block !important;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        width: 58mm; 
+        padding: 4px 1px; 
+        font-size: 8.5pt; 
+        line-height: 1.1; 
+    }
+    
+    /* Kurangi lebar saat cetak agar lebih ringkas */
+    .label-col {
+        min-width: 110px; 
+    }
+    
+    /* KUNCI: Untuk Cetak Massal */
+    .receipt-item {
+        /* Memastikan setiap item kuitansi dicetak sebagai potongan terpisah */
+        page-break-after: always;
+    }
+    
+    /* Hapus page-break setelah item terakhir */
+    .receipt-item:last-child {
+        page-break-after: avoid;
+    }
+}
