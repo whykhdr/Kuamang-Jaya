@@ -176,7 +176,7 @@ function generateSingleReceiptHTML(data) {
     return `
         <div style="text-align: center; font-weight: bold;">
             <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
-            <p style="margin: 0; font-size: 8pt;">PAMSIMAS DESA [NAMA DESA]</p>
+            <p style="margin: 0; font-size: 8pt;">PAMSIMAS TIRTA JAYA DESA [KUAMANG JAYA]</p>
         </div>
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
         
@@ -206,7 +206,7 @@ function generateSingleReceiptHTML(data) {
             TERIMA KASIH
         </div>
         <div style="text-align: center; font-size: 7pt; margin-top: 2px;">
-            Operator: [Nama Petugas Anda]
+            Colector: [Suparno]
         </div>
     `;
 }
