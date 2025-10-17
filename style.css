@@ -7,28 +7,28 @@
     --color-danger: #dc3545;
     --color-text-light: #f8f9fa;
     --color-text-dark: #212529;
-    --color-bg-dark: #343a40; /* Warna latar gelap untuk form */
+    --color-bg-dark: #343a40; 
     --color-bg-light: #ffffff;
-    --color-border-subtle: #495057; /* Border gelap halus */
+    --color-border-subtle: #495057; 
     --color-input-bg: #495057;
 }
 
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef; /* Latar belakang body terang */
+    background-color: #e9ecef;
     text-align: center;
-    padding: 20px;
+    padding: 10px; /* Kurangi padding di body */
 }
 
 .no-print {
     max-width: 1100px;
-    margin: 0 auto 30px;
-    padding: 30px;
-    background: var(--color-bg-dark); /* Latar belakang form gelap */
-    color: var(--color-text-light); /* Teks terang */
+    margin: 0 auto 20px;
+    padding: 20px; /* Kurangi padding di form */
+    background: var(--color-bg-dark);
+    color: var(--color-text-light);
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Shadow lebih menonjol */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s ease;
 }
 
@@ -38,22 +38,22 @@ body {
 
 h1, h2 {
     color: var(--color-text-light);
-    font-weight: 300; /* Font lebih tipis */
+    font-weight: 300;
     margin-bottom: 10px;
 }
 
 hr {
     border: 0;
     border-top: 1px solid var(--color-border-subtle);
-    margin: 25px 0;
+    margin: 20px 0;
 }
 
 /* --- Input dan Tombol --- */
 .input-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 10px;
     text-align: left;
 }
 
@@ -67,14 +67,15 @@ hr {
     font-weight: 400;
     align-self: center;
     color: #ced4da;
+    font-size: 0.9em; /* Kecilkan font label */
 }
 
 input[type="text"], input[type="number"] {
-    padding: 10px;
+    padding: 8px; /* Kurangi padding input */
     width: 95%;
     border: 1px solid var(--color-border-subtle);
     border-radius: 6px;
-    background-color: var(--color-input-bg); /* Latar belakang input gelap */
+    background-color: var(--color-input-bg);
     color: var(--color-text-light);
     transition: border-color 0.3s;
 }
@@ -93,14 +94,14 @@ input[readonly] {
 }
 
 button {
-    padding: 12px 30px;
-    font-size: 16px;
+    padding: 10px 20px; /* Kurangi padding tombol */
+    font-size: 14px;
     font-weight: 600;
     color: var(--color-text-light);
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 10px;
     transition: background-color 0.3s, transform 0.1s;
 }
 
@@ -125,43 +126,46 @@ button[onclick="handlePrintMassal()"]:hover {
 
 /* --- Gaya Tabel Input --- */
 .table-container {
-    max-width: 95%;
-    overflow-x: auto;
-    margin: 30px auto;
-    background-color: #495057; /* Latar belakang tabel */
+    max-width: 100%; /* Lebar penuh di mobile */
+    overflow-x: auto; /* Kunci: Memungkinkan scroll horizontal pada tabel */
+    margin: 20px auto;
+    background-color: #495057;
     border-radius: 8px;
-    overflow: hidden;
+    overflow-y: hidden; 
 }
 
 #data-table {
     width: 100%;
+    min-width: 700px; /* Pastikan lebar minimum agar tidak terlalu sempit */
     border-collapse: collapse;
     font-size: 10pt;
     color: var(--color-text-light);
 }
 
 #data-table th, #data-table td {
-    padding: 10px 5px;
+    padding: 8px 4px; /* Kurangi padding tabel */
     text-align: center;
     white-space: nowrap;
     border-bottom: 1px solid #6c757d;
 }
 
 #data-table th {
-    background-color: #212529; /* Header tabel lebih gelap */
+    background-color: #212529;
     font-weight: 600;
     color: #ffffff;
+    font-size: 0.9em; /* Kecilkan font header tabel */
 }
 
 #data-table tr:hover td {
-    background-color: #343a40; /* Hover baris */
+    background-color: #343a40;
 }
 
 #data-table input {
     width: 95%;
-    padding: 6px;
+    padding: 4px; /* Kurangi padding input di tabel */
+    font-size: 0.9em;
     border: 1px solid #343a40;
-    background-color: #6c757d; /* Input di tabel abu-abu */
+    background-color: #6c757d;
     color: #f8f9fa;
 }
 #data-table input:focus {
@@ -171,8 +175,8 @@ button[onclick="handlePrintMassal()"]:hover {
 
 
 #data-table button {
-    padding: 5px 8px;
-    font-size: 10pt;
+    padding: 3px 6px; /* Tombol hapus lebih kecil */
+    font-size: 9pt;
     margin: 0;
     background-color: var(--color-danger);
 }
@@ -194,7 +198,6 @@ button[onclick="handlePrintMassal()"]:hover {
     line-height: 1.2;
     color: var(--color-text-dark);
     background-color: var(--color-bg-light);
-    /* Hapus border/shadow di pratinjau agar lebih fokus ke konten cetak */
     border: none; 
     box-shadow: none;
     display: block; 
@@ -230,7 +233,33 @@ button[onclick="handlePrintMassal()"]:hover {
 
 
 /* ======================================= */
-/* 3. MERAPIKAN HASIL CETAK (@media print) */
+/* 4. MEDIA QUERY (KHUSUS HP/Layar Kecil)  */
+/* ======================================= */
+@media (max-width: 768px) {
+    /* Atur ulang tata letak Harga Tetap */
+    .fixed-prices {
+        grid-template-columns: 1fr 1fr; /* 2 kolom per baris di HP */
+        max-width: 100%;
+        gap: 10px;
+        padding: 0 5px;
+    }
+    
+    /* Tombol menjadi blok penuh */
+    button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .no-print {
+        padding: 15px 10px;
+        border-radius: 8px;
+    }
+}
+
+
+/* ======================================= */
+/* 5. MERAPIKAN HASIL CETAK (@media print) */
 /* ======================================= */
 @media print {
     /* Margin nol untuk kertas thermal */
@@ -238,13 +267,11 @@ button[onclick="handlePrintMassal()"]:hover {
         margin: 0; 
     }
     
-    /* SOLUSI KUNCI: Sembunyikan Area Input dengan ID */
     #input-area {
         display: none !important; 
         visibility: hidden !important;
     }
     
-    /* Tampilkan Area Cetak dan hapus styling pratinjau */
     .receipt-container {
         display: block !important;
         border: none;
@@ -256,17 +283,14 @@ button[onclick="handlePrintMassal()"]:hover {
         line-height: 1.1; 
     }
     
-    /* Kurangi lebar saat cetak agar lebih ringkas */
     .label-col {
         min-width: 110px; 
     }
     
-    /* KUNCI: Untuk Cetak Massal */
     .receipt-item {
         page-break-after: always;
     }
     
-    /* Hapus page-break setelah item terakhir */
     .receipt-item:last-child {
         page-break-after: avoid;
     }
