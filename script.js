@@ -136,6 +136,7 @@ function handlePrintMassal() {
 
 /**
  * Fungsi ini HANYA menghasilkan string HTML untuk SATU kuitansi berdasarkan data yang diberikan.
+ * Tata letak dirapikan untuk cetak thermal.
  */
 function generateSingleReceiptHTML(data) {
     // 2. Lakukan Perhitungan
@@ -157,7 +158,7 @@ function generateSingleReceiptHTML(data) {
         let alignment = 'left';
 
         if (isDotted) {
-            valueContent = `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right; display: block; width: 100%;">${value}</span>`;
+            valueContent = `<span style="text-align: right; display: block; width: 100%;">${value}</span>`;
             alignment = 'right';
         }
 
@@ -202,16 +203,20 @@ function generateSingleReceiptHTML(data) {
 
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
 
-        ${createAlignedRow("Stand Awal", `${data.standAwal} M`)}
-        ${createAlignedRow("Stand Akhir", `${data.standAkhir} M`)}
-        ${createAlignedRow("Jumlah Pemakaian", `${jumlahPemakaian} M`)}
+        <div style="font-weight: bold; margin-bottom: 5px;">Rincian Pemakaian Air (M3)</div>
+        ${createAlignedRow("Stand Awal", `${data.standAwal}`)}
+        ${createAlignedRow("Stand Akhir", `${data.standAkhir}`)}
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 2px 0;">
+        ${createAlignedRow("Jumlah Pemakaian", `${jumlahPemakaian}`)}
 
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
 
-        ${createAlignedRow(`Iuran ${formatRupiah(data.hargaPerM).replace('Rp', '')}/m`, formatRupiah(iuranBiaya), true)}
-        ${createAlignedRow("Pokok Beban", formatRupiah(data.pokokBeban), true)}
+        <div style="font-weight: bold; margin-bottom: 5px;">Rincian Biaya (Rp)</div>
+        ${createAlignedRow(`Iuran ${formatRupiah(data.hargaPerM).replace('Rp', '')}/m`, formatRupiah(iuranBiaya))}
+        <hr style="border: 0; border-top: 1px dotted #000; margin: 2px 0;">
+        ${createAlignedRow("Pokok Beban", formatRupiah(data.pokokBeban))}
         
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 2px 0;">
+        <hr style="border: 0; border-top: 2px solid #000; margin: 5px 0;">
         ${createTotalRow("Jumlah Bayar", formatRupiah(jumlahBayar))}
         
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
