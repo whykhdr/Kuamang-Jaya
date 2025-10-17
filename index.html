@@ -34,10 +34,17 @@
             
             <label for="pokok_beban">Pokok Beban (Rp):</label>
             <input type="number" id="pokok_beban" value="10000" oninput="updateReceipt()" readonly>
+
+            <label for="jumlah_cetak">Jumlah Cetak Satuan:</label>
+            <input type="number" id="jumlah_cetak" value="1" min="1" oninput="updateReceipt()">
         </div>
         
-        <button onclick="handlePrint()">
-            Cetak Kuitansi ke PDF (Print)
+        <button onclick="handlePrint(false)">
+            Cetak Kuitansi Satuan (Pratinjau)
+        </button>
+        
+        <button onclick="handlePrint(true)" style="background-color: #28a745;">
+            Cetak Kuitansi Massal (Lihat script.js)
         </button>
         <hr>
     </div>
