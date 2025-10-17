@@ -18,13 +18,13 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #e9ecef;
     text-align: center;
-    padding: 10px; /* Kurangi padding di body */
+    padding: 10px;
 }
 
 .no-print {
     max-width: 1100px;
     margin: 0 auto 20px;
-    padding: 20px; /* Kurangi padding di form */
+    padding: 20px;
     background: var(--color-bg-dark);
     color: var(--color-text-light);
     border-radius: 12px;
@@ -67,11 +67,11 @@ hr {
     font-weight: 400;
     align-self: center;
     color: #ced4da;
-    font-size: 0.9em; /* Kecilkan font label */
+    font-size: 0.9em;
 }
 
 input[type="text"], input[type="number"] {
-    padding: 8px; /* Kurangi padding input */
+    padding: 8px;
     width: 95%;
     border: 1px solid var(--color-border-subtle);
     border-radius: 6px;
@@ -94,7 +94,7 @@ input[readonly] {
 }
 
 button {
-    padding: 10px 20px; /* Kurangi padding tombol */
+    padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
     color: var(--color-text-light);
@@ -126,8 +126,8 @@ button[onclick="handlePrintMassal()"]:hover {
 
 /* --- Gaya Tabel Input --- */
 .table-container {
-    max-width: 100%; /* Lebar penuh di mobile */
-    overflow-x: auto; /* Kunci: Memungkinkan scroll horizontal pada tabel */
+    max-width: 100%; 
+    overflow-x: auto; 
     margin: 20px auto;
     background-color: #495057;
     border-radius: 8px;
@@ -136,14 +136,14 @@ button[onclick="handlePrintMassal()"]:hover {
 
 #data-table {
     width: 100%;
-    min-width: 700px; /* Pastikan lebar minimum agar tidak terlalu sempit */
+    min-width: 700px; 
     border-collapse: collapse;
     font-size: 10pt;
     color: var(--color-text-light);
 }
 
 #data-table th, #data-table td {
-    padding: 8px 4px; /* Kurangi padding tabel */
+    padding: 8px 4px; 
     text-align: center;
     white-space: nowrap;
     border-bottom: 1px solid #6c757d;
@@ -153,7 +153,7 @@ button[onclick="handlePrintMassal()"]:hover {
     background-color: #212529;
     font-weight: 600;
     color: #ffffff;
-    font-size: 0.9em; /* Kecilkan font header tabel */
+    font-size: 0.9em;
 }
 
 #data-table tr:hover td {
@@ -162,7 +162,7 @@ button[onclick="handlePrintMassal()"]:hover {
 
 #data-table input {
     width: 95%;
-    padding: 4px; /* Kurangi padding input di tabel */
+    padding: 4px;
     font-size: 0.9em;
     border: 1px solid #343a40;
     background-color: #6c757d;
@@ -175,7 +175,7 @@ button[onclick="handlePrintMassal()"]:hover {
 
 
 #data-table button {
-    padding: 3px 6px; /* Tombol hapus lebih kecil */
+    padding: 3px 6px;
     font-size: 9pt;
     margin: 0;
     background-color: var(--color-danger);
@@ -212,7 +212,7 @@ button[onclick="handlePrintMassal()"]:hover {
 
 /* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
 .label-col {
-    min-width: 130px; 
+    min-width: 100px; 
     text-align: left;
     white-space: nowrap; 
     display: flex;
@@ -238,7 +238,7 @@ button[onclick="handlePrintMassal()"]:hover {
 @media (max-width: 768px) {
     /* Atur ulang tata letak Harga Tetap */
     .fixed-prices {
-        grid-template-columns: 1fr 1fr; /* 2 kolom per baris di HP */
+        grid-template-columns: 1fr 1fr; 
         max-width: 100%;
         gap: 10px;
         padding: 0 5px;
@@ -283,8 +283,9 @@ button[onclick="handlePrintMassal()"]:hover {
         line-height: 1.1; 
     }
     
+    /* Nilai yang diperbarui */
     .label-col {
-        min-width: 110px; 
+        min-width: 95px; 
     }
     
     .receipt-item {
