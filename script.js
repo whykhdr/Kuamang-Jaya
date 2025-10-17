@@ -11,7 +11,6 @@ function handlePrint() {
     updateReceipt(); 
     
     // 2. Jeda singkat (100ms) agar browser selesai me-render konten baru.
-    // Jeda dinaikkan untuk mengatasi masalah rendering.
     setTimeout(() => {
         window.print();
     }, 100); 
@@ -43,13 +42,15 @@ function updateReceipt() {
         return 'Rp' + angka.toLocaleString('id-ID');
     };
 
-    // FUNGSI INI KUNCI UNTUK PERATAAN TITIK DUA PADA SEMUA BARIS
+    // FUNGSI UTAMA PERATAAN
     const createAlignedRow = (label, value, isDotted = false) => {
         let valueContent = value;
-        
+        let alignment = 'left';
+
         if (isDotted) {
-            // Jika dotted, wrap nilai dalam span dengan style dotted dan align right
-            valueContent = `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right; display: block;">${value}</span>`;
+            // Untuk Biaya (Iuran & Pokok Beban): Dotted dan Align Right
+            valueContent = `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right; display: block; width: 100%;">${value}</span>`;
+            alignment = 'right';
         }
 
         return `
@@ -58,7 +59,20 @@ function updateReceipt() {
                     <span>${label}</span>
                     <span>:</span>
                 </span>
-                <span class="value-col" style="text-align: left;">${valueContent}</span>
+                <span class="value-col" style="text-align: ${alignment};">${valueContent}</span>
+            </div>
+        `;
+    };
+
+    // FUNGSI BARU UNTUK TOTAL (Memastikan titik dua sejajar, nilai Bold & Align Right)
+    const createTotalRow = (label, value) => {
+        return `
+            <div class="info-row total-row" style="font-weight: bold;">
+                <span class="label-col">
+                    <span>${label}</span>
+                    <span>:</span>
+                </span>
+                <span class="value-col" style="text-align: right;">${value}</span>
             </div>
         `;
     };
@@ -91,10 +105,8 @@ function updateReceipt() {
         ${createAlignedRow(`Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m`, formatRupiah(iuranBiaya), true)}
         ${createAlignedRow("Pokok Beban", formatRupiah(pokokBeban), true)}
         
-        <div class="info-row total-row" style="display: flex; justify-content: space-between;">
-            <span>Jumlah Bayar:</span>
-            <span>${formatRupiah(jumlahBayar)}</span>
-        </div>
+        <hr style="border: 0; border-top: 1px dashed #000; margin: 2px 0;">
+        ${createTotalRow("Jumlah Bayar", formatRupiah(jumlahBayar))}
         
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
         <div style="text-align: center; font-size: 8pt; font-weight: bold;">
