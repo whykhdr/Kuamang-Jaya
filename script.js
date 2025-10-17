@@ -1,5 +1,5 @@
 // =========================================================================
-// 1. DATA BIAYA TETAP (Dibaca dari input readonly)
+// 1. DATA BIAYA TETAP & UTILITY
 // =========================================================================
 const getFixedPrices = () => ({
     hargaPerM: parseInt(document.getElementById('harga_per_m').value) || 2000,
@@ -11,8 +11,7 @@ const getFixedPrices = () => ({
  */
 const getNamaPetugas = () => {
     const input = document.getElementById('nama_petugas');
-    // Jika input ada, gunakan nilainya. Jika tidak ada, gunakan default 'SUPARNO'
-    return input ? input.value.toUpperCase() || "" : "";
+    return input ? input.value.toUpperCase() || "SUPARNO" : "SUPARNO";
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,20 +26,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// =========================================================================
+// 2. LOGIKA TABEL DINAMIS
+// =========================================================================
+
 /**
- * Menambahkan satu baris input baru ke dalam tabel.
+ * Menambahkan satu baris input baru ke dalam tabel, dengan placeholder yang jelas.
  */
 function addRow() {
     const tableBody = document.getElementById('data-table-body');
     const newRow = tableBody.insertRow();
 
     newRow.innerHTML = `
-        <td><input type="text" name="periode" value=""></td>
-        <td><input type="text" name="nama" placeholder="Nama Pelanggan"></td>
-        <td><input type="text" name="noPelanggan" placeholder="000"></td>
-        <td><input type="text" name="alamat" placeholder="Alamat"></td>
-        <td><input type="number" name="standAwal" value="0" min="0"></td>
-        <td><input type="number" name="standAkhir" value="0" min="0"></td>
+        <td><input type="text" name="periode" placeholder="Cth: OKTOBER"></td>
+        <td><input type="text" name="nama" placeholder="Cth: AGUS SETIAWAN"></td>
+        <td><input type="text" name="noPelanggan" placeholder="Cth: 001"></td>
+        <td><input type="text" name="alamat" placeholder="Cth: JL. GARUDA NO. 5"></td>
+        <td><input type="number" name="standAwal" value="0" min="0" placeholder="Angka M3 awal"></td>
+        <td><input type="number" name="standAkhir" value="0" min="0" placeholder="Angka M3 akhir"></td>
         <td><button onclick="deleteRow(this)">Hapus</button></td>
     `;
 }
@@ -65,7 +68,6 @@ function getTableData() {
     return rows.map(row => {
         const inputs = row.querySelectorAll('input');
         
-        // Buat objek data dari setiap baris
         const data = {
             periode: inputs[0].value.toUpperCase().trim() || "BULAN",
             nama: inputs[1].value.toUpperCase().trim() || "", 
@@ -74,7 +76,6 @@ function getTableData() {
             standAwal: parseInt(inputs[4].value) || 0,
             standAkhir: parseInt(inputs[5].value) || 0,
             
-            // Tambahkan harga tetap
             hargaPerM: fixedPrices.hargaPerM,
             pokokBeban: fixedPrices.pokokBeban,
         };
@@ -85,9 +86,12 @@ function getTableData() {
         }
         
         return data;
-    }).filter(data => data !== null); // Hapus baris yang diabaikan (kosong)
+    }).filter(data => data !== null);
 }
 
+// =========================================================================
+// 3. LOGIKA CETAK
+// =========================================================================
 
 /**
  * Fungsi utama untuk memicu CETAK MASSAL.
@@ -130,13 +134,8 @@ function handlePrintMassal() {
 }
 
 
-// =========================================================================
-// FUNGSI GENERATOR HTML (LOGIKA CETAK)
-// =========================================================================
-
 /**
  * Fungsi ini HANYA menghasilkan string HTML untuk SATU kuitansi berdasarkan data yang diberikan.
- * @param {Object} data - Objek yang berisi semua detail pelanggan.
  */
 function generateSingleReceiptHTML(data) {
     // 2. Lakukan Perhitungan
@@ -145,7 +144,7 @@ function generateSingleReceiptHTML(data) {
     const jumlahBayar = iuranBiaya + data.pokokBeban;
     
     const tglCetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
-    const namaKolektor = getNamaPetugas(); // Mengambil nama kolektor
+    const namaKolektor = getNamaPetugas(); 
 
     // 3. Fungsi Pembantu Format Rupiah
     const formatRupiah = (angka) => {
@@ -190,7 +189,8 @@ function generateSingleReceiptHTML(data) {
     return `
         <div style="text-align: center; font-weight: bold;">
             <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
-            <p style="margin: 0; font-size: 8pt;">PAMSIMAS TIRTA JAYA DESA KUAMANG JAYA</p> </div>
+            <p style="margin: 0; font-size: 8pt;">PAMSIMAS TIRTA JAYA DESA KUAMANG JAYA</p> 
+        </div>
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
         
         <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
@@ -219,6 +219,7 @@ function generateSingleReceiptHTML(data) {
             TERIMA KASIH
         </div>
         <div style="text-align: center; font-size: 7pt; margin-top: 2px;">
-            Colector: ${namaKolektor} </div>
+            Colector: ${namaKolektor}
+        </div>
     `;
 }
