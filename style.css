@@ -1,212 +1,197 @@
-// =========================================================================
-// 1. DATA BIAYA TETAP (Dibaca dari input readonly)
-// =========================================================================
-const getFixedPrices = () => ({
-    hargaPerM: parseInt(document.getElementById('harga_per_m').value) || 2000,
-    pokokBeban: parseInt(document.getElementById('pokok_beban').value) || 10000,
-});
+/* style.css - Tidak Ada Perubahan */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Tambahkan 2 baris input kosong saat pertama kali dimuat
-    addRow(); 
-    addRow();
-});
-
-/**
- * Menambahkan satu baris input baru ke dalam tabel.
- */
-function addRow() {
-    const tableBody = document.getElementById('data-table-body');
-    const newRow = tableBody.insertRow();
-
-    newRow.innerHTML = `
-        <td><input type="text" name="periode" value=""></td>
-        <td><input type="text" name="nama" placeholder="Nama Pelanggan"></td>
-        <td><input type="text" name="noPelanggan" placeholder="000"></td>
-        <td><input type="text" name="alamat" placeholder="Alamat"></td>
-        <td><input type="number" name="standAwal" value="0" min="0"></td>
-        <td><input type="number" name="standAkhir" value="0" min="0"></td>
-        <td><button onclick="deleteRow(this)">Hapus</button></td>
-    `;
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
+/* ======================================= */
+body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
 }
 
-/**
- * Menghapus baris input dari tabel.
- * @param {HTMLButtonElement} btn - Tombol Hapus yang diklik.
- */
-function deleteRow(btn) {
-    const row = btn.parentNode.parentNode;
-    row.parentNode.removeChild(row);
+.no-print {
+    max-width: 1000px;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Gaya untuk input harga tetap yang lebih ringkas */
+.fixed-prices {
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+    max-width: 600px;
+    margin: 10px auto;
+}
+
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 8px;
+    width: 95%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Kunci: Gaya untuk input yang readonly */
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    border: 1px solid #ced4da;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-right: 10px;
+}
+
+/* Gaya Tabel Input */
+.table-container {
+    max-width: 95%;
+    overflow-x: auto;
+    margin: 20px auto;
+}
+
+#data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+}
+
+#data-table th, #data-table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#data-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+#data-table input {
+    width: 90%;
+    padding: 3px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#data-table button {
+    padding: 3px 5px;
+    font-size: 10pt;
+    margin: 0;
+    background-color: #dc3545;
 }
 
 
-/**
- * Mengambil semua data dari tabel input.
- * @returns {Array} Array of Objects berisi data pelanggan.
- */
-function getTableData() {
-    const tableBody = document.getElementById('data-table-body');
-    const rows = Array.from(tableBody.rows);
-    const fixedPrices = getFixedPrices();
-    
-    return rows.map(row => {
-        const inputs = row.querySelectorAll('input');
-        
-        // Buat objek data dari setiap baris
-        const data = {
-            periode: inputs[0].value.toUpperCase().trim() || "BULAN",
-            nama: inputs[1].value.toUpperCase().trim() || "", // Jangan pakai "PELANGGAN" agar mudah deteksi kosong
-            noPelanggan: inputs[2].value.trim() || "",
-            alamat: inputs[3].value.toUpperCase().trim() || "ALAMAT",
-            standAwal: parseInt(inputs[4].value) || 0,
-            standAkhir: parseInt(inputs[5].value) || 0,
-            
-            // Tambahkan harga tetap
-            hargaPerM: fixedPrices.hargaPerM,
-            pokokBeban: fixedPrices.pokokBeban,
-        };
+/* ======================================= */
+/* 2. AREA KWITANSI (Simulasi Thermal)     */
+/* ======================================= */
+.receipt-container {
+    width: 58mm; 
+    max-width: 300px; 
+    margin: 0 auto;
+    padding: 5px 3px; 
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 9.5pt; 
+    line-height: 1.2;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: block; 
+}
 
-        // Abaikan baris jika nama dan noPelanggan kosong
-        if (data.nama === "" && data.noPelanggan === "") {
-            return null; 
-        }
-        
-        return data;
-    }).filter(data => data !== null); // Hapus baris yang diabaikan (kosong)
+/* Kunci: Baris informasi menggunakan Flex */
+.info-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2px;
+}
+
+/* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
+.label-col {
+    min-width: 130px; 
+    text-align: left;
+    white-space: nowrap; 
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px; 
+}
+
+.value-col {
+    flex-grow: 1; 
+    text-align: left;
+    word-break: break-all;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 10pt;
 }
 
 
-/**
- * Fungsi utama untuk memicu CETAK MASSAL.
- */
-function handlePrintMassal() {
-    const outputContainer = document.getElementById('receipt-output');
-    const inputArea = document.getElementById('input-area'); 
-    outputContainer.innerHTML = ''; 
-    
-    const massData = getTableData();
-
-    if (massData.length === 0) {
-        alert("Tidak ada data pelanggan yang terisi untuk dicetak.");
-        return;
+/* ======================================= */
+/* 3. MERAPIKAN HASIL CETAK (@media print) */
+/* ======================================= */
+@media print {
+    /* Margin nol untuk kertas thermal */
+    @page {
+        margin: 0; 
     }
-
-    // 1. Generate dan tampilkan semua kuitansi
-    const receiptsToPrint = massData.map(data => generateSingleReceiptHTML(data));
-    receiptsToPrint.forEach(html => {
-        outputContainer.innerHTML += `<div class="receipt-item">${html}</div>`;
-    });
-
-    // 2. SEMBUNYIKAN INPUT sebelum print
-    if (inputArea) inputArea.style.display = 'none'; 
-    outputContainer.style.display = 'block'; 
-
-    // 3. Jeda singkat (100ms) agar browser selesai me-render konten baru.
-    setTimeout(() => {
-        window.print();
-        
-        // 4. Setelah mencetak, KEMBALIKAN tampilan formulir
-        if (inputArea) inputArea.style.display = 'block'; 
-        
-        // Hapus konten cetak
-        outputContainer.innerHTML = '';
-        outputContainer.style.display = 'none'; 
-        
-        alert(`Pencetakan ${massData.length} kuitansi selesai.`);
-    }, 100); 
-}
-
-
-// =========================================================================
-// FUNGSI GENERATOR HTML (LOGIKA CETAK)
-// =========================================================================
-
-/**
- * Fungsi ini HANYA menghasilkan string HTML untuk SATU kuitansi berdasarkan data yang diberikan.
- * @param {Object} data - Objek yang berisi semua detail pelanggan.
- */
-function generateSingleReceiptHTML(data) {
-    // 2. Lakukan Perhitungan
-    const jumlahPemakaian = Math.max(0, data.standAkhir - data.standAwal);
-    const iuranBiaya = jumlahPemakaian * data.hargaPerM;
-    const jumlahBayar = iuranBiaya + data.pokokBeban;
     
-    const tglCetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
-
-    // 3. Fungsi Pembantu Format Rupiah
-    const formatRupiah = (angka) => {
-        return 'Rp' + angka.toLocaleString('id-ID');
-    };
-
-    // FUNGSI UTAMA PERATAAN
-    const createAlignedRow = (label, value, isDotted = false) => {
-        let valueContent = value;
-        let alignment = 'left';
-
-        if (isDotted) {
-            valueContent = `<span style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right; display: block; width: 100%;">${value}</span>`;
-            alignment = 'right';
-        }
-
-        return `
-            <div class="info-row">
-                <span class="label-col">
-                    <span>${label}</span>
-                    <span>:</span>
-                </span>
-                <span class="value-col" style="text-align: ${alignment};">${valueContent}</span>
-            </div>
-        `;
-    };
-
-    // FUNGSI BARU UNTUK TOTAL
-    const createTotalRow = (label, value) => {
-        return `
-            <div class="info-row total-row" style="font-weight: bold;">
-                <span class="label-col">
-                    <span>${label}</span>
-                    <span>:</span>
-                </span>
-                <span class="value-col" style="text-align: right;">${value}</span>
-            </div>
-        `;
-    };
+    /* SOLUSI KUNCI: Sembunyikan Area Input dengan ID */
+    #input-area {
+        display: none !important; 
+        visibility: hidden !important;
+    }
     
-    // 4. RETURN KONTEN HTML
-    return `
-        <div style="text-align: center; font-weight: bold;">
-            <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
-            <p style="margin: 0; font-size: 8pt;">PAMSIMAS TIRTA JAYA DESA [KUAMANG JAYA]</p>
-        </div>
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-        
-        <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
-
-        ${createAlignedRow("Periode Bulan", data.periode)}
-        ${createAlignedRow("Nama Pelanggan", `<b>${data.nama}</b>`)}
-        ${createAlignedRow("No Pelanggan", data.noPelanggan)}
-        ${createAlignedRow("Alamat Rumah", data.alamat)}
-
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-
-        ${createAlignedRow("Stand Awal", `${data.standAwal} M`)}
-        ${createAlignedRow("Stand Akhir", `${data.standAkhir} M`)}
-        ${createAlignedRow("Jumlah Pemakaian", `${jumlahPemakaian} M`)}
-
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-
-        ${createAlignedRow(`Iuran ${formatRupiah(data.hargaPerM).replace('Rp', '')}/m`, formatRupiah(iuranBiaya), true)}
-        ${createAlignedRow("Pokok Beban", formatRupiah(data.pokokBeban), true)}
-        
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 2px 0;">
-        ${createTotalRow("Jumlah Bayar", formatRupiah(jumlahBayar))}
-        
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-        <div style="text-align: center; font-size: 8pt; font-weight: bold;">
-            TERIMA KASIH
-        </div>
-        <div style="text-align: center; font-size: 7pt; margin-top: 2px;">
-            Colector: [Suparno]
-        </div>
-    `;
+    /* Tampilkan Area Cetak dan hapus styling pratinjau */
+    .receipt-container {
+        display: block !important;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        width: 58mm; 
+        padding: 4px 1px; 
+        font-size: 8.5pt; 
+        line-height: 1.1; 
+    }
+    
+    /* Kurangi lebar saat cetak agar lebih ringkas */
+    .label-col {
+        min-width: 110px; 
+    }
+    
+    /* KUNCI: Untuk Cetak Massal */
+    .receipt-item {
+        /* Memastikan setiap item kuitansi dicetak sebagai potongan terpisah */
+        page-break-after: always;
+    }
+    
+    /* Hapus page-break setelah item terakhir */
+    .receipt-item:last-child {
+        page-break-after: avoid;
+    }
 }
