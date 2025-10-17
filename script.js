@@ -6,9 +6,25 @@ const getFixedPrices = () => ({
     pokokBeban: parseInt(document.getElementById('pokok_beban').value) || 10000,
 });
 
+/**
+ * Mengambil Nama Petugas (Kolektor) dari input.
+ */
+const getNamaPetugas = () => {
+    const input = document.getElementById('nama_petugas');
+    // Jika input ada, gunakan nilainya. Jika tidak ada, gunakan default 'SUPARNO'
+    return input ? input.value.toUpperCase() || "SUPARNO" : "SUPARNO";
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Tambahkan 1 baris kosong saat pertama kali dimuat
+    // Tambahkan 2 baris input kosong saat pertama kali dimuat
     addRow(); 
+    addRow();
+    
+    // Set default nama petugas menjadi SUPARNO
+    const petugasInput = document.getElementById('nama_petugas');
+    if(petugasInput) {
+        petugasInput.value = "SUPARNO";
+    }
 });
 
 /**
@@ -17,10 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function addRow() {
     const tableBody = document.getElementById('data-table-body');
     const newRow = tableBody.insertRow();
-    const rowIndex = tableBody.rows.length;
 
     newRow.innerHTML = `
-        <td><input type="text" name="periode" value="OKTOBER"></td>
+        <td><input type="text" name="periode" value=""></td>
         <td><input type="text" name="nama" placeholder="Nama Pelanggan"></td>
         <td><input type="text" name="noPelanggan" placeholder="000"></td>
         <td><input type="text" name="alamat" placeholder="Alamat"></td>
@@ -32,7 +47,6 @@ function addRow() {
 
 /**
  * Menghapus baris input dari tabel.
- * @param {HTMLButtonElement} btn - Tombol Hapus yang diklik.
  */
 function deleteRow(btn) {
     const row = btn.parentNode.parentNode;
@@ -42,7 +56,6 @@ function deleteRow(btn) {
 
 /**
  * Mengambil semua data dari tabel input.
- * @returns {Array} Array of Objects berisi data pelanggan.
  */
 function getTableData() {
     const tableBody = document.getElementById('data-table-body');
@@ -55,8 +68,8 @@ function getTableData() {
         // Buat objek data dari setiap baris
         const data = {
             periode: inputs[0].value.toUpperCase().trim() || "BULAN",
-            nama: inputs[1].value.toUpperCase().trim() || "PELANGGAN",
-            noPelanggan: inputs[2].value.trim() || "0",
+            nama: inputs[1].value.toUpperCase().trim() || "", 
+            noPelanggan: inputs[2].value.trim() || "",
             alamat: inputs[3].value.toUpperCase().trim() || "ALAMAT",
             standAwal: parseInt(inputs[4].value) || 0,
             standAkhir: parseInt(inputs[5].value) || 0,
@@ -66,13 +79,13 @@ function getTableData() {
             pokokBeban: fixedPrices.pokokBeban,
         };
 
-        // Filter data yang kosong (misal: hanya baris placeholder yang tidak diisi)
-        if (data.nama === "PELANGGAN" && data.noPelanggan === "0") {
-            return null; // Abaikan baris kosong
+        // Abaikan baris jika nama dan noPelanggan kosong
+        if (data.nama === "" && data.noPelanggan === "") {
+            return null; 
         }
         
         return data;
-    }).filter(data => data !== null); // Hapus baris yang dikembalikan sebagai null
+    }).filter(data => data !== null); // Hapus baris yang diabaikan (kosong)
 }
 
 
@@ -81,7 +94,8 @@ function getTableData() {
  */
 function handlePrintMassal() {
     const outputContainer = document.getElementById('receipt-output');
-    outputContainer.innerHTML = ''; // Kosongkan container
+    const inputArea = document.getElementById('input-area'); 
+    outputContainer.innerHTML = ''; 
     
     const massData = getTableData();
 
@@ -90,33 +104,34 @@ function handlePrintMassal() {
         return;
     }
 
-    // 1. Generate semua kuitansi
+    // 1. Generate dan tampilkan semua kuitansi
     const receiptsToPrint = massData.map(data => generateSingleReceiptHTML(data));
-
-    // 2. Tampilkan semua kuitansi ke DOM
     receiptsToPrint.forEach(html => {
         outputContainer.innerHTML += `<div class="receipt-item">${html}</div>`;
     });
 
-    // 3. Pastikan area kuitansi terlihat dan cetak
+    // 2. SEMBUNYIKAN INPUT sebelum print
+    if (inputArea) inputArea.style.display = 'none'; 
     outputContainer.style.display = 'block'; 
 
-    // 4. Jeda singkat (100ms) agar browser selesai me-render konten baru.
+    // 3. Jeda singkat (100ms) agar browser selesai me-render konten baru.
     setTimeout(() => {
         window.print();
         
-        // 5. Setelah mencetak, kosongkan kembali dan tampilkan pesan
-        outputContainer.innerHTML = `<div class="receipt-item" style="text-align: center; margin-top: 50px;">
-            <p>Proses cetak ${receiptsToPrint.length} kuitansi selesai.</p>
-            <p>Anda dapat menutup dialog cetak.</p>
-         </div>`;
-        outputContainer.style.display = 'none'; // Sembunyikan lagi pratinjau
+        // 4. Setelah mencetak, KEMBALIKAN tampilan formulir
+        if (inputArea) inputArea.style.display = 'block'; 
+        
+        // Hapus konten cetak
+        outputContainer.innerHTML = '';
+        outputContainer.style.display = 'none'; 
+        
+        alert(`Pencetakan ${massData.length} kuitansi selesai.`);
     }, 100); 
 }
 
 
 // =========================================================================
-// FUNGSI GENERATOR HTML (TIDAK BERUBAH)
+// FUNGSI GENERATOR HTML (LOGIKA CETAK)
 // =========================================================================
 
 /**
@@ -130,6 +145,7 @@ function generateSingleReceiptHTML(data) {
     const jumlahBayar = iuranBiaya + data.pokokBeban;
     
     const tglCetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
+    const namaKolektor = getNamaPetugas(); // Mengambil nama kolektor
 
     // 3. Fungsi Pembantu Format Rupiah
     const formatRupiah = (angka) => {
@@ -174,8 +190,7 @@ function generateSingleReceiptHTML(data) {
     return `
         <div style="text-align: center; font-weight: bold;">
             <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
-            <p style="margin: 0; font-size: 8pt;">PAMSIMAS DESA [NAMA DESA]</p>
-        </div>
+            <p style="margin: 0; font-size: 8pt;">PAMSIMAS TIRTA JAYA DESA KUAMANG JAYA</p> </div>
         <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
         
         <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
@@ -204,7 +219,6 @@ function generateSingleReceiptHTML(data) {
             TERIMA KASIH
         </div>
         <div style="text-align: center; font-size: 7pt; margin-top: 2px;">
-            Operator: [Nama Petugas Anda]
-        </div>
+            Colector: ${namaKolektor} </div>
     `;
 }
