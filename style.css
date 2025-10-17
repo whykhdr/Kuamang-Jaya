@@ -37,6 +37,13 @@ input[type="text"], input[type="number"], input[type="date"] {
     border-radius: 4px;
 }
 
+/* Kunci: Gaya untuk input yang readonly */
+input[readonly] {
+    background-color: #e9ecef; /* Warna abu-abu muda */
+    cursor: not-allowed;      /* Menampilkan kursor tanda larangan */
+    border: 1px solid #ced4da;
+}
+
 button {
     padding: 12px 25px;
     font-size: 16px;
@@ -46,6 +53,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 15px;
+    margin-right: 10px; /* Jarak antar tombol */
 }
 
 /* ======================================= */
@@ -67,13 +75,6 @@ button {
     display: block; 
 }
 
-/* Penghapusan semua aturan Grid */
-.receipt-grid, .left-col, .right-col {
-    display: block !important;
-    width: auto !important;
-    margin: 0 !important;
-}
-
 /* Kunci: Baris informasi menggunakan Flex */
 .info-row {
     display: flex;
@@ -83,12 +84,12 @@ button {
 
 /* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
 .label-col {
-    /* Lebar kaku, pastikan cukup untuk label terpanjang */
+    /* Lebar kaku (minimal), pastikan cukup untuk label terpanjang */
     min-width: 130px; 
     text-align: left;
     white-space: nowrap; 
     
-    /* PENTING: Gunakan Flex untuk menyejajarkan titik dua ke ujung kolom label */
+    /* PENTING: Flex untuk menyejajarkan titik dua ke ujung kolom label */
     display: flex;
     justify-content: space-between;
     margin-right: 5px; /* Jarak antara titik dua dan nilai */
@@ -103,9 +104,6 @@ button {
 .total-row {
     font-weight: bold;
     font-size: 10pt;
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px dashed #000;
 }
 
 
@@ -136,8 +134,19 @@ button {
         margin-bottom: 0;
     }
     
-    /* Kurangi lebar saat cetak */
+    /* Kurangi lebar saat cetak agar lebih ringkas */
     .label-col {
         min-width: 110px; 
+    }
+
+    /* KUNCI: Untuk Cetak Massal */
+    .receipt-item {
+        /* Memastikan setiap item kuitansi dicetak sebagai potongan terpisah */
+        page-break-after: always;
+    }
+    
+    /* Hapus page-break setelah item terakhir */
+    .receipt-item:last-child {
+        page-break-after: avoid;
     }
 }
