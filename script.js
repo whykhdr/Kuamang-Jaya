@@ -1,103 +1,123 @@
 // =========================================================================
-// 1. DATA PELANGGAN (INI SUMBER DATA UNTUK CETAK MASSAL)
-// GANTI ISI ARRAY INI DENGAN DATA PELANGGAN AKTUAL ANDA
+// 1. DATA BIAYA TETAP (Dibaca dari input readonly)
 // =========================================================================
-const dataPelanggan = [
-    { periode: "OKTOBER", nama: "ADI WIJAYA", noPelanggan: "001", alamat: "JL. GARUDA", standAwal: 100, standAkhir: 125 },
-    { periode: "OKTOBER", nama: "BUDI SANTOSO", noPelanggan: "002", alamat: "JL. MERPATI", standAwal: 50, standAkhir: 65 },
-    { periode: "OKTOBER", nama: "CITRA DEWI", noPelanggan: "003", alamat: "GANG MANGGA", standAwal: 200, standAkhir: 230 },
-    { periode: "OKTOBER", nama: "DWI JAYANTO", noPelanggan: "004", alamat: "JL. KENARI", standAwal: 150, standAkhir: 170 },
-    // TAMBAHKAN DATA PELANGGAN LAIN DI SINI
-];
-
-// Data biaya tetap (readonly dari formulir)
-const HARGA_PER_M = 2000;
-const POKOK_BEBAN = 10000;
+const getFixedPrices = () => ({
+    hargaPerM: parseInt(document.getElementById('harga_per_m').value) || 2000,
+    pokokBeban: parseInt(document.getElementById('pokok_beban').value) || 10000,
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set nilai default Jumlah Cetak = 1 saat dimuat
-    const jumlahCetakInput = document.getElementById('jumlah_cetak');
-    if (jumlahCetakInput) {
-        jumlahCetakInput.value = 1;
-    }
-
-    // Perbarui label tombol cetak massal
-    const massButton = document.querySelector('button[onclick="handlePrint(true)"]');
-    if (massButton) {
-        massButton.textContent = `Cetak Kuitansi Massal (${dataPelanggan.length} Pelanggan)`;
-    }
-    
-    updateReceipt(); 
+    // Tambahkan 1 baris kosong saat pertama kali dimuat
+    addRow(); 
 });
 
 /**
- * Fungsi PENTING untuk mengatasi masalah timing cetak dan DUPLIKASI.
- * @param {boolean} isMassPrint - True jika mode Cetak Massal (ambil data dari Array).
+ * Menambahkan satu baris input baru ke dalam tabel.
  */
-function handlePrint(isMassPrint) {
+function addRow() {
+    const tableBody = document.getElementById('data-table-body');
+    const newRow = tableBody.insertRow();
+    const rowIndex = tableBody.rows.length;
+
+    newRow.innerHTML = `
+        <td><input type="text" name="periode" value="OKTOBER"></td>
+        <td><input type="text" name="nama" placeholder="Nama Pelanggan"></td>
+        <td><input type="text" name="noPelanggan" placeholder="000"></td>
+        <td><input type="text" name="alamat" placeholder="Alamat"></td>
+        <td><input type="number" name="standAwal" value="0" min="0"></td>
+        <td><input type="number" name="standAkhir" value="0" min="0"></td>
+        <td><button onclick="deleteRow(this)">Hapus</button></td>
+    `;
+}
+
+/**
+ * Menghapus baris input dari tabel.
+ * @param {HTMLButtonElement} btn - Tombol Hapus yang diklik.
+ */
+function deleteRow(btn) {
+    const row = btn.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+
+/**
+ * Mengambil semua data dari tabel input.
+ * @returns {Array} Array of Objects berisi data pelanggan.
+ */
+function getTableData() {
+    const tableBody = document.getElementById('data-table-body');
+    const rows = Array.from(tableBody.rows);
+    const fixedPrices = getFixedPrices();
+    
+    return rows.map(row => {
+        const inputs = row.querySelectorAll('input');
+        
+        // Buat objek data dari setiap baris
+        const data = {
+            periode: inputs[0].value.toUpperCase().trim() || "BULAN",
+            nama: inputs[1].value.toUpperCase().trim() || "PELANGGAN",
+            noPelanggan: inputs[2].value.trim() || "0",
+            alamat: inputs[3].value.toUpperCase().trim() || "ALAMAT",
+            standAwal: parseInt(inputs[4].value) || 0,
+            standAkhir: parseInt(inputs[5].value) || 0,
+            
+            // Tambahkan harga tetap
+            hargaPerM: fixedPrices.hargaPerM,
+            pokokBeban: fixedPrices.pokokBeban,
+        };
+
+        // Filter data yang kosong (misal: hanya baris placeholder yang tidak diisi)
+        if (data.nama === "PELANGGAN" && data.noPelanggan === "0") {
+            return null; // Abaikan baris kosong
+        }
+        
+        return data;
+    }).filter(data => data !== null); // Hapus baris yang dikembalikan sebagai null
+}
+
+
+/**
+ * Fungsi utama untuk memicu CETAK MASSAL.
+ */
+function handlePrintMassal() {
     const outputContainer = document.getElementById('receipt-output');
     outputContainer.innerHTML = ''; // Kosongkan container
-
-    let receiptsToPrint = [];
     
-    if (isMassPrint) {
-        // Mode Massal: Ulangi array data pelanggan
-        receiptsToPrint = dataPelanggan.map(data => generateSingleReceiptHTML(data));
-    } else {
-        // Mode Satuan: Ambil dari input HTML, duplikasi sebanyak 'jumlah_cetak'
-        const inputData = collectInputData(); // Kumpulkan data dari input
-        const singleReceiptHTML = generateSingleReceiptHTML(inputData);
-        
-        const jumlahCetak = parseInt(document.getElementById('jumlah_cetak').value) || 1;
-        for (let i = 0; i < jumlahCetak; i++) {
-            receiptsToPrint.push(singleReceiptHTML);
-        }
+    const massData = getTableData();
+
+    if (massData.length === 0) {
+        alert("Tidak ada data pelanggan yang terisi untuk dicetak.");
+        return;
     }
 
-    // Gabungkan semua kuitansi yang perlu dicetak
+    // 1. Generate semua kuitansi
+    const receiptsToPrint = massData.map(data => generateSingleReceiptHTML(data));
+
+    // 2. Tampilkan semua kuitansi ke DOM
     receiptsToPrint.forEach(html => {
         outputContainer.innerHTML += `<div class="receipt-item">${html}</div>`;
     });
 
-    // 4. Pastikan area kuitansi selalu terlihat
+    // 3. Pastikan area kuitansi terlihat dan cetak
     outputContainer.style.display = 'block'; 
 
-    // 5. Jeda singkat (100ms) agar browser selesai me-render konten baru.
+    // 4. Jeda singkat (100ms) agar browser selesai me-render konten baru.
     setTimeout(() => {
         window.print();
         
-        // Opsional: Setelah mencetak, kembalikan tampilan ke pratinjau tunggal
-        if (!isMassPrint) {
-             outputContainer.innerHTML = `<div class="receipt-item">${generateSingleReceiptHTML(collectInputData())}</div>`;
-        } else {
-             outputContainer.innerHTML = `<div class="receipt-item" style="text-align: center; margin-top: 50px;">
-                <p>Proses cetak ${dataPelanggan.length} kuitansi selesai.</p>
-                <p>Silakan gunakan tombol "Cetak Satuan" untuk pratinjau.</p>
-             </div>`;
-        }
+        // 5. Setelah mencetak, kosongkan kembali dan tampilkan pesan
+        outputContainer.innerHTML = `<div class="receipt-item" style="text-align: center; margin-top: 50px;">
+            <p>Proses cetak ${receiptsToPrint.length} kuitansi selesai.</p>
+            <p>Anda dapat menutup dialog cetak.</p>
+         </div>`;
+        outputContainer.style.display = 'none'; // Sembunyikan lagi pratinjau
     }, 100); 
 }
 
-/**
- * Fungsi untuk mengumpulkan data dari input HTML (mode satuan).
- */
-function collectInputData() {
-    // Ambil harga tetap dari input yang dikunci (readonly)
-    const hrgM = parseInt(document.getElementById('harga_per_m').value) || HARGA_PER_M;
-    const pBeban = parseInt(document.getElementById('pokok_beban').value) || POKOK_BEBAN;
-    
-    return {
-        periode: document.getElementById('periode').value.toUpperCase() || "BULAN",
-        nama: document.getElementById('nama').value.toUpperCase() || "PELANGGAN",
-        noPelanggan: document.getElementById('no_pelanggan').value || "0",
-        alamat: document.getElementById('alamat').value.toUpperCase() || "ALAMAT",
-        standAwal: parseInt(document.getElementById('stand_awal').value) || 0,
-        standAkhir: parseInt(document.getElementById('stand_akhir').value) || 0,
-        hargaPerM: hrgM, 
-        pokokBeban: pBeban,
-    };
-}
 
+// =========================================================================
+// FUNGSI GENERATOR HTML (TIDAK BERUBAH)
+// =========================================================================
 
 /**
  * Fungsi ini HANYA menghasilkan string HTML untuk SATU kuitansi berdasarkan data yang diberikan.
@@ -187,17 +207,4 @@ function generateSingleReceiptHTML(data) {
             Operator: [Nama Petugas Anda]
         </div>
     `;
-}
-
-/**
- * Fungsi untuk memperbarui tampilan saat ada perubahan input (hanya menampilkan 1 kuitansi).
- */
-function updateReceipt() {
-    const output = document.getElementById('receipt-output');
-    
-    // Tampilkan hanya satu template dari input untuk pratinjau
-    const inputData = collectInputData();
-    const singleReceiptHTML = generateSingleReceiptHTML(inputData);
-    output.innerHTML = `<div class="receipt-item">${singleReceiptHTML}</div>`;
-    output.style.display = 'block'; 
 }
