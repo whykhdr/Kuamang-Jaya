@@ -12,7 +12,7 @@ const getFixedPrices = () => ({
 const getNamaPetugas = () => {
     const input = document.getElementById('nama_petugas');
     // Jika input ada, gunakan nilainya. Jika tidak ada, gunakan default 'SUPARNO'
-    return input ? input.value.toUpperCase() || "SUPARNO" : "SUPARNO";
+    return input ? input.value.toUpperCase() || "" : "";
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set default nama petugas menjadi SUPARNO
     const petugasInput = document.getElementById('nama_petugas');
     if(petugasInput) {
-        petugasInput.value = "SUPARNO";
+        petugasInput.value = "";
     }
 });
 
