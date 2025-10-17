@@ -1,118 +1,143 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Pastikan kuitansi terisi segera setelah DOM dimuat
-    updateReceipt(); 
-});
-
-/**
- * Fungsi PENTING untuk mengatasi masalah timing cetak.
- */
-function handlePrint() {
-    // 1. Pastikan DOM diperbarui sebelum mencetak
-    updateReceipt(); 
-    
-    // 2. Jeda singkat (50ms) agar browser selesai me-render konten baru.
-    setTimeout(() => {
-        window.print();
-    }, 50); 
+/* ======================================= */
+/* 1. TAMPILAN LAYAR (Un-Printable Area)   */
+/* ======================================= */
+body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
 }
 
-/**
- * Fungsi utama untuk mengambil input, menghitung total, dan memperbarui tampilan kuitansi.
- */
-function updateReceipt() {
-    // 1. Ambil Nilai Input
-    const periode = document.getElementById('periode').value.toUpperCase() || "BULAN";
-    const nama = document.getElementById('nama').value.toUpperCase() || "PELANGGAN";
-    const noPelanggan = document.getElementById('no_pelanggan').value || "0";
-    const alamat = document.getElementById('alamat').value.toUpperCase() || "ALAMAT";
-    const standAwal = parseInt(document.getElementById('stand_awal').value) || 0;
-    const standAkhir = parseInt(document.getElementById('stand_akhir').value) || 0;
-    const hargaPerM = parseInt(document.getElementById('harga_per_m').value) || 0;
-    const pokokBeban = parseInt(document.getElementById('pokok_beban').value) || 0;
+.no-print {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
 
-    // 2. Lakukan Perhitungan
-    const jumlahPemakaian = Math.max(0, standAkhir - standAwal);
-    const iuranBiaya = jumlahPemakaian * hargaPerM;
-    const jumlahBayar = iuranBiaya + pokokBeban;
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-grid label {
+    font-weight: bold;
+    align-self: center;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    padding: 8px;
+    width: 95%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Kunci: Gaya untuk input yang readonly */
+input[readonly] {
+    background-color: #e9ecef; /* Warna abu-abu muda */
+    cursor: not-allowed;      /* Menampilkan kursor tanda larangan */
+    border: 1px solid #ced4da;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* ======================================= */
+/* 2. AREA KWITANSI (Simulasi Thermal)     */
+/* ======================================= */
+.receipt-container {
+    width: 58mm; 
+    max-width: 300px; 
+    margin: 0 auto;
+    padding: 5px 3px; 
+    /* Font wajib: Monospace untuk perataan karakter */
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 9.5pt; 
+    line-height: 1.2;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: block; 
+}
+
+/* Kunci: Baris informasi menggunakan Flex */
+.info-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2px;
+}
+
+/* KUNCI ALIGNMENT: Kolom Label memiliki lebar kaku dan menggunakan Flex */
+.label-col {
+    /* Lebar kaku (minimal), pastikan cukup untuk label terpanjang */
+    min-width: 130px; 
+    text-align: left;
+    white-space: nowrap; 
     
-    const tglCetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '/');
+    /* PENTING: Flex untuk menyejajarkan titik dua ke ujung kolom label */
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px; /* Jarak antara titik dua dan nilai */
+}
 
-    // 3. Fungsi Pembantu Format Rupiah
-    const formatRupiah = (angka) => {
-        return 'Rp' + angka.toLocaleString('id-ID');
-    };
+.value-col {
+    flex-grow: 1; /* Sisa lebar diambil kolom nilai */
+    text-align: left;
+    word-break: break-all;
+}
 
-    // Fungsi pembantu untuk baris dengan garis putus-putus
-    const dottedValue = (value) => {
-        // Menggunakan value-col untuk nilai, di-align ke kanan
-        return `<span class="value-col" style="border-bottom: 1px dotted #000; padding-bottom: 1px; text-align: right;">${value}</span>`;
-    };
+.total-row {
+    font-weight: bold;
+    font-size: 10pt;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px dashed #000;
+}
 
-    // FUNGSI INI KUNCI UNTUK PERATAAN TITIK DUA: Label dan Titik Dua dipisahkan di dalam label-col.
-    const createAlignedRow = (label, value) => {
-        return `
-            <div class="info-row">
-                <span class="label-col">
-                    <span>${label}</span>
-                    <span>:</span>
-                </span>
-                <span class="value-col" style="text-align: left;">${value}</span>
-            </div>
-        `;
-    };
+
+/* ======================================= */
+/* 3. MERAPIKAN HASIL CETAK (@media print) */
+/* ======================================= */
+@media print {
+    /* Margin nol untuk kertas thermal */
+    @page {
+        margin: 0; 
+    }
     
-    // 4. Buat dan Tampilkan Konten Kuitansi (Mode Flex/Block)
-    const output = document.getElementById('receipt-output');
+    .no-print {
+        display: none; 
+    }
     
-    output.innerHTML = `
-        <div style="text-align: center; font-weight: bold;">
-            <p style="margin: 0; font-size: 10pt;">KWITANSI PEMBAYARAN AIR</p>
-            <p style="margin: 0; font-size: 8pt;">PAMSIMAS DESA [NAMA DESA]</p>
-        </div>
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-        
-        <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${tglCetak}</div>
-
-        <!-- INFORMASI UMUM (MENGGUNAKAN ALIGNED ROW) -->
-        ${createAlignedRow("Periode Bulan", periode)}
-        ${createAlignedRow("Nama Pelanggan", `<b>${nama}</b>`)}
-        ${createAlignedRow("No Pelanggan", noPelanggan)}
-        ${createAlignedRow("Alamat Rumah", alamat)}
-
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-
-        <!-- DETAIL METER (MENGGUNAKAN ALIGNED ROW) -->
-        ${createAlignedRow("Stand Awal", `${standAwal} M`)}
-        ${createAlignedRow("Stand Akhir", `${standAkhir} M`)}
-        ${createAlignedRow("Jumlah Pemakaian", `${jumlahPemakaian} M`)}
-
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-
-        <!-- RINCIAN BIAYA (Menggunakan 2 kolom Flexbox untuk kanan-kiri) -->
-        <div class="info-row">
-            <span class="label-col" style="min-width: 50%; justify-content: flex-start;">Iuran ${formatRupiah(hargaPerM).replace('Rp', '')}/m</span>
-            ${dottedValue(formatRupiah(iuranBiaya))}
-        </div>
-        <div class="info-row">
-            <span class="label-col" style="min-width: 50%; justify-content: flex-start;">Pokok Beban</span>
-            ${dottedValue(formatRupiah(pokokBeban))}
-        </div>
-        
-        <!-- JUMLAH BAYAR (TOTAL) -->
-        <div class="info-row total-row" style="display: flex; justify-content: space-between;">
-            <span>Jumlah Bayar:</span>
-            <span>${formatRupiah(jumlahBayar)}</span>
-        </div>
-        
-        <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0;">
-        <div style="text-align: center; font-size: 8pt; font-weight: bold;">
-            TERIMA KASIH
-        </div>
-        <div style="text-align: center; font-size: 7pt; margin-top: 2px;">
-            Operator: [Nama Petugas Anda]
-        </div>
-    `;
+    .receipt-container {
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        width: 58mm; 
+        padding: 4px 1px; 
+        font-size: 8.5pt; 
+        line-height: 1.1; 
+    }
     
-    // Pastikan area kuitansi selalu terlihat
-    output.style.display = 'block'; 
+    .info-row {
+        margin-bottom: 0;
+    }
+    
+    /* Kurangi lebar saat cetak agar lebih ringkas */
+    .label-col {
+        min-width: 110px; 
+    }
 }
