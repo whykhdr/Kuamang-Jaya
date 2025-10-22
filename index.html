@@ -17,8 +17,7 @@
             }
             .container { padding: 0 2mm; width: 58mm; }
             
-            /* Tombol Kembali, Tombol Cetak, dan Daftar disembunyikan saat mencetak */
-            /* Perhatikan, tombol "Cetak Kuitansi Ini" di dalam container juga akan disembunyikan */
+            /* Tombol Kembali dan Tombol Cetak (di dalam container) disembunyikan saat mencetak */
             .print-list, #back-btn, button { 
                 display: none !important; 
             } 
@@ -107,7 +106,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         button:hover { background-color: #45a049; }
-        /* Tombol Kembali akan disembunyikan di sini, tetapi akan ditampillkan oleh JS di view mode */
         #back-btn { background-color: #6c757d; margin-top: 10px; }
         #back-btn:hover { background-color: #5a6268; }
 
@@ -170,7 +168,7 @@
             const Collector = 'Suciani'; 
 
             // --- MERENDER HTML KUITANSI (Desain Final) ---
-            // Tombol "Cetak Kuitansi Ini" dihilangkan karena akan langsung dicetak
+            // Tombol "Cetak Kuitansi Ini" ditambahkan kembali untuk manual print
             const html = `
                 <div class="container">
                     <div class="text-center text-bold" style="font-size:10pt;">KWITANSI PEMBAYARAN AIR</div>
@@ -208,6 +206,7 @@
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
+                    <button onclick="window.print()" style="margin-top: 10px; width: 100%;">Cetak Kuitansi Ini</button>
                 </div>
             `;
             
@@ -215,15 +214,10 @@
             document.getElementById('list-output').style.display = 'none';
             document.getElementById('receipt-output').style.display = 'block';
             
-            // Tampilkan tombol kembali (untuk mengakhiri preview)
+            // Tampilkan tombol kembali
             document.querySelector('.receipt-view-controls #back-btn').style.display = 'block';
 
-            // 1. LANGSUNG PICU PRINT DI SINI
-            window.print(); 
-            
-            // 2. KEMBALI KE DAFTAR SECARA OTOMATIS setelah 500ms
-            // Ini memberi waktu pada browser untuk memproses dialog cetak
-            setTimeout(showList, 500); 
+            // --- KODE WINDOW.PRINT() DIHAPUS DI SINI ---
         }
 
         // --- FUNGSI TAMPIL DAFTAR (87 TRANSAKSI) ---
