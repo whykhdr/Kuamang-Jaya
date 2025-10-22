@@ -158,7 +158,7 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (Tanggal Cetak dipindahkan dan diperkecil) ---
+            // --- MERENDER HTML KUITANSI (Tanggal Cetak di luar tabel, rata kanan penuh) ---
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">PAMSIMAS TIRTA KUSUMA</div>
@@ -166,9 +166,9 @@
                     
                     <div class="text-center" style="margin: 2px 0;">-------------------------</div>
 
+                    <div style="text-align: right; font-size: 7pt; margin-bottom: 5px;">Tgl. Cetak: ${Tgl_Cetak}</div>
+
                     <table class="receipt-table">
-                        <tr><td class="td-label" style="font-size: 7pt;">Tgl. Cetak</td><td class="td-colon" style="font-size: 7pt;">:</td><td class="td-value td-value-right" style="font-size: 7pt;">${Tgl_Cetak}</td></tr>
-                        
                         <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value">${Periode_Bulan}</td></tr>
                         <tr><td class="td-label">Nama Pelanggan</td><td class="td-colon">:</td><td class="td-value">${Nama_Pelanggan}</td></tr>
                         <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value">${No_Pelanggan}</td></tr>
