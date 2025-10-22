@@ -4,119 +4,64 @@
     <title>Daftar Kuitansi PAMSIMAS</title>
     <meta charset="UTF-8">
     
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
     <style>
         /* ==================== A. PENGATURAN CETAK (THERMAL 58mm) ==================== */
         @media print {
-            body {
-                width: 58mm;
-                font-family: 'Consolas', monospace, sans-serif; 
-                font-size: 9pt; 
-                margin: 0;
-                padding: 0;
-                line-height: 1.2;
-            }
-            /* Kontainer cetak tidak memiliki border atau shadow */
-            .container { 
-                padding: 0 2mm; 
-                width: 58mm; 
-                border: none;
-                box-shadow: none;
-            }
-            
-            /* Hanya tombol "Kembali" dan Daftar yang disembunyikan saat mencetak */
+            /* Pastikan tidak ada border/shadow saat dicetak */
+            .container { border: none !important; box-shadow: none !important; }
+            /* Sembunyikan semua tombol saat pengguna memaksa cetak (Ctrl+P) */
             .print-list, #back-btn, button { 
                 display: none !important; 
             } 
-            
+            /* Styling Cetak lainnya tetap sama */
+            body { width: 58mm; font-family: 'Consolas', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
+            .container { padding: 0 2mm; width: 58mm; }
             .receipt-view { display: block !important; }
-            
-            /* Styling Garis Pemisah */
-            .separator-dashed { 
-                border: none;
-                border-top: 1px dashed black; 
-                margin: 2px 0; 
-                height: 1px;
-            }
-            .separator-double { 
-                border: none;
-                border-top: 3px double black; 
-                margin: 2px 0; 
-                height: 3px;
-            }
+            .separator-dashed { border: none; border-top: 1px dashed black; margin: 2px 0; height: 1px; }
+            .separator-double { border: none; border-top: 3px double black; margin: 2px 0; height: 3px; }
         }
         
         /* ==================== B. PENGATURAN LAYAR (BROWSER) ==================== */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 20px; 
-            background: #e0e0e0; 
-            text-align: center; 
+            margin: 20px; background: #e0e0e0; text-align: center; 
         }
         
-        /* Kontainer Kuitansi (Preview) - Gunakan font monospace agar layout lebih rapi */
-        .receipt-view { 
-            display: inline-block; 
-            margin: 0 auto;
-        }
+        /* Kontainer Kuitansi (Preview) - Font Monospace 58mm */
+        .receipt-view { display: inline-block; margin: 0 auto; }
         .container { 
             width: 58mm; 
-            /* Menggunakan Consolas/Monospace agar perataan data rapi seperti di struk */
             font-family: 'Consolas', monospace; 
-            font-size: 9pt; /* Ukuran font di preview disamakan dengan cetakan */
-            line-height: 1.2; /* Ketinggian baris rapat seperti struk */
-            
+            font-size: 9pt; 
+            line-height: 1.2; 
             min-height: 87mm; 
             border: 1px solid #ccc; 
-            padding: 5px 2mm; /* Padding efektif untuk konten */
+            padding: 5px 2mm; 
             box-shadow: 0 0 10px rgba(0,0,0,0.1); 
             background: white;
             margin: 0 auto; 
             box-sizing: border-box; 
         }
         
-        /* Styling Halaman Utama (Daftar) - Kembali ke font standar untuk daftar */
+        /* Styling Halaman Utama (Daftar) */
         .print-list { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 700px; 
-            margin: 20px auto; 
-            padding: 20px; 
-            background: white; 
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: left; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 700px; margin: 20px auto; 
+            padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); text-align: left; 
         }
-        .print-list h2 { 
-            color: #1a73e8; 
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .print-list ol {
-            list-style: none;
-            padding: 0;
-        }
+        .print-list h2 { color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 20px; }
+        .print-list ol { list-style: none; padding: 0; }
         .print-list li {
-            display: flex; 
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 15px;
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px;
         }
         .print-list li:last-child { border-bottom: none; }
         
         /* Styling Tombol */
         button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            background-color: #4CAF50; 
-            color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Kembali ke font standar */
+            padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;
+            background-color: #4CAF50; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
         button:hover { background-color: #45a049; }
         #back-btn { background-color: #6c757d; margin-top: 10px; }
@@ -129,9 +74,7 @@
         .text-underline { text-decoration: underline; }
 
         .receipt-table { width: 100%; border-collapse: collapse; }
-        /* Padding 0 agar baris rapat */
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; } 
-        /* Penyesuaian lebar kolom agar rata */
         .td-label { width: 40%; text-align: left; }
         .td-colon { width: 5%; text-align: center; }
         .td-value { width: 55%; text-align: left; font-weight: bold; }
@@ -163,28 +106,58 @@
             return cell.f || cell.v || 'N/A';
         };
 
-        // --- FUNGSI TAMPIL KUITANSI TUNGGAL ---
+        // =========================================================
+        // === FUNGSI DOWNLOAD GAMBAR (MENGGUNAKAN html2canvas) ====
+        // =========================================================
+        function downloadReceiptAsImage(namaPelanggan) {
+            const container = document.querySelector('#receipt-output .container');
+            const fileName = `Kuitansi_${namaPelanggan.replace(/\s/g, '_')}.png`;
+
+            // Opsi: Scale ditingkatkan untuk kualitas gambar yang lebih baik (resiko file besar)
+            html2canvas(container, {
+                scale: 3, // Skala 3 kali lipat dari resolusi asli
+                useCORS: true,
+                backgroundColor: null // Pastikan background putih
+            }).then(canvas => {
+                // Konversi canvas menjadi Data URL
+                const image = canvas.toDataURL('image/png');
+                
+                // Membuat elemen link tersembunyi untuk memicu download
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = fileName;
+                
+                // Memicu klik
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
+
+        // --- FUNGSI TAMPIL KUITANSI TUNGGAL (PREVIEW + TOMBOL DOWNLOAD) ---
         function renderReceipt(rowIndex) {
             const row = masterData[rowIndex + 1].c; 
             
-            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM FINAL ---
-            const No_Pelanggan = getCellVal(row, 0);        // Kolom A (Index 0)
-            const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B (Index 1)
-            const Stand_Awal = getCellVal(row, 2);          // Kolom C (Index 2)
-            const Stand_Akhir = getCellVal(row, 3);         // Kolom D (Index 3)
-            const Jumlah_Pemakaian = getCellVal(row, 4);    // Kolom E (Index 4)
-            const Pokok_Beban = getCellVal(row, 5);         // Kolom F (Index 5)
-            const Tarif_Ixuan = getCellVal(row, 6);         // Kolom G (Index 6)
-            const Jumlah_Bayar = getCellVal(row, 8);        // Kolom I (Index 8) 
-            const Alamat_Rumah = getCellVal(row, 9);        // Kolom J (Index 9)
+            // --- EKSTRAKSI DATA ---
+            const No_Pelanggan = getCellVal(row, 0);       
+            const Nama_Pelanggan = getCellVal(row, 1);     
+            const Stand_Awal = getCellVal(row, 2);         
+            const Stand_Akhir = getCellVal(row, 3);        
+            const Jumlah_Pemakaian = getCellVal(row, 4);   
+            const Pokok_Beban = getCellVal(row, 5);        
+            const Tarif_Ixuan = getCellVal(row, 6);        
+            const Jumlah_Bayar = getCellVal(row, 8);       
+            const Alamat_Rumah = getCellVal(row, 9);       
             
             // Data statis/umum
             const Tgl_Cetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}); 
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (Disesuaikan dengan format cetak) ---
-            const html = `
+            // --- MERENDER HTML KUITANSI ---
+            // Tombol download dipisahkan dari kontainer utama agar tidak ikut terpotret
+            const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
                     <div class="text-center text-bold">PAMSIMAS TIRTA JAYA</div>
@@ -222,9 +195,10 @@
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
                 </div>
+                <button onclick="downloadReceiptAsImage('${Nama_Pelanggan}')" style="margin-top: 10px; width: 58mm;">Download Gambar (PNG)</button>
             `;
             
-            document.getElementById('receipt-output').innerHTML = html;
+            document.getElementById('receipt-output').innerHTML = htmlContainer;
             document.getElementById('list-output').style.display = 'none';
             document.getElementById('receipt-output').style.display = 'block';
             
@@ -246,7 +220,7 @@
                     listHtml += `
                         <li>
                             <span>**${i}. ${Nama_Pelanggan}** | Total: ${Jumlah_Bayar}</span>
-                            <button onclick="renderReceipt(${i - 1})">&#x1F5B6; Lihat Struk</button>
+                            <button onclick="renderReceipt(${i - 1})">&#x1F4F7; Lihat & Download</button>
                         </li>
                     `;
                 }
