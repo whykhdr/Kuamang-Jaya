@@ -16,7 +16,7 @@
                 line-height: 1.2;
             }
             .container { padding: 0 2mm; width: 58mm; }
-            .print-list, #back-btn, button { display: none; } /* Sembunyikan daftar dan tombol di hasil cetak */
+            .print-list, #back-btn, button { display: none; } 
             .receipt-view { display: block !important; }
             
             /* Styling Garis Pemisah (Kunci Desain) */
@@ -24,7 +24,7 @@
                 border: none;
                 border-top: 1px dashed black; 
                 margin: 2px 0; 
-                height: 1px; /* Pastikan tinggi garis minimal */
+                height: 1px;
             }
             .separator-double { 
                 border: none;
@@ -47,7 +47,7 @@
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
         .print-list { max-width: 600px; margin: 0 auto; padding: 20px; background: white; border-radius: 5px; }
-        .receipt-view { display: none; } /* Sembunyikan tampilan kuitansi di awal */
+        .receipt-view { display: none; }
 
         /* Styling Khusus Tabel untuk Alignment Titik Dua */
         .receipt-table { width: 100%; border-collapse: collapse; }
@@ -55,8 +55,6 @@
         .td-label { width: 45%; text-align: left; }
         .td-colon { width: 5%; text-align: center; }
         .td-value { width: 50%; text-align: left; font-weight: bold; }
-
-        /* Kunci Perataan Final */
         .td-value-center { text-align: center !important; } 
         .td-value-right { text-align: right !important; } 
     </style>
@@ -72,7 +70,7 @@
     </div>
 
     <script>
-        // PASTIKAN INI ADALAH URL JSON DARI SPREADSHEET HORIZONTAL ANDA (Master Data)
+        // PASTIKAN INI ADALAH URL JSON DARI SPREADSHEET HORIZONTAL ANDA
         const DATA_URL = 'https://docs.google.com/spreadsheets/d/1HHn6ZnqfLrEVNVktxIchcwdmBMmL-WyEnBBJP5piABg/gviz/tq?tqx=out:json&gid=651467196';
         let masterData = [];
 
@@ -88,21 +86,21 @@
             // Kita menggunakan rowIndex + 1 karena baris pertama adalah header
             const row = masterData[rowIndex + 1].c; 
             
-            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM HORIZONTAL ---
+            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM FIX (USER DEFINED) ---
+            const No_Pelanggan = getCellVal(row, 0);        // Kolom A
             const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B
-            const No_Pelanggan = getCellVal(row, 0);        // Kolom A (Nomor Urut)
-            const Stand_Awal = getCellVal(row, 3);          // Kolom D
-            const Stand_Akhir = getCellVal(row, 4);         // Kolom E
-            const Jumlah_Pemakaian = getCellVal(row, 5);    // Kolom F
-            const Pokok_Beban = getCellVal(row, 6);         // Kolom G
-            const Tarif_Ixuan = getCellVal(row, 7);         // Kolom H
-            const Jumlah_Bayar = getCellVal(row, 8);        // Kolom I
+            const Stand_Awal = getCellVal(row, 2);          // Kolom C
+            const Stand_Akhir = getCellVal(row, 3);         // Kolom D
+            const Jumlah_Pemakaian = getCellVal(row, 4);    // Kolom E
+            const Pokok_Beban = getCellVal(row, 5);         // Kolom F
+            const Tarif_Ixuan = getCellVal(row, 6);         // Kolom G
+            const Jumlah_Bayar = getCellVal(row, 7);        // Kolom H
             const Alamat_Rumah = getCellVal(row, 9);        // Kolom J
             
             // Data statis/umum
-            const Tgl_Cetak = new Date().toLocaleDateString('id-ID'); // Menggunakan tanggal hari ini
+            const Tgl_Cetak = new Date().toLocaleDateString('id-ID'); 
             const Periode_Bulan = 'SEPTEMBER'; 
-            const Collector = 'Suciani'; // (Atau ambil dari kolom jika ada)
+            const Collector = 'Suciani'; 
 
             // --- MERENDER HTML KUITANSI (Desain Final) ---
             const html = `
@@ -146,7 +144,6 @@
                 </div>
             `;
             
-            // Tampilkan kuitansi dan sembunyikan daftar
             document.getElementById('receipt-output').innerHTML = html;
             document.getElementById('list-output').style.display = 'none';
             document.getElementById('receipt-output').style.display = 'block';
@@ -161,7 +158,7 @@
             for (let i = 1; i < masterData.length; i++) {
                 const row = masterData[i].c;
                 const Nama_Pelanggan = getCellVal(row, 1);
-                const Jumlah_Bayar = getCellVal(row, 8);
+                const Jumlah_Bayar = getCellVal(row, 7); // Menggunakan indeks Total Bayar (H = 7)
 
                 if (Nama_Pelanggan && Nama_Pelanggan !== 'N/A') {
                     listHtml += `
