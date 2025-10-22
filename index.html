@@ -19,8 +19,10 @@
             body { width: 58mm; font-family: 'Consolas', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
             .container { padding: 0 2mm; width: 58mm; }
             .receipt-view { display: block !important; }
-            .separator-dashed { border: none; border-top: 1px dashed black; margin: 2px 0; height: 1px; }
-            .separator-double { border: none; border-top: 3px double black; margin: 2px 0; height: 3px; }
+            
+            /* HAPUS: Kelas separator CSS dihapus karena kita menggunakan karakter teks */
+            /* .separator-dashed { border: none; border-top: 1px dashed black; margin: 2px 0; height: 1px; } */
+            /* .separator-double { border: none; border-top: 3px double black; margin: 2px 0; height: 3px; } */
         }
         
         /* ==================== B. PENGATURAN LAYAR (BROWSER) ==================== */
@@ -143,7 +145,7 @@
             const Nama_Pelanggan = getCellVal(row, 1);     
             const Stand_Awal = getCellVal(row, 2);         
             const Stand_Akhir = getCellVal(row, 3);        
-            const Jumlah_Pemakaian = getCellVal(row, 4);   // Kolom E (Pemakaian)
+            const Jumlah_Pemakaian = getCellVal(row, 4);   
             const Pokok_Beban = getCellVal(row, 5);        
             const Tarif_Ixuan = getCellVal(row, 6);        
             const Jumlah_Bayar = getCellVal(row, 8);       
@@ -154,13 +156,14 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI ---
+            // --- MERENDER HTML KUITANSI (MENGGUNAKAN KARAKTER GARIS PUTUS-PUTUS) ---
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
                     <div class="text-center text-bold">PAMSIMAS TIRTA JAYA</div>
                     <div class="text-center text-bold">DUSUN KUAMANG JAYA</div>
-                    <div class="separator-dashed"></div>
+                    
+                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
 
                     <table class="receipt-table">
                         <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value">${Tgl_Cetak}</td></tr>
@@ -169,7 +172,8 @@
                         <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value">${No_Pelanggan}</td></tr>
                         <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value">${Alamat_Rumah}</td></tr>
                     </table>
-                    <div class="separator-dashed"></div>
+
+                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
 
                     <div class="text-center text-bold">Rincian Pemakaian Air (M³)</div>
                     <table class="receipt-table">
@@ -177,18 +181,21 @@
                         <tr><td class="td-label">Stand Akhir</td><td class="td-colon">:</td><td class="td-value td-value-right">${Stand_Akhir}</td></tr>
                         <tr><td class="td-label">Jumlah Pemakaian</td><td class="td-colon">:</td><td class="td-value td-value-right">${Jumlah_Pemakaian}</td></tr>
                     </table>
-                    <div class="separator-dashed"></div> 
+                    
+                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
 
                     <div class="text-center text-bold">Rincian Biaya (Rp)</div>
                     <table class="receipt-table">
                         <tr><td class="td-label">Iuran 2.000/m³</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Tarif_Ixuan}</td></tr>
                         <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Pokok_Beban}</td></tr>
                     </table>
-                    <div class="separator-double"></div>
+                    
+                    <div class="text-center" style="margin: 2px 0;">===================</div>
                     
                     <div class="text-center text-bold text-underline">JUMLAH BAYAR</div>
                     <div class="text-center text-bold" style="font-size: 11pt;">Rp ${Jumlah_Bayar}</div>
-                    <div class="separator-dashed"></div>
+                    
+                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
