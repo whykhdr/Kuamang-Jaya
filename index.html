@@ -24,7 +24,7 @@
             }
             
             /* Hanya tombol "Kembali" dan Daftar yang disembunyikan saat mencetak */
-            .print-list, #back-btn { 
+            .print-list, #back-btn, button { 
                 display: none !important; 
             } 
             
@@ -53,26 +53,30 @@
             text-align: center; 
         }
         
-        /* Kontainer Kuitansi (Preview) */
+        /* Kontainer Kuitansi (Preview) - Gunakan font monospace agar layout lebih rapi */
         .receipt-view { 
             display: inline-block; 
             margin: 0 auto;
         }
         .container { 
             width: 58mm; 
+            /* Menggunakan Consolas/Monospace agar perataan data rapi seperti di struk */
+            font-family: 'Consolas', monospace; 
+            font-size: 9pt; /* Ukuran font di preview disamakan dengan cetakan */
+            line-height: 1.2; /* Ketinggian baris rapat seperti struk */
+            
             min-height: 87mm; 
             border: 1px solid #ccc; 
-            padding: 5px 2mm; 
+            padding: 5px 2mm; /* Padding efektif untuk konten */
             box-shadow: 0 0 10px rgba(0,0,0,0.1); 
             background: white;
             margin: 0 auto; 
             box-sizing: border-box; 
-            font-size: 10pt; 
-            line-height: 1.3; 
         }
         
-        /* Styling Halaman Utama (Daftar) - ELEGAN */
+        /* Styling Halaman Utama (Daftar) - Kembali ke font standar untuk daftar */
         .print-list { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 700px; 
             margin: 20px auto; 
             padding: 20px; 
@@ -112,6 +116,7 @@
             background-color: #4CAF50; 
             color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Kembali ke font standar */
         }
         button:hover { background-color: #45a049; }
         #back-btn { background-color: #6c757d; margin-top: 10px; }
@@ -121,12 +126,15 @@
         /* ==================== C. STYLING KUITANSI (DETAIL) ==================== */
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
+        .text-underline { text-decoration: underline; }
 
         .receipt-table { width: 100%; border-collapse: collapse; }
-        .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; }
-        .td-label { width: 45%; text-align: left; }
+        /* Padding 0 agar baris rapat */
+        .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; } 
+        /* Penyesuaian lebar kolom agar rata */
+        .td-label { width: 40%; text-align: left; }
         .td-colon { width: 5%; text-align: center; }
-        .td-value { width: 50%; text-align: left; font-weight: bold; }
+        .td-value { width: 55%; text-align: left; font-weight: bold; }
         .td-value-center { text-align: center !important; } 
         .td-value-right { text-align: right !important; } 
     </style>
@@ -175,17 +183,17 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (Tombol CETAK DIHAPUS) ---
+            // --- MERENDER HTML KUITANSI (Disesuaikan dengan format cetak) ---
             const html = `
                 <div class="container">
-                    <div class="text-center text-bold" style="font-size:10pt;">KWITANSI PEMBAYARAN AIR</div>
-                    <div class="text-center text-bold" style="font-size:10pt;">PAMSIMAS TIRTA JAYA</div>
-                    <div class="text-center text-bold" style="font-size:10pt;">DUSUN KUAMANG JAYA</div>
+                    <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
+                    <div class="text-center text-bold">PAMSIMAS TIRTA JAYA</div>
+                    <div class="text-center text-bold">DUSUN KUAMANG JAYA</div>
                     <div class="separator-dashed"></div>
 
                     <table class="receipt-table">
-                        <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value td-value-center">${Tgl_Cetak}</td></tr>
-                        <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value td-value-center">${Periode_Bulan}</td></tr>
+                        <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value">${Tgl_Cetak}</td></tr>
+                        <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value">${Periode_Bulan}</td></tr>
                         <tr><td class="td-label">Nama Pelanggan</td><td class="td-colon">:</td><td class="td-value">${Nama_Pelanggan}</td></tr>
                         <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value">${No_Pelanggan}</td></tr>
                         <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value">${Alamat_Rumah}</td></tr>
@@ -202,19 +210,18 @@
 
                     <div class="text-center text-bold">Rincian Biaya (Rp)</div>
                     <table class="receipt-table">
-                        <tr><td class="td-label">Iuran 2.000/m³</td><td class="td-colon">:</td><td class="td-value td-value-right">${Tarif_Ixuan}</td></tr>
-                        <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value td-value-right">${Pokok_Beban}</td></tr>
+                        <tr><td class="td-label">Iuran 2.000/m³</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Tarif_Ixuan}</td></tr>
+                        <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Pokok_Beban}</td></tr>
                     </table>
                     <div class="separator-double"></div>
                     
-                    <div class="text-bold" style="font-size: 11pt; text-align:center;">JUMLAH BAYAR</div>
-                    <div class="text-center text-bold" style="font-size: 11pt;">${Jumlah_Bayar}</div>
+                    <div class="text-center text-bold text-underline">JUMLAH BAYAR</div>
+                    <div class="text-center text-bold" style="font-size: 11pt;">Rp ${Jumlah_Bayar}</div>
                     <div class="separator-dashed"></div>
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
-                    
-                    </div>
+                </div>
             `;
             
             document.getElementById('receipt-output').innerHTML = html;
