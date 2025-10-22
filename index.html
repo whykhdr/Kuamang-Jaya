@@ -10,12 +10,18 @@
             body {
                 width: 58mm;
                 font-family: 'Consolas', monospace, sans-serif; 
-                font-size: 9pt;
+                font-size: 9pt; /* Ukuran font di cetakan */
                 margin: 0;
                 padding: 0;
                 line-height: 1.2;
             }
-            .container { padding: 0 2mm; width: 58mm; }
+            /* Kontainer cetak tidak memiliki border atau shadow */
+            .container { 
+                padding: 0 2mm; /* Padding efektif untuk konten di dalam 58mm */
+                width: 58mm; 
+                border: none;
+                box-shadow: none;
+            }
             
             /* Tombol Kembali dan Tombol Cetak (di dalam container) disembunyikan saat mencetak */
             .print-list, #back-btn, button { 
@@ -53,14 +59,17 @@
             margin: 0 auto;
         }
         .container { 
-            width: 58mm;
-            min-height: 87mm; 
-            border: 1px solid #ccc;
-            padding: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            /* Lebar persis 58mm, box-sizing: border-box memastikan padding dihitung ke dalam width */
+            width: 58mm; 
+            min-height: 87mm; /* Rasio 1:1.5 untuk tampilan lebih proporsional */
+            border: 1px solid #ccc; /* Border untuk visualisasi di preview */
+            padding: 5px 2mm; /* Padding efektif (atas/bawah 5px, kiri/kanan 2mm) */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Shadow untuk visualisasi di preview */
             background: white;
             margin: 0 auto; 
-            box-sizing: border-box; 
+            box-sizing: border-box; /* Kunci: padding tidak menambah lebar total */
+            font-size: 10pt; /* Ukuran font umum di preview, mendekati 9pt cetak */
+            line-height: 1.3; /* Jarak antar baris */
         }
         
         /* Styling Halaman Utama (Daftar) - ELEGAN */
@@ -115,6 +124,7 @@
         .text-bold { font-weight: bold; }
 
         .receipt-table { width: 100%; border-collapse: collapse; }
+        /* Padding TD dibuat 0 karena sudah ada padding di .container */
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; }
         .td-label { width: 45%; text-align: left; }
         .td-colon { width: 5%; text-align: center; }
@@ -168,7 +178,6 @@
             const Collector = 'Suciani'; 
 
             // --- MERENDER HTML KUITANSI (Desain Final) ---
-            // Tombol "Cetak Kuitansi Ini" ditambahkan kembali untuk manual print
             const html = `
                 <div class="container">
                     <div class="text-center text-bold" style="font-size:10pt;">KWITANSI PEMBAYARAN AIR</div>
@@ -216,8 +225,6 @@
             
             // Tampilkan tombol kembali
             document.querySelector('.receipt-view-controls #back-btn').style.display = 'block';
-
-            // --- KODE WINDOW.PRINT() DIHAPUS DI SINI ---
         }
 
         // --- FUNGSI TAMPIL DAFTAR (87 TRANSAKSI) ---
