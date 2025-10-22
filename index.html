@@ -44,21 +44,23 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 20px; 
             background: #e0e0e0; 
-            text-align: center; /* Kunci Perataan Tengah */
+            text-align: center; 
         }
         
         /* Kontainer Kuitansi (Preview) */
         .receipt-view { 
-            display: inline-block; /* Kunci Perataan Tengah */
+            display: inline-block; 
             margin: 0 auto;
         }
         .container { 
             width: 58mm;
+            min-height: 87mm; /* RASIO 1:1.5 (58mm x 1.5 = 87mm) untuk tampilan elegan */
             border: 1px solid #ccc;
             padding: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             background: white;
             margin: 0 auto; 
+            box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
         }
         
         /* Styling Halaman Utama (Daftar) - ELEGAN */
@@ -69,7 +71,7 @@
             background: white; 
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: left; /* Kembalikan perataan teks di dalam daftar */
+            text-align: left; 
         }
         .print-list h2 { 
             color: #1a73e8; 
