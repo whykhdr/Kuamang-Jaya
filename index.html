@@ -16,7 +16,6 @@
                 display: none !important; 
             } 
             /* Styling Cetak lainnya tetap sama */
-            /* FONT DIUBAH KE COURIER NEW */
             body { width: 58mm; font-family: 'Courier New', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
             .container { padding: 0 2mm; width: 58mm; }
             .receipt-view { display: block !important; }
@@ -32,7 +31,6 @@
         .receipt-view { display: inline-block; margin: 0 auto; }
         .container { 
             width: 58mm; 
-            /* FONT DIUBAH KE COURIER NEW */
             font-family: 'Courier New', monospace; 
             font-size: 9pt; 
             line-height: 1.2; 
@@ -164,7 +162,7 @@
                     <div class="text-center text-bold">PAMSIMAS TIRTA KUSUMA</div>
                     <div class="text-center text-bold">DUSUN KUAMANG JAYA</div>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">------------------------------------</div>
 
                     <div style="text-align: right; font-size: 7pt; margin-bottom: 5px;">Tgl. Cetak: ${Tgl_Cetak}</div>
 
@@ -175,7 +173,7 @@
                         <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value">${Alamat_Rumah}</td></tr>
                     </table>
 
-                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">------------------------------------</div>
 
                     <div class="text-center text-bold">Rincian Pemakaian Air (M³)</div>
                     <table class="receipt-table">
@@ -184,7 +182,7 @@
                         <tr><td class="td-label">Jumlah Pemakaian</td><td class="td-colon">:</td><td class="td-value td-value-right">${Jumlah_Pemakaian}</td></tr>
                     </table>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">------------------------------------</div>
 
                     <div class="text-center text-bold">Rincian Biaya (Rp)</div>
                     <table class="receipt-table">
@@ -192,12 +190,12 @@
                         <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Pokok_Beban}</td></tr>
                     </table>
                     
-                    <div class="text-center" style="margin: 2px 0;">=========================</div>
+                    <div class="text-center" style="margin: 2px 0;">====================================</div>
                     
                     <div class="text-center text-bold text-underline">JUMLAH BAYAR</div>
                     <div class="text-center text-bold" style="font-size: 11pt;">Rp ${Jumlah_Bayar}</div>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">------------------------------------</div>
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center" style="font-size: 7pt;">Collector: ${Collector}</div>
