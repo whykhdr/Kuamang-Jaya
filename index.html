@@ -74,12 +74,12 @@
         /* PENTING: Pengaturan Lebar Kolom untuk Menyelaraskan Titik Dua */
         .receipt-table { width: 100%; border-collapse: collapse; }
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; } 
-        /* Label (Contoh: Nama Pelanggan) */
-        .td-label { width: 45%; text-align: left; }
+        /* Label (Disesuaikan menjadi 40% untuk penyelarasan yang lebih baik) */
+        .td-label { width: 40%; text-align: left; } 
         /* Kolom Titik Dua */
         .td-colon { width: 5%; text-align: center; } 
-        /* Kolom Nilai */
-        .td-value { width: 50%; text-align: left; font-weight: bold; }
+        /* Kolom Nilai (Disesuaikan menjadi 55%) */
+        .td-value { width: 55%; text-align: left; font-weight: bold; }
         
         .td-value-center { text-align: center !important; } 
         /* Rata Kanan untuk Nilai (Pemakaian & Biaya) */
@@ -158,7 +158,7 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (Tanggal Cetak di luar tabel, rata kanan penuh) ---
+            // --- MERENDER HTML KUITANSI ---
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">PAMSIMAS TIRTA KUSUMA</div>
@@ -200,7 +200,7 @@
                     <div class="text-center" style="margin: 2px 0;">-------------------------</div>
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
-                    <div class="text-center">Collector: ${Collector}</div>
+                    <div class="text-center" style="font-size: 7pt;">Collector: ${Collector}</div>
                 </div>
                 <button onclick="downloadReceiptAsImage('${Nama_Pelanggan}')" style="margin-top: 10px; width: 58mm;">Download Gambar (PNG)</button>
             `;
