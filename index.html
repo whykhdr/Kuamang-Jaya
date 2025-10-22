@@ -70,12 +70,17 @@
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
         .text-underline { text-decoration: underline; }
-
+        
+        /* PENTING: Pengaturan Lebar Kolom untuk Menyelaraskan Titik Dua */
         .receipt-table { width: 100%; border-collapse: collapse; }
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; } 
-        .td-label { width: 40%; text-align: left; }
-        .td-colon { width: 5%; text-align: center; }
-        .td-value { width: 55%; text-align: left; font-weight: bold; }
+        /* Label (Contoh: Nama Pelanggan) */
+        .td-label { width: 45%; text-align: left; }
+        /* Kolom Titik Dua */
+        .td-colon { width: 5%; text-align: center; } 
+        /* Kolom Nilai */
+        .td-value { width: 50%; text-align: left; font-weight: bold; }
+        
         .td-value-center { text-align: center !important; } 
         .td-value-right { text-align: right !important; } 
     </style>
@@ -152,16 +157,17 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (Nama dan Judul Diubah) ---
+            // --- MERENDER HTML KUITANSI (Tanggal dan Titik Dua dirapikan) ---
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">PAMSIMAS TIRTA KUSUMA</div>
                     <div class="text-center text-bold">DUSUN KUAMANG JAYA</div>
                     
+                    <div style="text-align: right; font-size: 8pt; margin-bottom: 5px;">Tgl. Cetak: ${Tgl_Cetak}</div>
+
                     <div class="text-center" style="margin: 2px 0;">-------------------------</div>
 
                     <table class="receipt-table">
-                        <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value">${Tgl_Cetak}</td></tr>
                         <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value">${Periode_Bulan}</td></tr>
                         <tr><td class="td-label">Nama Pelanggan</td><td class="td-colon">:</td><td class="td-value">${Nama_Pelanggan}</td></tr>
                         <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value">${No_Pelanggan}</td></tr>
