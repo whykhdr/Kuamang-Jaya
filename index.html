@@ -1,66 +1,110 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
+    <title>Struk Thermal 58mm</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi PAMSIMAS</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* CSS ini hanya berlaku saat perintah cetak dipicu */
+        @media print {
+            body {
+                width: 58mm; /* Kunci: Atur lebar fisik */
+                font-family: Arial, sans-serif;
+                font-size: 9pt; /* Ukuran font yang optimal untuk 58mm */
+                margin: 0;
+                padding: 0;
+                line-height: 1.2;
+            }
+            .container {
+                width: 58mm;
+            }
+            /* Sembunyikan tombol saat mencetak */
+            #print-btn { display: none; }
+        }
+        
+        /* CSS untuk tampilan di layar (browser) */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            width: 58mm;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            background: white;
+            margin: 0 auto; /* Tengah di layar */
+        }
+        .text-center { text-align: center; }
+        .text-bold { font-weight: bold; }
+    </style>
 </head>
 <body>
 
-    <div id="input-area" class="no-print">
-        <h1>PAMSIMAS DUSUN KUAMANG JAYA</h1>
-        
-        <div class="input-grid fixed-prices" style="max-width: 400px; margin-bottom: 20px;">
-            <label for="nama_petugas">Nama Kolektor:</label>
-            <input type="text" id="nama_petugas" value="">
+    <button id="print-btn" onclick="window.print()">Cetak Kuitansi (Akan menyesuaikan ke 58mm)</button>
+    <div class="container">
+        <div id="receipt-output">
+            Memuat data...
         </div>
-
-        <h2>Input Data Tagihan Massal</h2>
-        
-        <div class="input-grid fixed-prices">
-            <label for="harga_per_m">Iuran/m (Rp):</label>
-            <input type="number" id="harga_per_m" value="2000" readonly>
-            
-            <label for="pokok_beban">Pokok Beban (Rp):</label>
-            <input type="number" id="pokok_beban" value="10000" readonly>
-        </div>
-        
-        <hr>
-
-        <div class="table-container">
-            <table id="data-table">
-                <thead>
-                    <tr>
-                        <th>Periode</th>
-                        <th>Nama</th>
-                        <th>No Pelanggan</th>
-                        <th>Alamat</th>
-                        <th>Stand Awal (M3)</th>
-                        <th>Stand Akhir (M3)</th>
-                        <th>Hapus</th>
-                    </tr>
-                </thead>
-                <tbody id="data-table-body">
-                    </tbody>
-            </table>
-        </div>
-        
-        <button onclick="addRow()" style="background-color: #007bff; margin-top: 10px;">
-            ➕ Tambah Baris Pelanggan Baru
-        </button>
-        
-        <hr>
-        
-        <button onclick="handlePrintMassal()" style="background-color: #28a745;">
-            Cetak Semua Kuitansi Massal
-        </button>
-        
     </div>
 
-    <div id="receipt-output" class="receipt-container" style="display: none;">
-        </div>
+    <script>
+        // PASTE URL JSON DARI Sesi 1 DI SINI
+        const DATA_URL = 'https://docs.google.com/spreadsheets/d/2PACX-1vTXYHC3Xo_3egouHbOvY1_z_Swbq1xDg1F4O8ZX90Y4iWmhsXu2T-Vi3mDO2Ay4Hr_MaDAoU6NleK_z/gviz/tq?tqx=out:json&gid=gid=1435913472';
 
-    <script src="script.js"></script>
+        function loadReceiptData() {
+            // Mengatasi masalah format JSON Google Sheets
+            fetch(DATA_URL)
+                .then(res => res.text())
+                .then(text => {
+                    // Membersihkan teks untuk mendapatkan objek JSON yang valid
+                    const jsonString = text.substring(47).slice(0, -2);
+                    const data = JSON.parse(jsonString);
+                    
+                    // Ambil SEMUA BARIS DATA (kecuali header)
+                    const rows = data.table.rows;
+                    
+                    if (rows.length === 0) {
+                        document.getElementById('receipt-output').innerHTML = "Tidak ada data transaksi.";
+                        return;
+                    }
+
+                    // Kunci: Ambil data dari BARIS TERAKHIR/TERBARU (atau baris yang ingin Anda cetak)
+                    // Ganti 'rows[rows.length - 1]' jika Anda ingin mengambil baris lain
+                    const lastRow = rows[rows.length - 1].c; 
+
+                    // AMBIL NILAI DATA BERDASARKAN INDEKS KOLOM (Indeks dimulai dari 0)
+                    // Anda harus mencocokkan ini dengan letak kolom Anda di Spreadsheet
+                    const Tgl_Cetak = lastRow[3] ? lastRow[3].v : 'N/A'; // Asumsi Kolom D = Indeks 3
+                    const Periode_Bulan = lastRow[4] ? lastRow[4].v : 'N/A'; // Asumsi Kolom E = Indeks 4
+                    const Nama_Pelanggan = lastRow[5] ? lastRow[5].v : 'N/A'; // Asumsi Kolom F = Indeks 5
+                    const Jumlah_Bayar = lastRow[14] ? lastRow[14].v : 'N/A'; // Asumsi Kolom O = Indeks 14
+
+                    // MERENDER HTML KUITANSI (Template)
+                    const receiptHTML = `
+                        <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
+                        <div class="text-center text-bold">PAM SIMAS TIRTA JAYA</div>
+                        <hr>
+                        Tgl. Cetak: ${Tgl_Cetak}<br>
+                        Periode Bulan: ${Periode_Bulan}<br>
+                        Nama Pelanggan: ${Nama_Pelanggan}<br>
+                        <hr>
+                        <div class="text-bold" style="font-size: 11pt;">JUMLAH BAYAR</div>
+                        Rp <span class="text-bold" style="font-size: 11pt;">${Jumlah_Bayar}</span>
+                        <hr>
+                        <div class="text-center">TERIMA KASIH</div>
+                    `;
+                    
+                    document.getElementById('receipt-output').innerHTML = receiptHTML;
+                })
+                .catch(error => {
+                    document.getElementById('receipt-output').innerHTML = 'Gagal memuat data. Periksa ID Spreadsheet dan izin publikasi.';
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        loadReceiptData();
+    </script>
 </body>
 </html>
