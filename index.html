@@ -16,7 +16,8 @@
                 display: none !important; 
             } 
             /* Styling Cetak lainnya tetap sama */
-            body { width: 58mm; font-family: 'Consolas', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
+            /* FONT DIUBAH KE COURIER NEW */
+            body { width: 58mm; font-family: 'Courier New', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
             .container { padding: 0 2mm; width: 58mm; }
             .receipt-view { display: block !important; }
         }
@@ -31,7 +32,8 @@
         .receipt-view { display: inline-block; margin: 0 auto; }
         .container { 
             width: 58mm; 
-            font-family: 'Consolas', monospace; 
+            /* FONT DIUBAH KE COURIER NEW */
+            font-family: 'Courier New', monospace; 
             font-size: 9pt; 
             line-height: 1.2; 
             min-height: 87mm; 
@@ -75,10 +77,10 @@
         .receipt-table { width: 100%; border-collapse: collapse; }
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; } 
         
-        /* PERUBAHAN CSS UNTUK PENYELARASAN */
-        .td-label { width: 40%; text-align: left; } /* Ditingkatkan ke 40% */
-        .td-colon { width: 3%; text-align: center; } /* Diperkecil ke 3% */
-        .td-value { width: 57%; text-align: left; font-weight: bold; } /* Disesuaikan ke 57% */
+        /* Penyesuaian Lebar Kolom */
+        .td-label { width: 40%; text-align: left; } 
+        .td-colon { width: 3%; text-align: center; } 
+        .td-value { width: 57%; text-align: left; font-weight: bold; } 
         
         .td-value-center { text-align: center !important; } 
         .td-value-right { text-align: right !important; } 
