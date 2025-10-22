@@ -16,7 +16,12 @@
                 line-height: 1.2;
             }
             .container { padding: 0 2mm; width: 58mm; }
-            .print-list, #back-btn, button { display: none; } 
+            
+            /* Tombol Kembali, Tombol Cetak, dan Daftar disembunyikan saat mencetak */
+            .print-list, #back-btn, button { 
+                display: none !important; 
+            } 
+            
             .receipt-view { display: block !important; }
             
             /* Styling Garis Pemisah */
@@ -41,7 +46,7 @@
         .receipt-view { 
             display: none; 
             margin: 0 auto;
-            width: fit-content; /* Hanya selebar konten kuitansi */
+            width: fit-content;
         }
         .container { 
             width: 58mm;
@@ -52,7 +57,7 @@
             margin: 0 auto; 
         }
         
-        /* Styling Halaman Utama (Daftar) */
+        /* Styling Halaman Utama (Daftar) - ELEGAN */
         .print-list { 
             max-width: 700px; 
             margin: 20px auto; 
@@ -102,6 +107,7 @@
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
 
+        /* Tabel untuk alignment data */
         .receipt-table { width: 100%; border-collapse: collapse; }
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; }
         .td-label { width: 45%; text-align: left; }
@@ -139,7 +145,7 @@
         function renderReceipt(rowIndex) {
             const row = masterData[rowIndex + 1].c; 
             
-            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM FIX (FINAL) ---
+            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM FINAL ---
             const No_Pelanggan = getCellVal(row, 0);        // Kolom A (Index 0)
             const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B (Index 1)
             const Stand_Awal = getCellVal(row, 2);          // Kolom C (Index 2)
@@ -151,7 +157,7 @@
             const Alamat_Rumah = getCellVal(row, 9);        // Kolom J (Index 9)
             
             // Data statis/umum
-            const Tgl_Cetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}); // 22/10/2025
+            const Tgl_Cetak = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}); 
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
@@ -201,7 +207,7 @@
             document.getElementById('list-output').style.display = 'none';
             document.getElementById('receipt-output').style.display = 'block';
             
-            // Tampilkan tombol kembali di atas kontainer kuitansi
+            // Tampilkan tombol kembali
             document.querySelector('.receipt-view-controls #back-btn').style.display = 'block';
         }
 
