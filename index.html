@@ -24,7 +24,8 @@
         /* ==================== B. PENGATURAN LAYAR (BROWSER) ==================== */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 20px; background: #e0e0e0; text-align: center; 
+            margin: 20px; background: #f4f7f9; /* Latar belakang lebih lembut */
+            text-align: center; 
         }
         
         /* Kontainer Kuitansi (Preview) - Font Monospace 58mm */
@@ -43,27 +44,87 @@
             box-sizing: border-box; 
         }
         
-        /* Styling Halaman Utama (Daftar) */
+        /* ==================== STYLING BARU HALAMAN UTAMA (DAFTAR) ==================== */
         .print-list { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 700px; margin: 20px auto; 
-            padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); text-align: left; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 800px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Shadow yang lebih dalam */
+            text-align: left; 
         }
-        .print-list h2 { color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 20px; }
-        .print-list ol { list-style: none; padding: 0; }
+        .print-list h2 { 
+            color: #007bff; /* Biru Primer */
+            border-bottom: 2px solid #e0e0e0; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
+        }
+        .print-list ol { 
+            list-style: none; 
+            padding: 0; 
+            display: grid;
+            gap: 10px; /* Jarak antar kartu */
+        }
         .print-list li {
-            display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px; 
+            background: #f8f9fa; /* Warna latar belakang kartu */
+            border-radius: 8px; /* Sudut membulat */
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease-in-out;
         }
-        .print-list li:last-child { border-bottom: none; }
+        .print-list li:hover {
+            background: #e9ecef; /* Efek hover */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .list-info {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+        }
+        .list-info span:first-child {
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 4px;
+        }
+        .list-info span:last-child {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
         
         /* Styling Tombol */
         button {
-            padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;
-            background-color: #4CAF50; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 18px; 
+            border: none; 
+            border-radius: 50px; /* Tombol bulat */
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background-color 0.3s, box-shadow 0.3s;
+            background-color: #28a745; /* Hijau yang lebih cerah */
+            color: white; 
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            white-space: nowrap;
         }
-        button:hover { background-color: #45a049; }
-        #back-btn { background-color: #6c757d; margin-top: 10px; }
-        #back-btn:hover { background-color: #5a6268; }
+        button:hover { 
+            background-color: #218838; 
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4);
+        }
+        #back-btn { 
+            background-color: #6c757d; 
+            box-shadow: none;
+            margin-top: 10px; 
+            border-radius: 8px; 
+        }
+        #back-btn:hover { 
+            background-color: #5a6268; 
+        }
 
 
         /* ==================== C. STYLING KUITANSI (DETAIL) ==================== */
@@ -89,7 +150,7 @@
     <div id="app-container">
         <div id="list-output" class="print-list">Memuat daftar transaksi...</div>
         
-        <div class="receipt-view-controls" style="max-width: 700px; margin: 0 auto; text-align: left;">
+        <div class="receipt-view-controls" style="max-width: 800px; margin: 0 auto; text-align: left;">
              <button id="back-btn" onclick="showList()" style="display: none;">&#x2190; Kembali ke Daftar Pelanggan</button>
         </div>
         <div id="receipt-output" class="receipt-view">
@@ -224,7 +285,10 @@
                 if (Nama_Pelanggan && Nama_Pelanggan !== 'N/A') {
                     listHtml += `
                         <li>
-                            <span>**${i}. ${Nama_Pelanggan}** | Total: ${Jumlah_Bayar}</span>
+                            <div class="list-info">
+                                <span>${i}. 👤 ${Nama_Pelanggan}</span>
+                                <span>💰 Total: **Rp ${Jumlah_Bayar}**</span>
+                            </div>
                             <button onclick="renderReceipt(${i - 1})">&#x1F4F7; Lihat & Download</button>
                         </li>
                     `;
