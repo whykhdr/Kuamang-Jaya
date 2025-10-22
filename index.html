@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>87 Kuitansi Dinamis Thermal</title>
+    <title>Daftar Kuitansi PAMSIMAS</title>
     <meta charset="UTF-8">
     
     <style>
@@ -9,7 +9,7 @@
         @media print {
             body {
                 width: 58mm;
-                font-family: Arial, sans-serif;
+                font-family: 'Consolas', monospace, sans-serif; /* Font monospasi untuk cetak */
                 font-size: 9pt;
                 margin: 0;
                 padding: 0;
@@ -19,7 +19,7 @@
             .print-list, #back-btn, button { display: none; } 
             .receipt-view { display: block !important; }
             
-            /* Styling Garis Pemisah (Kunci Desain) */
+            /* Styling Garis Pemisah */
             .separator-dashed { 
                 border: none;
                 border-top: 1px dashed black; 
@@ -35,7 +35,9 @@
         }
         
         /* ==================== B. PENGATURAN LAYAR (BROWSER) ==================== */
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #e0e0e0; }
+        
+        /* Kontainer Kuitansi (Preview) */
         .container { 
             width: 58mm;
             border: 1px solid #ccc;
@@ -44,12 +46,66 @@
             background: white;
             margin: 0 auto; 
         }
+        
+        /* Styling Baru untuk Halaman Utama (Daftar) */
+        .print-list { 
+            max-width: 700px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .print-list h2 { 
+            color: #1a73e8; /* Biru Google */
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .print-list ol {
+            list-style: none; /* Hapus bullet/angka bawaan */
+            padding: 0;
+        }
+        .print-list li {
+            display: flex; /* Menggunakan Flexbox untuk perataan item */
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+        .print-list li:last-child { border-bottom: none; }
+        
+        /* Styling Tombol */
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            background-color: #4CAF50; /* Hijau (Cetak) */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #back-btn {
+            background-color: #6c757d; /* Abu-abu (Kembali) */
+            margin-left: auto;
+            display: block;
+        }
+        #back-btn:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* ==================== C. STYLING KUITANSI (DETAIL) ==================== */
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
-        .print-list { max-width: 600px; margin: 0 auto; padding: 20px; background: white; border-radius: 5px; }
         .receipt-view { display: none; }
 
-        /* Styling Khusus Tabel untuk Alignment Titik Dua */
         .receipt-table { width: 100%; border-collapse: collapse; }
         .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; }
         .td-label { width: 45%; text-align: left; }
@@ -64,7 +120,9 @@
     <div id="app-container">
         <div id="list-output" class="print-list">Memuat daftar transaksi...</div>
         
-        <button id="back-btn" onclick="showList()" style="margin-bottom: 10px; display: none;">&larr; Kembali ke Daftar</button>
+        <div style="max-width: 700px; margin: 0 auto; padding-top: 10px;">
+             <button id="back-btn" onclick="showList()">&#x2190; Kembali ke Daftar Pelanggan</button>
+        </div>
         <div id="receipt-output" class="receipt-view">
             </div>
     </div>
@@ -83,19 +141,18 @@
 
         // --- FUNGSI TAMPIL KUITANSI TUNGGAL ---
         function renderReceipt(rowIndex) {
-            // Kita menggunakan rowIndex + 1 karena baris pertama adalah header
             const row = masterData[rowIndex + 1].c; 
             
             // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM FIX (USER DEFINED) ---
-            const No_Pelanggan = getCellVal(row, 0);        // Kolom A
-            const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B
-            const Stand_Awal = getCellVal(row, 2);          // Kolom C
-            const Stand_Akhir = getCellVal(row, 3);         // Kolom D
-            const Jumlah_Pemakaian = getCellVal(row, 4);    // Kolom E
-            const Pokok_Beban = getCellVal(row, 5);         // Kolom F
-            const Tarif_Ixuan = getCellVal(row, 6);         // Kolom G
-            const Jumlah_Bayar = getCellVal(row, 8);        // Kolom I
-            const Alamat_Rumah = getCellVal(row, 9);        // Kolom J
+            const No_Pelanggan = getCellVal(row, 0);        // Kolom A (Index 0)
+            const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B (Index 1)
+            const Stand_Awal = getCellVal(row, 2);          // Kolom C (Index 2)
+            const Stand_Akhir = getCellVal(row, 3);         // Kolom D (Index 3)
+            const Jumlah_Pemakaian = getCellVal(row, 4);    // Kolom E (Index 4)
+            const Pokok_Beban = getCellVal(row, 5);         // Kolom F (Index 5)
+            const Tarif_Ixuan = getCellVal(row, 6);         // Kolom G (Index 6)
+            const Jumlah_Bayar = getCellVal(row, 8);        // Kolom I (Index 8) 
+            const Alamat_Rumah = getCellVal(row, 9);        // Kolom J (Index 9)
             
             // Data statis/umum
             const Tgl_Cetak = new Date().toLocaleDateString('id-ID'); 
@@ -140,7 +197,7 @@
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
-                    <button onclick="window.print()" style="margin-top: 10px;">Cetak Kuitansi Ini</button>
+                    <button onclick="window.print()" style="margin-top: 10px; width: 100%;">Cetak Kuitansi Ini</button>
                 </div>
             `;
             
@@ -153,18 +210,20 @@
         // --- FUNGSI TAMPIL DAFTAR (87 TRANSAKSI) ---
         function renderList(data) {
             masterData = data.table.rows;
-            let listHtml = '<h2>Pilih Transaksi untuk Dicetak:</h2><ol>';
+            let listHtml = '<h2>&#x1F4CB; Daftar Transaksi Pembayaran</h2><ol>';
 
+            // Mulai dari Indeks 1 untuk melewati baris header (Index 0)
             for (let i = 1; i < masterData.length; i++) {
                 const row = masterData[i].c;
+                const No_Pelanggan = getCellVal(row, 0);
                 const Nama_Pelanggan = getCellVal(row, 1);
-                const Jumlah_Bayar = getCellVal(row, 7); // Menggunakan indeks Total Bayar (H = 7)
+                const Jumlah_Bayar = getCellVal(row, 8); 
 
                 if (Nama_Pelanggan && Nama_Pelanggan !== 'N/A') {
                     listHtml += `
-                        <li style="margin-bottom: 10px;">
-                            ${Nama_Pelanggan} (${Jumlah_Bayar}) 
-                            <button onclick="renderReceipt(${i - 1})">Cetak</button>
+                        <li>
+                            <span>**${No_Pelanggan}. ${Nama_Pelanggan}** | Total: ${Jumlah_Bayar}</span>
+                            <button onclick="renderReceipt(${i - 1})">&#x1F5B6; Cetak</button>
                         </li>
                     `;
                 }
@@ -189,7 +248,7 @@
                 renderList(data);
             })
             .catch(error => {
-                document.getElementById('list-output').innerHTML = 'Gagal memuat data. Periksa ID Spreadsheet dan izin publikasi.';
+                document.getElementById('list-output').innerHTML = '<div style="color: red; text-align: center;">&#x26A0; Gagal memuat data. Periksa izin publikasi Spreadsheet!</div>';
                 console.error('Error fetching data:', error);
             });
     </script>
