@@ -19,10 +19,6 @@
             body { width: 58mm; font-family: 'Consolas', monospace, sans-serif; font-size: 9pt; margin: 0; padding: 0; line-height: 1.2; }
             .container { padding: 0 2mm; width: 58mm; }
             .receipt-view { display: block !important; }
-            
-            /* HAPUS: Kelas separator CSS dihapus karena kita menggunakan karakter teks */
-            /* .separator-dashed { border: none; border-top: 1px dashed black; margin: 2px 0; height: 1px; } */
-            /* .separator-double { border: none; border-top: 3px double black; margin: 2px 0; height: 3px; } */
         }
         
         /* ==================== B. PENGATURAN LAYAR (BROWSER) ==================== */
@@ -156,14 +152,14 @@
             const Periode_Bulan = 'SEPTEMBER'; 
             const Collector = 'Suciani'; 
 
-            // --- MERENDER HTML KUITANSI (MENGGUNAKAN KARAKTER GARIS PUTUS-PUTUS) ---
+            // --- MERENDER HTML KUITANSI (MENGGUNAKAN KARAKTER GARIS PUTUS-PUTUS DENGAN JUMLAH DITINGKATKAN) ---
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
                     <div class="text-center text-bold">PAMSIMAS TIRTA JAYA</div>
                     <div class="text-center text-bold">DUSUN KUAMANG JAYA</div>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
 
                     <table class="receipt-table">
                         <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value">${Tgl_Cetak}</td></tr>
@@ -173,7 +169,7 @@
                         <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value">${Alamat_Rumah}</td></tr>
                     </table>
 
-                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
 
                     <div class="text-center text-bold">Rincian Pemakaian Air (M³)</div>
                     <table class="receipt-table">
@@ -182,7 +178,7 @@
                         <tr><td class="td-label">Jumlah Pemakaian</td><td class="td-colon">:</td><td class="td-value td-value-right">${Jumlah_Pemakaian}</td></tr>
                     </table>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
 
                     <div class="text-center text-bold">Rincian Biaya (Rp)</div>
                     <table class="receipt-table">
@@ -190,12 +186,12 @@
                         <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value td-value-right">Rp ${Pokok_Beban}</td></tr>
                     </table>
                     
-                    <div class="text-center" style="margin: 2px 0;">===================</div>
+                    <div class="text-center" style="margin: 2px 0;">=========================</div>
                     
                     <div class="text-center text-bold text-underline">JUMLAH BAYAR</div>
                     <div class="text-center text-bold" style="font-size: 11pt;">Rp ${Jumlah_Bayar}</div>
                     
-                    <div class="text-center" style="margin: 2px 0;">-------------------</div>
+                    <div class="text-center" style="margin: 2px 0;">-------------------------</div>
                     
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center">Collector: ${Collector}</div>
