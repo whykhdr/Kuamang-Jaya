@@ -113,13 +113,12 @@
             const container = document.querySelector('#receipt-output .container');
             const fileName = `Kuitansi_${namaPelanggan.replace(/\s/g, '_')}.png`;
 
-            // Opsi: Scale ditingkatkan untuk kualitas gambar yang lebih baik (resiko file besar)
+            // Scale ditingkatkan untuk kualitas gambar yang lebih baik 
             html2canvas(container, {
-                scale: 3, // Skala 3 kali lipat dari resolusi asli
+                scale: 3, 
                 useCORS: true,
-                backgroundColor: null // Pastikan background putih
+                backgroundColor: null 
             }).then(canvas => {
-                // Konversi canvas menjadi Data URL
                 const image = canvas.toDataURL('image/png');
                 
                 // Membuat elemen link tersembunyi untuk memicu download
@@ -144,7 +143,7 @@
             const Nama_Pelanggan = getCellVal(row, 1);     
             const Stand_Awal = getCellVal(row, 2);         
             const Stand_Akhir = getCellVal(row, 3);        
-            const Jumlah_Pemakaian = getCellVal(row, 4);   
+            const Jumlah_Pemakaian = getCellVal(row, 4);   // Kolom E (Pemakaian)
             const Pokok_Beban = getCellVal(row, 5);        
             const Tarif_Ixuan = getCellVal(row, 6);        
             const Jumlah_Bayar = getCellVal(row, 8);       
@@ -156,7 +155,6 @@
             const Collector = 'Suciani'; 
 
             // --- MERENDER HTML KUITANSI ---
-            // Tombol download dipisahkan dari kontainer utama agar tidak ikut terpotret
             const htmlContainer = `
                 <div class="container">
                     <div class="text-center text-bold">KWITANSI PEMBAYARAN AIR</div>
@@ -177,9 +175,9 @@
                     <table class="receipt-table">
                         <tr><td class="td-label">Stand Awal</td><td class="td-colon">:</td><td class="td-value td-value-right">${Stand_Awal}</td></tr>
                         <tr><td class="td-label">Stand Akhir</td><td class="td-colon">:</td><td class="td-value td-value-right">${Stand_Akhir}</td></tr>
-                        <tr><td class="td-label">Jumlah Pemakai</td><td class="td-colon">:</td><td class="td-value td-value-right">${Jumlah_Pemakaian}</td></tr>
+                        <tr><td class="td-label">Jumlah Pemakaian</td><td class="td-colon">:</td><td class="td-value td-value-right">${Jumlah_Pemakaian}</td></tr>
                     </table>
-                    <div class="separator-dashed"></div>
+                    <div class="separator-dashed"></div> 
 
                     <div class="text-center text-bold">Rincian Biaya (Rp)</div>
                     <table class="receipt-table">
