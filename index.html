@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Struk Thermal Kuitansi PAM</title>
+    <title>87 Kuitansi Dinamis</title>
     <meta charset="UTF-8">
     
     <style>
-        /* CSS ini hanya berlaku saat perintah cetak dipicu */
         @media print {
             body {
                 width: 58mm;
@@ -15,148 +14,172 @@
                 padding: 0;
                 line-height: 1.2;
             }
-            .container {
-                width: 58mm;
-                padding: 0 2mm; 
-            }
-            /* Styling Garis Pemisah */
+            .container { padding: 0 2mm; width: 58mm; }
+            .print-list, #back-btn { display: none; }
+            .receipt-view { display: block !important; }
             .separator-dashed { border-top: 1px dashed black; margin: 2px 0; }
             .separator-double { border-top: 3px double black; margin: 2px 0; }
-            
-            #print-btn { display: none; }
         }
         
-        /* CSS untuk tampilan di layar (browser) */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background: #f0f0f0;
-        }
-        .container {
-            width: 58mm;
-            border: 1px solid #ccc;
-            padding: 10px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            background: white;
-            margin: 0 auto;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .container { width: 58mm; border: 1px solid #ccc; padding: 10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); background: white; margin: 0 auto; }
         .text-center { text-align: center; }
         .text-bold { font-weight: bold; }
         
-        /* Styling Khusus Tabel untuk Alignment Titik Dua */
-        .receipt-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .receipt-table td {
-            padding: 0;
-            vertical-align: top;
-            white-space: nowrap; /* Mencegah pemisahan kata di tengah */
-        }
+        /* Styling Khusus Tabel untuk Alignment */
+        .receipt-table { width: 100%; border-collapse: collapse; }
+        .receipt-table td { padding: 0; vertical-align: top; white-space: nowrap; }
         .td-label { width: 50%; text-align: left; }
         .td-colon { width: 5%; text-align: center; }
-        .td-value { width: 45%; text-align: right; font-weight: bold; }
+        .td-value { width: 45%; text-align: left; font-weight: bold; }
+        
+        .print-list { max-width: 600px; margin: 0 auto; padding: 20px; background: white; border-radius: 5px; }
+        .receipt-view { display: none; } /* Sembunyikan tampilan kuitansi di awal */
     </style>
 </head>
 <body>
 
-    <button id="print-btn" onclick="window.print()">Cetak Kuitansi (Akan menyesuaikan ke 58mm)</button>
-    <div class="container">
-        <div id="receipt-output">
-            Memuat data...
+    <div id="app-container">
+        <div id="list-output" class="print-list">Memuat daftar transaksi...</div>
+        
+        <button id="back-btn" onclick="showList()" style="margin-bottom: 10px;">&larr; Kembali ke Daftar</button>
+        <div id="receipt-output" class="receipt-view">
+            <div class="container"></div>
         </div>
     </div>
 
     <script>
-        // PASTIKAN INI ADALAH URL JSON DARI SPREADSHEET ASLI ANDA
+        // PASTE URL JSON DARI SPREADSHEET HORIZONTAL ANDA (Master Data)
+        // Gunakan GID sheet yang berisi 87 data horizontal
         const DATA_URL = 'https://docs.google.com/spreadsheets/d/1HHn6ZnqfLrEVNVktxIchcwdmBMmL-WyEnBBJP5piABg/gviz/tq?tqx=out:json&gid=651467196';
+        let masterData = [];
 
-        function loadReceiptData() {
-            fetch(DATA_URL)
-                .then(res => res.text())
-                .then(text => {
-                    const jsonString = text.substring(47).slice(0, -2);
-                    const data = JSON.parse(jsonString);
-                    const rows = data.table.rows;
+        // Fungsi untuk mengambil nilai dari JSON (index = posisi kolom)
+        const getCellVal = (row, index) => {
+            const cell = row[index];
+            if (!cell) return 'N/A';
+            return cell.f || cell.v || 'N/A';
+        };
+
+        // --- RENDER FUNGSI UTAMA ---
+
+        function renderReceipt(rowIndex) {
+            // Kita menggunakan rowIndex + 1 karena baris pertama adalah header
+            const row = masterData[rowIndex + 1].c; 
+            
+            // --- EKSTRAKSI DATA BERDASARKAN INDEKS KOLOM HORIZONTAL (Lihat image_0d509d.png) ---
+            const Nama_Pelanggan = getCellVal(row, 1);      // Kolom B
+            const No_Pelanggan = getCellVal(row, 0);        // Kolom A (Asumsi nomor urut)
+            const Stand_Awal = getCellVal(row, 3);          // Kolom D
+            const Stand_Akhir = getCellVal(row, 4);         // Kolom E
+            const Jumlah_Pemakaian = getCellVal(row, 5);    // Kolom F
+            const Pokok_Beban = getCellVal(row, 6);         // Kolom G
+            const Tarif_Ixuan = getCellVal(row, 7);         // Kolom H
+            const Jumlah_Bayar = getCellVal(row, 8);        // Kolom I
+            const Alamat_Rumah = getCellVal(row, 9);        // Kolom J
+            
+            // Data statis/umum
+            const Tgl_Cetak = new Date().toLocaleDateString('id-ID');
+            const Periode_Bulan = 'SEPTEMBER'; // Sesuai data di sheet
+
+            // --- MERENDER HTML KUITANSI DENGAN TABEL UNTUK ALIGNMENT ---
+            const html = `
+                <div class="container">
+                    <div class="text-center text-bold" style="font-size:10pt;">KWITANSI PEMBAYARAN AIR</div>
+                    <div class="text-center text-bold" style="font-size:10pt;">PAMSIMAS TIRTA JAYA</div>
+                    <div class="text-center text-bold" style="font-size:10pt;">DUSUN KUAMANG JAYA</div>
+                    <div class="separator-dashed"></div>
+
+                    <table class="receipt-table">
+                        <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value">${Tgl_Cetak}</td></tr>
+                        <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value">${Periode_Bulan}</td></tr>
+                        <tr><td class="td-label">Nama Pelanggan</td><td class="td-colon">:</td><td class="td-value">${Nama_Pelanggan}</td></tr>
+                        <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value">${No_Pelanggan}</td></tr>
+                        <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value">${Alamat_Rumah}</td></tr>
+                    </table>
+                    <div class="separator-dashed"></div>
+
+                    <div class="text-center text-bold">Rincian Pemakaian Air (M³)</div>
+                    <table class="receipt-table">
+                        <tr><td class="td-label">Stand Awal</td><td class="td-colon">:</td><td class="td-value">${Stand_Awal}</td></tr>
+                        <tr><td class="td-label">Stand Akhir</td><td class="td-colon">:</td><td class="td-value">${Stand_Akhir}</td></tr>
+                        <tr><td class="td-label">Jumlah Pemakai</td><td class="td-colon">:</td><td class="td-value">${Jumlah_Pemakaian}</td></tr>
+                    </table>
+                    <div class="separator-dashed"></div>
+
+                    <div class="text-center text-bold">Rincian Biaya (Rp)</div>
+                    <table class="receipt-table">
+                        <tr><td class="td-label">Iuran 2.000/m³</td><td class="td-colon">:</td><td class="td-value">${Tarif_Ixuan}</td></tr>
+                        <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value">${Pokok_Beban}</td></tr>
+                    </table>
+                    <div class="separator-double"></div>
                     
-                    if (rows.length < 18) {
-                        document.getElementById('receipt-output').innerHTML = "Data kuitansi tidak lengkap.";
-                        return;
-                    }
-
-                    // FUNGSI BANTU: Mengambil nilai kolom B (Indeks 1) dari baris JSON tertentu
-                    const getVal = (rowIndex) => {
-                        const cell = rows[rowIndex] ? rows[rowIndex].c[1] : null;
-                        if (!cell) return 'N/A';
-                        return cell.f || cell.v || 'N/A'; 
-                    };
-
-                    // EKSTRAKSI DATA BERDASARKAN INDEKS BARIS JSON (Sesuai Struktur Vertikal Anda)
-                    const Tgl_Cetak = getVal(3);
-                    const Periode_Bulan = getVal(4);
-                    const Nama_Pelanggan = getVal(5);
-                    const No_Pelanggan = getVal(6);
-                    const Alamat_Rumah = getVal(7);
+                    <div class="text-bold" style="font-size: 11pt; text-align:center;">JUMLAH BAYAR</div>
+                    <div class="text-center text-bold" style="font-size: 11pt;">${Jumlah_Bayar}</div>
+                    <div class="separator-dashed"></div>
                     
-                    const Stand_Awal = getVal(9);
-                    const Stand_Akhir = getVal(10);
-                    const Jumlah_Pemakaian = getVal(11);
+                    <div class="text-center text-bold">TERIMA KASIH</div>
+                    <div class="text-center">Collector: Susilani</div>
+                    <button onclick="window.print()">Cetak Kuitansi</button>
+                </div>
+            `;
+            
+            // Tampilkan kuitansi dan sembunyikan daftar
+            document.getElementById('receipt-output').innerHTML = html;
+            document.getElementById('list-output').style.display = 'none';
+            document.getElementById('receipt-output').style.display = 'block';
+            document.getElementById('back-btn').style.display = 'block';
 
-                    const Tarif_Ixuan = getVal(13); 
-                    const Pokok_Biaya = getVal(14); 
-
-                    const Jumlah_Bayar = getVal(15); 
-                    const Collector = getVal(17); 
-
-                    // --- MERENDER HTML KUITANSI DENGAN TABEL UNTUK ALIGNMENT ---
-                    const receiptHTML = `
-                        <div class="text-center text-bold" style="font-size:10pt;">KWITANSI PEMBAYARAN AIR</div>
-                        <div class="text-center text-bold" style="font-size:10pt;">PAMSIMAS TIRTA JAYA</div>
-                        <div class="text-center text-bold" style="font-size:10pt;">DUSUN KUAMANG JAYA</div>
-                        <div class="separator-dashed"></div>
-
-                        <table class="receipt-table">
-                            <tr><td class="td-label">Tgl. Cetak</td><td class="td-colon">:</td><td class="td-value" style="text-align: left;">${Tgl_Cetak}</td></tr>
-                            <tr><td class="td-label">Periode Bulan</td><td class="td-colon">:</td><td class="td-value" style="text-align: left;">${Periode_Bulan}</td></tr>
-                            <tr><td class="td-label">Nama Pelanggan</td><td class="td-colon">:</td><td class="td-value" style="text-align: left;">${Nama_Pelanggan}</td></tr>
-                            <tr><td class="td-label">No Pelanggan</td><td class="td-colon">:</td><td class="td-value" style="text-align: left;">${No_Pelanggan}</td></tr>
-                            <tr><td class="td-label">Alamat Rumah</td><td class="td-colon">:</td><td class="td-value" style="text-align: left;">${Alamat_Rumah}</td></tr>
-                        </table>
-                        <div class="separator-dashed"></div>
-
-                        <div class="text-center text-bold">Rincian Pemakaian Air (M³)</div>
-                        <table class="receipt-table">
-                            <tr><td class="td-label">Stand Awal</td><td class="td-colon">:</td><td class="td-value">${Stand_Awal}</td></tr>
-                            <tr><td class="td-label">Stand Akhir</td><td class="td-colon">:</td><td class="td-value">${Stand_Akhir}</td></tr>
-                            <tr><td class="td-label">Jumlah Pemakai</td><td class="td-colon">:</td><td class="td-value">${Jumlah_Pemakaian}</td></tr>
-                        </table>
-                        <div class="separator-dashed"></div>
-
-                        <div class="text-center text-bold">Rincian Biaya (Rp)</div>
-                        <table class="receipt-table">
-                            <tr><td class="td-label">Iuran 2.000/m³</td><td class="td-colon">:</td><td class="td-value">${Tarif_Ixuan}</td></tr>
-                            <tr><td class="td-label">Pokok Beban</td><td class="td-colon">:</td><td class="td-value">${Pokok_Biaya}</td></tr>
-                        </table>
-                        <div class="separator-double"></div>
-                        
-                        <div class="text-bold" style="font-size: 11pt; text-align:center;">JUMLAH BAYAR</div>
-                        <div class="text-center text-bold" style="font-size: 11pt;">${Jumlah_Bayar}</div>
-                        <div class="separator-dashed"></div>
-                        
-                        <div class="text-center text-bold">TERIMA KASIH</div>
-                        <div class="text-center">Collector: ${Collector}</div>
-                    `;
-                    
-                    document.getElementById('receipt-output').innerHTML = receiptHTML;
-
-                })
-                .catch(error => {
-                    document.getElementById('receipt-output').innerHTML = 'Gagal memuat data. Pastikan sheet dipublikasikan ke web dan link API benar.';
-                    console.error('Error fetching data:', error);
-                });
+            // Opsional: Langsung tampilkan dialog cetak setelah merender
+            // window.print(); 
         }
 
-        loadReceiptData();
+        // --- RENDER DAFTAR (87 TRANSAKSI) ---
+        
+        function renderList(data) {
+            masterData = data.table.rows;
+            let listHtml = '<h2>Pilih Transaksi untuk Dicetak:</h2><ul>';
+
+            // Mulai dari Indeks 1 untuk melewati baris header (Index 0)
+            for (let i = 1; i < masterData.length; i++) {
+                const row = masterData[i].c;
+                const Nama_Pelanggan = getCellVal(row, 1);
+                const Jumlah_Bayar = getCellVal(row, 8);
+
+                if (Nama_Pelanggan && Nama_Pelanggan !== 'N/A') {
+                    // Index yang dikirim adalah i - 1, karena kita mengirim index data (tanpa header)
+                    listHtml += `
+                        <li style="margin-bottom: 10px;">
+                            ${i}. ${Nama_Pelanggan} (${Jumlah_Bayar}) 
+                            <button onclick="renderReceipt(${i - 1})">Cetak</button>
+                        </li>
+                    `;
+                }
+            }
+
+            listHtml += '</ul>';
+            document.getElementById('list-output').innerHTML = listHtml;
+        }
+
+        function showList() {
+            document.getElementById('list-output').style.display = 'block';
+            document.getElementById('receipt-output').style.display = 'none';
+            document.getElementById('back-btn').style.display = 'none';
+        }
+
+        // --- MEMUAT DATA AWAL ---
+        
+        fetch(DATA_URL)
+            .then(res => res.text())
+            .then(text => {
+                const jsonString = text.substring(47).slice(0, -2);
+                const data = JSON.parse(jsonString);
+                renderList(data);
+            })
+            .catch(error => {
+                document.getElementById('list-output').innerHTML = 'Gagal memuat data. Periksa ID Spreadsheet dan izin publikasi.';
+                console.error('Error fetching data:', error);
+            });
     </script>
 </body>
 </html>
