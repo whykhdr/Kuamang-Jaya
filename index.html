@@ -12,7 +12,7 @@
             /* Pastikan tidak ada border/shadow saat dicetak */
             .container { border: none !important; box-shadow: none !important; }
             /* Sembunyikan semua tombol saat pengguna memaksa cetak (Ctrl+P) */
-            .print-list, #back-btn, button { 
+            .print-list, #back-btn, button, .batch-controls { 
                 display: none !important; 
             } 
             /* Styling Cetak lainnya tetap sama */
@@ -143,6 +143,45 @@
         
         .td-value-center { text-align: center !important; } 
         .td-value-right { text-align: right !important; } 
+        
+        /* ==================== D. STYLING BATCH DOWNLOAD (BARU) ==================== */
+        .batch-controls {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f0f4f8;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .batch-controls h3 {
+            margin-top: 0;
+            color: #343a40;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .batch-controls button {
+            background-color: #007bff; /* Biru */
+            margin: 5px;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            font-size: 13px;
+            padding: 8px 15px;
+        }
+        .batch-controls button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+        }
+        .batch-controls button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+        #batch-status {
+            display: none; 
+            color: #007bff; 
+            margin-top: 10px; 
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -196,14 +235,14 @@
             });
         }
 
-
-        // --- FUNGSI TAMPIL KUITANSI TUNGGAL (PREVIEW + TOMBOL DOWNLOAD) ---
-        function renderReceipt(rowIndex) {
+        // --- (BARU) FUNGSI UNTUK MENGHASILKAN HTML KUITANSI ---
+        // Fungsi ini HANYA mengembalikan string HTML dari kuitansi
+        function getReceiptHtml(rowIndex) {
             const row = masterData[rowIndex + 1].c; 
             
             // --- EKSTRAKSI DATA ---
             const No_Pelanggan = getCellVal(row, 0);       
-            const Nama_Pelanggan = getCellVal(row, 1);     
+            const Nama_Pelanggan = getCellVal(row, 1);       
             const Stand_Awal = getCellVal(row, 2);         
             const Stand_Akhir = getCellVal(row, 3);        
             const Jumlah_Pemakaian = getCellVal(row, 4);   
@@ -261,10 +300,26 @@
                     <div class="text-center text-bold">TERIMA KASIH</div>
                     <div class="text-center" style="font-size: 7pt;">Collector: ${Collector}</div>
                 </div>
-                <button onclick="downloadReceiptAsImage('${Nama_Pelanggan}')" style="margin-top: 10px; width: 58mm;">Download Gambar (PNG)</button>
             `;
             
-            document.getElementById('receipt-output').innerHTML = htmlContainer;
+            return htmlContainer;
+        }
+
+
+        // --- (DIMODIFIKASI) FUNGSI TAMPIL KUITANSI TUNGGAL (PREVIEW + TOMBOL DOWNLOAD) ---
+        function renderReceipt(rowIndex) {
+            // Ambil nama pelanggan untuk tombol
+            const row = masterData[rowIndex + 1].c;
+            const Nama_Pelanggan = getCellVal(row, 1);
+
+            // 1. Ambil HTML kuitansi dasar
+            let receiptHtml = getReceiptHtml(rowIndex);
+            
+            // 2. Tambahkan tombol download tunggal
+            receiptHtml += `<button onclick="downloadReceiptAsImage('${Nama_Pelanggan}')" style="margin-top: 10px; width: 58mm;">Download Gambar (PNG)</button>`;
+            
+            // 3. Render ke DOM
+            document.getElementById('receipt-output').innerHTML = receiptHtml;
             document.getElementById('list-output').style.display = 'none';
             document.getElementById('receipt-output').style.display = 'block';
             
@@ -272,10 +327,127 @@
             document.querySelector('.receipt-view-controls #back-btn').style.display = 'block';
         }
 
-        // --- FUNGSI TAMPIL DAFTAR (87 TRANSAKSI) ---
+        // =========================================================
+        // === (BARU) FUNGSI DOWNLOAD BATCH ========================
+        // =========================================================
+
+        /**
+         * (BARU) Fungsi helper untuk men-download satu kuitansi berdasarkan index data.
+         * Ini adalah versi "headless" (tanpa UI) dari renderReceipt + download.
+         * @returns {Promise<void>}
+         */
+        async function downloadSingleReceiptByIndex(rowIndex) {
+            // 1. Ambil data (masterData[0] adalah header, jadi +1)
+            const row = masterData[rowIndex + 1].c;
+            if (!row) return; // Data tidak ada
+
+            // 2. Ekstrak nama untuk file
+            const Nama_Pelanggan = getCellVal(row, 1);
+            const fileName = `Kuitansi_${(rowIndex + 1)}_${Nama_Pelanggan.replace(/\s/g, '_')}.png`;
+
+            // 3. Ambil HTML kuitansi (TANPA tombol download)
+            const receiptHtml = getReceiptHtml(rowIndex);
+            
+            // 4. Masukkan ke DOM (di area yang tersembunyi tapi di-render)
+            document.getElementById('receipt-output').innerHTML = receiptHtml;
+            
+            // 5. Ambil elemen .container yang baru di-render
+            const container = document.querySelector('#receipt-output .container');
+            if (!container) return; // Gagal render
+
+            // 6. Gunakan html2canvas untuk mengambil gambar (await)
+            const canvas = await html2canvas(container, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null
+            });
+
+            // 7. Buat link download
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 8. Beri jeda singkat agar browser tidak memblokir multiple download
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+
+        /**
+         * (BARU) Fungsi utama untuk batch download
+         */
+        async function batchDownload(startIndex, endIndex) {
+            const statusEl = document.getElementById('batch-status');
+            
+            // Nonaktifkan SEMUA tombol batch
+            document.querySelectorAll('.batch-controls button').forEach(btn => btn.disabled = true);
+            
+            statusEl.innerHTML = `Mulai mengunduh kuitansi ${startIndex + 1} - ${endIndex}...`;
+            statusEl.style.display = 'block';
+
+            // PENTING: Pastikan #receipt-output aktif di DOM (meski tidak terlihat oleh user)
+            // agar html2canvas bisa menemukan elemen .container
+            document.getElementById('list-output').style.display = 'none';
+            document.getElementById('receipt-output').style.display = 'block';
+            document.querySelector('.receipt-view-controls #back-btn').style.display = 'none'; // Sembunyikan tombol kembali
+
+
+            for (let i = startIndex; i < endIndex; i++) {
+                // Pastikan data ada
+                if (!masterData[i + 1]) {
+                    console.warn(`Data index ${i} tidak ditemukan, berhenti.`);
+                    break;
+                }
+                
+                const namaPelanggan = getCellVal(masterData[i+1].c, 1);
+                statusEl.innerHTML = `Mengunduh ${i + 1} / ${endIndex} : <b>${namaPelanggan}</b>...`;
+                
+                try {
+                    await downloadSingleReceiptByIndex(i);
+                } catch (err) {
+                    console.error(`Gagal mengunduh kuitansi index ${i}:`, err);
+                    statusEl.innerHTML = `<span style="color: red;">Gagal pada kuitansi ${i + 1}.</span>`;
+                }
+            }
+
+            // Selesai
+            statusEl.innerHTML = `Selesai mengunduh ${startIndex + 1} - ${endIndex}.`;
+            
+            // Aktifkan kembali SEMUA tombol batch
+            document.querySelectorAll('.batch-controls button').forEach(btn => btn.disabled = false);
+
+            // Kembalikan ke tampilan daftar
+            showList();
+            
+            // Sembunyikan status setelah beberapa detik
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 4000);
+        }
+
+
+        // --- (DIMODIFIKASI) FUNGSI TAMPIL DAFTAR (87 TRANSAKSI) ---
         function renderList(data) {
             masterData = data.table.rows;
-            let listHtml = '<h2>&#x1F4CB; Daftar Transaksi Pembayaran</h2><ol>';
+            
+            // (BARU) Buat tombol batch download secara dinamis
+            let batchHtml = '<div class="batch-controls">';
+            batchHtml += '<h3>Unduh Kuitansi (Batch per 10)</h3>';
+            batchHtml += '<div id="batch-status"></div>';
+            
+            const totalItems = masterData.length - 1; // -1 untuk header
+            for (let i = 0; i < totalItems; i += 10) {
+                const start = i; // 0, 10, 20...
+                const end = Math.min(i + 10, totalItems); // 10, 20, 30...
+                // i = index data (0-86). start+1 = nomor urut (1-87)
+                batchHtml += `<button id="batch-btn-${start}" onclick="batchDownload(${start}, ${end})">Unduh ${start + 1} - ${end}</button>`;
+            }
+            batchHtml += '</div>';
+
+            // Gabungkan tombol batch dengan judul dan daftar list
+            let listHtml = '<h2>&#x1F4CB; Daftar Transaksi Pembayaran</h2>' + batchHtml + '<ol>';
 
             for (let i = 1; i < masterData.length; i++) {
                 const row = masterData[i].c;
@@ -287,7 +459,7 @@
                         <li>
                             <div class="list-info">
                                 <span>${i}. 👤 ${Nama_Pelanggan}</span>
-                                <span>💰 Total: **Rp ${Jumlah_Bayar}**</span>
+                                <span>💰 Total: <strong>Rp ${Jumlah_Bayar}</strong></span>
                             </div>
                             <button onclick="renderReceipt(${i - 1})">&#x1F4F7; Lihat & Download</button>
                         </li>
