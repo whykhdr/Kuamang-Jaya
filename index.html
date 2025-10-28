@@ -44,7 +44,7 @@
                         Sampaikan Laporan Anda
                     </h2>
                     
-                    <form action="https://formsubmit.co/kuamang.jaya018@gmail.com" method="POST" class="space-y-5 sm:space-y-6"> <!-- Jarak antar form item sedikit lebih rapat di HP -->
+                    <form id="laporan-form" class="space-y-5 sm:space-y-6"> <!-- Hapus action & method, tambahkan ID -->
                         
                         <!-- Konfigurasi FormSubmit (Tidak berubah) -->
                         <input type="text" name="_honey" style="display:none">
@@ -91,10 +91,12 @@
                         <!-- === AKHIR PERBAIKAN === -->
 
                         <div>
-                            <button type="submit" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+                            <button type="submit" id="submit-button" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50">
                                 Kirim Laporan
                             </button>
                         </div>
+                        <!-- Area untuk status pengiriman -->
+                        <div id="form-status" class="text-center text-sm font-medium"></div>
                     </form>
                 </div>
 
@@ -138,7 +140,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const kategoriSelect = document.getElementById('kategori');
-            const laporanLabel = document.getElementById('laporan-label');
+            // ... (kode dropdown yang ada tetap di sini) ...
             const laporanTextarea = document.getElementById('laporan');
             // === TAMBAHAN BARU: Ambil wrapper RT/Lokasi ===
             const rtLokasiWrapper = document.getElementById('rt-lokasi-wrapper');
@@ -178,10 +180,56 @@
                     console.error("Elemen label atau textarea tidak ditemukan!");
                 }
             });
+
+            // === SCRIPT BARU UNTUK GOOGLE APPS SCRIPT ===
+            const form = document.getElementById('laporan-form');
+            const submitButton = document.getElementById('submit-button');
+            const formStatus = document.getElementById('form-status');
+            
+            // !!! PENTING: Ganti dengan URL Google Apps Script Anda nanti !!!
+            const scriptURL = 'MASUKKAN_URL_SCRIPT_ANDA_DI_SINI';
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Nonaktifkan tombol dan tampilkan loading
+                submitButton.disabled = true;
+                submitButton.textContent = 'Mengirim...';
+                formStatus.textContent = '';
+
+                const formData = new FormData(form);
+
+                fetch(scriptURL, { method: 'POST', body: formData })
+                    .then(response => {
+                        if (response.ok) {
+                            formStatus.textContent = 'Laporan berhasil terkirim. Terima kasih!';
+                            formStatus.className = 'text-center text-sm font-medium text-green-600';
+                            form.reset(); // Kosongkan formulir
+                            // Sembunyikan lagi RT/Lokasi jika form di-reset
+                            rtLokasiWrapper.classList.add('hidden');
+                        } else {
+                            // Tangani error dari server (jarang terjadi di GAS jika setup benar)
+                            formStatus.textContent = 'Gagal mengirim laporan. Coba lagi nanti.';
+                            formStatus.className = 'text-center text-sm font-medium text-red-600';
+                        }
+                    })
+                    .catch(error => {
+                        // Tangani error jaringan
+                        console.error('Error!', error.message);
+                        formStatus.textContent = 'Terjadi kesalahan jaringan. Coba lagi nanti.';
+                        formStatus.className = 'text-center text-sm font-medium text-red-600';
+                    })
+                    .finally(() => {
+                        // Aktifkan tombol kembali
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Kirim Laporan';
+                    });
+            });
+            // === AKHIR SCRIPT BARU ===
+
         });
     </script>
     <!-- === AKHIR BLOK SCRIPT === -->
 
 </body>
 </html>
-
