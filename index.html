@@ -14,63 +14,84 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen py-12">
+<body class="bg-slate-100 flex items-center justify-center min-h-screen py-8 sm:py-12"> <!-- Mengurangi padding vertikal di layar kecil -->
 
     <div class="container mx-auto p-4">
-        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-3xl">
-            <div class="p-8 md:p-12">
-                <!-- Header -->
-                <div class="text-center">
-                    <svg class="mx-auto h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
-                    <h1 class="text-3xl font-bold text-gray-900 mt-4">
-                        Layanan Aspirasi & Pengaduan Desa
-                    </h1>
-                    <p class="text-lg text-gray-600 mt-2">
-                        Dusun Kuamang Jaya
-                    </p>
-                    <p class="text-md text-gray-500 mt-4 max-w-lg mx-auto">
-                        Kami mendengarkan Anda. Silakan sampaikan kritik, saran, atau pengaduan Anda untuk membangun desa yang lebih baik.
-                    </p>
-                </div>
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-3xl border border-gray-200/50">
+            
+            <!-- Header Baru dengan Gradien -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-8 text-center"> <!-- Padding di header dibuat konsisten -->
+                <!-- Ikon baru (Heroicons: chat-bubble-left-right) -->
+                <svg class="mx-auto h-14 w-14 sm:h-16 sm:w-16 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <!-- Ikon sedikit lebih kecil di HP -->
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.722.537a5.25 5.25 0 01-5.038-4.02l-1.04-3.73V13.5a.75.75 0 01.75-.75h3.621m10.921-3.232a.75.75 0 00-.75-.75H13.5a.75.75 0 00-.75.75v3.75m0 0H7.125A2.625 2.625 0 004.5 9.75v5.25c0 .621.504 1.125 1.125 1.125h3.047a.75.75 0 01.75.75V18a.75.75 0 01-1.5 0v-1.125a.75.75 0 01-.75-.75H4.5A2.625 2.625 0 011.875 15V9.75A2.625 2.625 0 014.5 7.125h7.125M15 13.5v-3.75" />
+                </svg>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mt-4"> <!-- Ukuran font lebih kecil di HP -->
+                    Layanan Aspirasi & Pengaduan Desa
+                </h1>
+                <p class="text-base sm:text-lg text-blue-100 mt-2"> <!-- Ukuran font lebih kecil di HP -->
+                    Dusun Kuamang Jaya
+                </p>
+                <p class="text-sm sm:text-base text-blue-200 mt-4 max-w-lg mx-auto"> <!-- Ukuran font lebih kecil di HP -->
+                    Kami mendengarkan Anda. Silakan sampaikan kritik, saran, atau pengaduan Anda untuk membangun desa yang lebih baik.
+                </p>
+            </div>
 
+            <!-- Konten (Formulir, dll) -->
+            <div class="p-6 sm:p-8 md:p-12"> <!-- Padding lebih kecil di HP -->
                 <!-- Formulir Pengaduan -->
-                <div class="mt-10">
-                    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Sampaikan Laporan Anda</h2>
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 text-center mb-6"> <!-- Ukuran font lebih kecil di HP -->
+                        Sampaikan Laporan Anda
+                    </h2>
                     
-                    <!-- 
-                      PENTING: Ganti placeholder email di bawah ini!
-                      Ganti 'email-admin-desa-anda@contoh.com' dengan alamat email Anda
-                      yang ingin menerima laporan.
-                    -->
-                    <form action="https://formsubmit.co/kuamang.jaya018@gmail.com" method="POST" class="space-y-6">
+                    <form action="https://formsubmit.co/kuamang.jaya018@gmail.com" method="POST" class="space-y-5 sm:space-y-6"> <!-- Jarak antar form item sedikit lebih rapat di HP -->
                         
-                        <!-- Konfigurasi FormSubmit -->
-                        <!-- Anti-spam honeypot (jangan diisi oleh user) -->
+                        <!-- Konfigurasi FormSubmit (Tidak berubah) -->
                         <input type="text" name="_honey" style="display:none">
-                        <!-- Nonaktifkan Captcha dari FormSubmit -->
                         <input type="hidden" name="_captcha" value="false">
-                        <!-- Judul Email yang Akan Anda Terima -->
                         <input type="hidden" name="_subject" value="Laporan Baru dari Website Desa!">
 
                         <div>
                             <label for="nama" class="block text-sm font-medium text-gray-700">Nama Anda (Opsional)</label>
-                            <input type="text" name="nama" id="nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Nama Anda">
+                            <input type="text" name="nama" id="nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Nama Anda">
                         </div>
 
+                        <!-- === BLOK BARU UNTUK KATEGORI === -->
                         <div>
-                            <label for="subjek" class="block text-sm font-medium text-gray-700">Subjek Laporan</label>
-                            <input type="text" name="subjek" id="subjek" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Contoh: Lampu jalan mati di RT 01">
+                            <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori Laporan</label>
+                            <select id="kategori" name="kategori" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition">
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                <option value="Laporan">Laporan (Contoh: fasilitas rusak)</option>
+                                <option value="Kritik/Saran">Kritik/Saran (Contoh: perbaikan layanan)</option>
+                                <option value="Usulan">Usulan (Contoh: ide program baru)</option>
+                            </select>
                         </div>
+                        <!-- === AKHIR BLOK BARU === -->
+
+                        <!-- === BLOK BARU UNTUK RT & LOKASI (HIDDEN BY DEFAULT) === -->
+                        <div id="rt-lokasi-wrapper" class="hidden space-y-5 sm:space-y-6"> <!-- Dibungkus agar mudah di-toggle -->
+                            <div>
+                                <label for="rt" class="block text-sm font-medium text-gray-700">RT (Opsional)</label>
+                                <input type="text" name="rt" id="rt" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Contoh: RT 01 / RW 02">
+                            </div>
+                            <div>
+                                <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi/Tempat Kejadian (Opsional)</label>
+                                <input type="text" name="lokasi" id="lokasi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Contoh: Depan pos ronda, Jalan Amarta">
+                            </div>
+                        </div>
+                        <!-- === AKHIR BLOK RT & LOKASI === -->
+
+                        <!-- === PERBAIKAN: BLOK TEXTAREA YANG HILANG === -->
+                        <div>
+                            <!-- Label ini yang dicari oleh JavaScript -->
+                            <label for="laporan" id="laporan-label" class="block text-sm font-medium text-gray-700">Isi Laporan / Saran</label>
+                            <!-- Textarea ini yang dicari oleh JavaScript -->
+                            <textarea id="laporan" name="laporan" rows="5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Jelaskan laporan atau saran Anda dengan detail..."></textarea>
+                        </div>
+                        <!-- === AKHIR PERBAIKAN === -->
 
                         <div>
-                            <label for="laporan" class="block text-sm font-medium text-gray-700">Isi Laporan / Saran</label>
-                            <textarea id="laporan" name="laporan" rows="5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Jelaskan laporan atau saran Anda dengan detail..."></textarea>
-                        </div>
-
-                        <div>
-                            <button type="submit" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1">
+                            <button type="submit" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
                                 Kirim Laporan
                             </button>
                         </div>
@@ -80,23 +101,21 @@
                 <!-- Pemisah dan Tombol Lihat Laporan -->
                 <div class="mt-12 text-center">
                     <div class="border-t border-gray-200 my-6"></div>
-                    <p class="text-gray-600 mb-4">Untuk transparansi, Anda bisa melihat laporan publik yang sedang ditangani:</p>
-                    <!-- 
-                      PENTING: Ganti placeholder di bawah ini!
-                      Ganti [NAMA_PENGGUNA_ANDA] dengan username GitHub Anda.
-                      Ganti [NAMA_REPO_ANDA] dengan nama repository yang Anda buat untuk project ini.
-                    -->
+                    <p class="text-gray-600 mb-4 px-2">Untuk transparansi, Anda bisa melihat laporan publik yang sedang ditangani:</p> <!-- Tambah padding horizontal sedikit -->
+                    
+                    <!-- Tombol Lihat Laporan Baru (Outline) -->
+                    <!-- Kelas w-full sm:w-auto sudah responsif -->
                     <a href="https://github.com/whykhdr/Kuamang-Jaya/issues" 
                        target="_blank" 
-                       class="w-full sm:w-auto inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg text-center transition duration-300 ease-in-out">
+                       class="w-full sm:w-auto inline-block bg-white text-blue-700 border border-blue-600 hover:bg-blue-50 font-bold py-3 px-8 rounded-lg text-center transition duration-300 ease-in-out hover:shadow-sm">
                         Lihat Status Laporan Publik
                     </a>
                 </div>
                 
-                <!-- Penjelasan Alur -->
-                <div class="mt-12 text-left text-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-800">Bagaimana Cara Kerjanya?</h3>
-                    <ol class="list-decimal list-inside mt-2 space-y-2">
+                <!-- Penjelasan Alur (diberi kotak) -->
+                <div class="mt-12 text-left text-gray-700 bg-blue-50/60 p-5 sm:p-6 rounded-lg border border-blue-100"> <!-- Padding lebih kecil di HP -->
+                    <h3 class="text-base sm:text-lg font-semibold text-blue-900">Bagaimana Cara Kerjanya?</h3> <!-- Ukuran font lebih kecil di HP -->
+                    <ol class="list-decimal list-inside mt-2 space-y-2 text-sm sm:text-base text-blue-800/90"> <!-- Ukuran font lebih kecil di HP -->
                         <li>Isi formulir di atas dengan subjek dan isi laporan Anda.</li>
                         <li>Klik tombol <strong>"Kirim Laporan"</strong>.</li>
                         <li>Laporan Anda akan otomatis terkirim ke email tim admin desa.</li>
@@ -106,14 +125,63 @@
                 </div>
             </div>
             
-            <!-- Footer -->
-            <div class="bg-gray-50 px-8 py-4 text-center">
-                <p class="text-sm text-gray-500">
+            <!-- Footer (sedikit penyesuaian padding) -->
+            <div class="bg-gray-50 px-6 sm:px-8 py-4 text-center border-t border-gray-100">
+                <p class="text-xs sm:text-sm text-gray-500"> <!-- Ukuran font lebih kecil di HP -->
                     © 2025 | Pemerintah Dusun Kuamang Jaya.
                 </p>
             </div>
         </div>
     </div>
 
+    <!-- === BLOK SCRIPT BARU UNTUK FORM DINAMIS === -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const kategoriSelect = document.getElementById('kategori');
+            const laporanLabel = document.getElementById('laporan-label');
+            const laporanTextarea = document.getElementById('laporan');
+            // === TAMBAHAN BARU: Ambil wrapper RT/Lokasi ===
+            const rtLokasiWrapper = document.getElementById('rt-lokasi-wrapper');
+            
+            kategoriSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
+
+                // === TAMBAHAN BARU: Logika untuk menampilkan/menyembunyikan RT/Lokasi ===
+                if (selectedValue === 'Laporan' || selectedValue === 'Usulan') {
+                    rtLokasiWrapper.classList.remove('hidden');
+                } else {
+                    rtLokasiWrapper.classList.add('hidden');
+                }
+                // === AKHIR TAMBAHAN ===
+
+                // Cek jika elemen ditemukan sebelum mengubah propertinya
+                if (laporanLabel && laporanTextarea) {
+                    switch (selectedValue) {
+                        case 'Laporan':
+                            laporanLabel.textContent = 'Isi Laporan';
+                            laporanTextarea.placeholder = 'Jelaskan laporan Anda dengan detail (contoh: lokasi, kerusakan, dll)...';
+                            break;
+                        case 'Kritik/Saran':
+                            laporanLabel.textContent = 'Isi Kritik / Saran';
+                            laporanTextarea.placeholder = 'Jelaskan kritik atau saran Anda untuk perbaikan...';
+                            break;
+                        case 'Usulan':
+                            laporanLabel.textContent = 'Isi Usulan';
+                            laporanTextarea.placeholder = 'Jelaskan usulan atau ide program baru Anda...';
+                            break;
+                        default:
+                            // Jika kembali ke default (meskipun tidak mungkin karena 'disabled')
+                            laporanLabel.textContent = 'Isi Laporan / Saran';
+                            laporanTextarea.placeholder = 'Jelaskan laporan atau saran Anda dengan detail...';
+                    }
+                } else {
+                    console.error("Elemen label atau textarea tidak ditemukan!");
+                }
+            });
+        });
+    </script>
+    <!-- === AKHIR BLOK SCRIPT === -->
+
 </body>
 </html>
+
