@@ -14,7 +14,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-12">
 
     <div class="container mx-auto p-4">
         <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-3xl">
@@ -27,7 +27,6 @@
                     <h1 class="text-3xl font-bold text-gray-900 mt-4">
                         Layanan Aspirasi & Pengaduan Desa
                     </h1>
-                    <!-- Ganti [NAMA_DESA] dengan nama desa Anda -->
                     <p class="text-lg text-gray-600 mt-2">
                         Dusun Kuamang Jaya
                     </p>
@@ -36,19 +35,52 @@
                     </p>
                 </div>
 
-                <!-- Tombol Aksi -->
-                <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- 
-                      PENTING: Ganti placeholder di bawah ini!
-                      Ganti [NAMA_PENGGUNA_ANDA] dengan username GitHub Anda.
-                      Ganti [NAMA_REPO_ANDA] dengan nama repository yang Anda buat untuk project ini.
-                    -->
-                    <a href="https://github.com/[NAMA_PENGGUNA_ANDA]/[NAMA_REPO_ANDA]/issues/new/choose" 
-                       target="_blank" 
-                       class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-300 ease-in-out transform hover:-translate-y-1">
-                        Buat Laporan / Saran Baru
-                    </a>
+                <!-- Formulir Pengaduan -->
+                <div class="mt-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Sampaikan Laporan Anda</h2>
                     
+                    <!-- 
+                      PENTING: Ganti placeholder email di bawah ini!
+                      Ganti 'email-admin-desa-anda@contoh.com' dengan alamat email Anda
+                      yang ingin menerima laporan.
+                    -->
+                    <form action="https://formsubmit.co/kuamang.jaya018@gmail.com" method="POST" class="space-y-6">
+                        
+                        <!-- Konfigurasi FormSubmit -->
+                        <!-- Anti-spam honeypot (jangan diisi oleh user) -->
+                        <input type="text" name="_honey" style="display:none">
+                        <!-- Nonaktifkan Captcha dari FormSubmit -->
+                        <input type="hidden" name="_captcha" value="false">
+                        <!-- Judul Email yang Akan Anda Terima -->
+                        <input type="hidden" name="_subject" value="Laporan Baru dari Website Desa!">
+
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Anda (Opsional)</label>
+                            <input type="text" name="nama" id="nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Nama Anda">
+                        </div>
+
+                        <div>
+                            <label for="subjek" class="block text-sm font-medium text-gray-700">Subjek Laporan</label>
+                            <input type="text" name="subjek" id="subjek" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Contoh: Lampu jalan mati di RT 01">
+                        </div>
+
+                        <div>
+                            <label for="laporan" class="block text-sm font-medium text-gray-700">Isi Laporan / Saran</label>
+                            <textarea id="laporan" name="laporan" rows="5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3" placeholder="Jelaskan laporan atau saran Anda dengan detail..."></textarea>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1">
+                                Kirim Laporan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pemisah dan Tombol Lihat Laporan -->
+                <div class="mt-12 text-center">
+                    <div class="border-t border-gray-200 my-6"></div>
+                    <p class="text-gray-600 mb-4">Untuk transparansi, Anda bisa melihat laporan publik yang sedang ditangani:</p>
                     <!-- 
                       PENTING: Ganti placeholder di bawah ini!
                       Ganti [NAMA_PENGGUNA_ANDA] dengan username GitHub Anda.
@@ -56,20 +88,20 @@
                     -->
                     <a href="https://github.com/[NAMA_PENGGUNA_ANDA]/[NAMA_REPO_ANDA]/issues" 
                        target="_blank" 
-                       class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg text-center transition duration-300 ease-in-out">
-                        Lihat Semua Laporan
+                       class="w-full sm:w-auto inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg text-center transition duration-300 ease-in-out">
+                        Lihat Status Laporan Publik
                     </a>
                 </div>
-
+                
                 <!-- Penjelasan Alur -->
                 <div class="mt-12 text-left text-gray-600">
                     <h3 class="text-lg font-semibold text-gray-800">Bagaimana Cara Kerjanya?</h3>
                     <ol class="list-decimal list-inside mt-2 space-y-2">
-                        <li>Klik tombol <strong>"Buat Laporan / Saran Baru"</strong>.</li>
-                        <li>Anda akan diarahkan ke halaman GitHub Issues.</li>
-                        <li>Tulis judul dan isi laporan Anda dengan jelas. (Anda mungkin perlu login ke GitHub).</li>
-                        <li>Tim kami akan meninjau dan merespons laporan Anda secara transparan.</li>
-                        <li>Anda dapat melihat status semua laporan di tombol <strong>"Lihat Semua Laporan"</strong>.</li>
+                        <li>Isi formulir di atas dengan subjek dan isi laporan Anda.</li>
+                        <li>Klik tombol <strong>"Kirim Laporan"</strong>.</li>
+                        <li>Laporan Anda akan otomatis terkirim ke email tim admin desa.</li>
+                        <li>Tim kami akan meninjau dan menindaklanjuti laporan Anda.</li>
+                        <li>Admin dapat mempublikasikan laporan tertentu ke halaman 'Status Laporan Publik' untuk transparansi.</li>
                     </ol>
                 </div>
             </div>
@@ -77,7 +109,7 @@
             <!-- Footer -->
             <div class="bg-gray-50 px-8 py-4 text-center">
                 <p class="text-sm text-gray-500">
-                    © 2024 | Pemerintah Dusun Kuamang Jaya.
+                    © 2025 | Pemerintah Dusun Kuamang Jaya.
                 </p>
             </div>
         </div>
