@@ -63,6 +63,13 @@
                 gap: 5mm;
                 width: 100%;
                 height: 100%; /* Sesuaikan dengan halaman */
+                page-break-inside: avoid; /* (DIUBAH) Jaga grid utuh */
+                page-break-after: always; /* (BARU) Pindah halaman setelah grid */
+            }
+
+            /* (BARU) Jangan beri page break setelah grid terakhir */
+            .f4-grid-container:last-child {
+                page-break-after: auto;
             }
 
             .f4-receipt-item {
@@ -329,13 +336,23 @@
             background-color: #138496;
             box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3);
         }
-        /* (BARU) Style Tombol Cetak F4 */
+        /* (BARU) Style Tombol Cetak F4 (Tombol rentang) */
         .batch-controls button#batch-btn-f4 {
+            background-color: #28a745; /* Hijau */
+            box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+            /* margin-left: 10px; Dihapus, dihandle oleh 'gap' di .range-controls div */
+        }
+        .batch-controls button#batch-btn-f4:hover {
+            background-color: #218838;
+        }
+
+        /* (BARU) Style Tombol Cetak F4 (Tombol Semua) */
+        .batch-controls button#batch-btn-f4-all {
             background-color: #28a745; /* Hijau */
             box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
             margin-left: 10px;
         }
-        .batch-controls button#batch-btn-f4:hover {
+        .batch-controls button#batch-btn-f4-all:hover {
             background-color: #218838;
         }
 
@@ -603,6 +620,58 @@
             }, 5000);
         }
 
+        // --- (BARU) Fungsi untuk mencetak SEMUA kuitansi ke F4 ---
+        function printAllF4Pages() {
+            const f4View = document.getElementById('f4-print-view');
+            const totalItems = masterData.length - 1;
+            const statusEl = document.getElementById('batch-status');
+            
+            if (totalItems <= 0) {
+                statusEl.innerHTML = `<span style="color: red;">Tidak ada data untuk dicetak.</span>`;
+                statusEl.style.display = 'block';
+                setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
+                return;
+            }
+
+            let gridHtml = '';
+            for (let i = 0; i < totalItems; i++) {
+                // Mulai grid baru setiap 9 item
+                if (i % 9 === 0) {
+                    gridHtml += '<div class="f4-grid-container">';
+                }
+
+                if (masterData[i + 1]) {
+                    let receiptHtml = getReceiptHtml(i);
+                    // Ganti class 'container' (58mm) dengan class 'f4-receipt-item' (grid)
+                    receiptHtml = receiptHtml.replace(
+                        'class="container"', 
+                        'class="f4-receipt-item"'
+                    );
+                    gridHtml += receiptHtml;
+                }
+
+                // Tutup grid setiap 9 item, atau di item terakhir
+                if ((i + 1) % 9 === 0 || i === totalItems - 1) {
+                    gridHtml += '</div>';
+                }
+            }
+            
+            f4View.innerHTML = gridHtml;
+            
+            // Tambah class ke body untuk memicu CSS print F4
+            document.body.classList.add('print-f4-active');
+            
+            // Siapkan cleanup setelah print
+            window.onafterprint = function() {
+                document.body.classList.remove('print-f4-active');
+                f4View.innerHTML = ''; // Kosongkan
+                window.onafterprint = null; // Hapus listener
+            }
+            
+            // Panggil dialog cetak
+            window.print();
+        }
+
         // --- (BARU) Fungsi validasi dan trigger cetak F4 ---
         function printF4Page() {
             const startInput = document.getElementById('batch-start');
@@ -721,6 +790,8 @@
             const totalItems = masterData.length - 1; 
             
             batchHtml += `<button id="batch-btn-all" onclick="batchDownload(0, ${totalItems})">⬇️ Unduh Semua (${totalItems})</button>`;
+            // (BARU) Tombol Cetak F4 Semua
+            batchHtml += `<button id="batch-btn-f4-all" onclick="printAllF4Pages()">🖨️ Cetak F4 (Semua)</button>`;
             
             batchHtml += `<div class="range-controls">`;
             batchHtml += `<h4>...atau unduh/cetak rentang tertentu</h4>`;
