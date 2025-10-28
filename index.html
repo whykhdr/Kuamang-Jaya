@@ -140,8 +140,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const kategoriSelect = document.getElementById('kategori');
-            // ... (kode dropdown yang ada tetap di sini) ...
+            
+            // === PERBAIKAN: Pindahkan definisi variabel ini ke atas ===
+            const laporanLabel = document.getElementById('laporan-label');
             const laporanTextarea = document.getElementById('laporan');
+            // === AKHIR PERBAIKAN ===
+            
             // === TAMBAHAN BARU: Ambil wrapper RT/Lokasi ===
             const rtLokasiWrapper = document.getElementById('rt-lokasi-wrapper');
             
@@ -187,7 +191,7 @@
             const formStatus = document.getElementById('form-status');
             
             // !!! PENTING: Ganti dengan URL Google Apps Script Anda nanti !!!
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyFUwNb9-3oto0KWB600FaPz9FFaG4zb9DVqxpl9LE3YfgBuYejkn9LEGuw-4YvQNBb/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbw-1UAYikwRVA4hJeGZ2SIq5RY-qx3KZoS4RgLFU7FRw638m0SrPxtRWxe_FEcM0BNf/exec';
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
