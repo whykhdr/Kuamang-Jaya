@@ -3,245 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layanan Pengaduan Desa</title>
-    <!-- Memuat Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>MyXL Web Client</title>
     <style>
-        /* Menggunakan font Inter */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        .menu-item { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        #output { white-space: pre-wrap; background-color: #f4f4f4; padding: 10px; border-radius: 5px; }
+        .hidden { display: none; }
     </style>
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen py-8 sm:py-12"> <!-- Mengurangi padding vertikal di layar kecil -->
+<body>
 
-    <div class="container mx-auto p-4">
-        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-3xl border border-gray-200/50">
-            
-            <!-- Header Baru dengan Gradien -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-8 text-center"> <!-- Padding di header dibuat konsisten -->
-                <!-- Ikon baru (Heroicons: chat-bubble-left-right) -->
-                <svg class="mx-auto h-14 w-14 sm:h-16 sm:w-16 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <!-- Ikon sedikit lebih kecil di HP -->
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.722.537a5.25 5.25 0 01-5.038-4.02l-1.04-3.73V13.5a.75.75 0 01.75-.75h3.621m10.921-3.232a.75.75 0 00-.75-.75H13.5a.75.75 0 00-.75.75v3.75m0 0H7.125A2.625 2.625 0 004.5 9.75v5.25c0 .621.504 1.125 1.125 1.125h3.047a.75.75 0 01.75.75V18a.75.75 0 01-1.5 0v-1.125a.75.75 0 01-.75-.75H4.5A2.625 2.625 0 011.875 15V9.75A2.625 2.625 0 014.5 7.125h7.125M15 13.5v-3.75" />
-                </svg>
-                <h1 class="text-2xl sm:text-3xl font-bold text-white mt-4"> <!-- Ukuran font lebih kecil di HP -->
-                    Layanan Aspirasi & Pengaduan Desa
-                </h1>
-                <p class="text-base sm:text-lg text-blue-100 mt-2"> <!-- Ukuran font lebih kecil di HP -->
-                    Dusun Kuamang Jaya
-                </p>
-                <p class="text-sm sm:text-base text-blue-200 mt-4 max-w-lg mx-auto"> <!-- Ukuran font lebih kecil di HP -->
-                    Kami mendengarkan Anda. Silakan sampaikan kritik, saran, atau pengaduan Anda untuk membangun desa yang lebih baik.
-                </p>
-            </div>
+    <h1>MyXL Web Client</h1>
+    <div id="status"></div>
+    <div id="output">Hasil/Log API akan muncul di sini...</div>
 
-            <!-- Konten (Formulir, dll) -->
-            <div class="p-6 sm:p-8 md:p-12"> <!-- Padding lebih kecil di HP -->
-                <!-- Formulir Pengaduan -->
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 text-center mb-6"> <!-- Ukuran font lebih kecil di HP -->
-                        Sampaikan Laporan Anda
-                    </h2>
-                    
-                    <form id="laporan-form" class="space-y-5 sm:space-y-6"> <!-- Hapus action & method, tambahkan ID -->
-                        
-                        <!-- Konfigurasi FormSubmit (Tidak berubah) -->
-                        <input type="text" name="_honey" style="display:none">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_subject" value="Laporan Baru dari Website Desa!">
-
-                        <div>
-                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Anda (Opsional)</label>
-                            <input type="text" name="nama" id="nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Nama Anda">
-                        </div>
-
-                        <!-- === BLOK BARU UNTUK KATEGORI === -->
-                        <div>
-                            <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori Laporan</label>
-                            <select id="kategori" name="kategori" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition">
-                                <option value="" disabled selected>-- Pilih Kategori --</option>
-                                <option value="Laporan">Laporan (Contoh: fasilitas rusak)</option>
-                                <option value="Kritik/Saran">Kritik/Saran (Contoh: perbaikan layanan)</option>
-                                <option value="Usulan">Usulan (Contoh: ide program baru)</option>
-                            </select>
-                        </div>
-                        <!-- === AKHIR BLOK BARU === -->
-
-                        <!-- === BLOK BARU UNTUK RT & LOKASI (HIDDEN BY DEFAULT) === -->
-                        <div id="rt-lokasi-wrapper" class="hidden space-y-5 sm:space-y-6"> <!-- Dibungkus agar mudah di-toggle -->
-                            <div>
-                                <label for="rt" class="block text-sm font-medium text-gray-700">RT (Opsional)</label>
-                                <input type="text" name="rt" id="rt" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Contoh: RT 01 / RW 02">
-                            </div>
-                            <div>
-                                <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi/Tempat Kejadian (Opsional)</label>
-                                <input type="text" name="lokasi" id="lokasi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Contoh: Depan pos ronda, Jalan Amarta">
-                            </div>
-                        </div>
-                        <!-- === AKHIR BLOK RT & LOKASI === -->
-
-                        <!-- === PERBAIKAN: BLOK TEXTAREA YANG HILANG === -->
-                        <div>
-                            <!-- Label ini yang dicari oleh JavaScript -->
-                            <label for="laporan" id="laporan-label" class="block text-sm font-medium text-gray-700">Isi Laporan / Saran</label>
-                            <!-- Textarea ini yang dicari oleh JavaScript -->
-                            <textarea id="laporan" name="laporan" rows="5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50/70 focus:bg-white transition" placeholder="Jelaskan laporan atau saran Anda dengan detail..."></textarea>
-                        </div>
-                        <!-- === AKHIR PERBAIKAN === -->
-
-                        <div>
-                            <button type="submit" id="submit-button" class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50">
-                                Kirim Laporan
-                            </button>
-                        </div>
-                        <!-- Area untuk status pengiriman -->
-                        <div id="form-status" class="text-center text-sm font-medium"></div>
-                    </form>
-                </div>
-
-                <!-- Pemisah dan Tombol Lihat Laporan -->
-                <div class="mt-12 text-center">
-                    <div class="border-t border-gray-200 my-6"></div>
-                    <p class="text-gray-600 mb-4 px-2">Untuk transparansi, Anda bisa melihat laporan publik yang sedang ditangani:</p> <!-- Tambah padding horizontal sedikit -->
-                    
-                    <!-- Tombol Lihat Laporan Baru (Outline) -->
-                    <!-- Kelas w-full sm:w-auto sudah responsif -->
-                    <a href="https://github.com/whykhdr/Kuamang-Jaya/issues" 
-                       target="_blank" 
-                       class="w-full sm:w-auto inline-block bg-white text-blue-700 border border-blue-600 hover:bg-blue-50 font-bold py-3 px-8 rounded-lg text-center transition duration-300 ease-in-out hover:shadow-sm">
-                        Lihat Status Laporan Publik
-                    </a>
-                </div>
-                
-                <!-- Penjelasan Alur (diberi kotak) -->
-                <div class="mt-12 text-left text-gray-700 bg-blue-50/60 p-5 sm:p-6 rounded-lg border border-blue-100"> <!-- Padding lebih kecil di HP -->
-                    <h3 class="text-base sm:text-lg font-semibold text-blue-900">Bagaimana Cara Kerjanya?</h3> <!-- Ukuran font lebih kecil di HP -->
-                    <ol class="list-decimal list-inside mt-2 space-y-2 text-sm sm:text-base text-blue-800/90"> <!-- Ukuran font lebih kecil di HP -->
-                        <li>Isi formulir di atas dengan subjek dan isi laporan Anda.</li>
-                        <li>Klik tombol <strong>"Kirim Laporan"</strong>.</li>
-                        <li>Laporan Anda akan otomatis terkirim ke email tim admin desa.</li>
-                        <li>Tim kami akan meninjau dan menindaklanjuti laporan Anda.</li>
-                        <li>Admin dapat mempublikasikan laporan tertentu ke halaman 'Status Laporan Publik' untuk transparansi.</li>
-                    </ol>
-                </div>
-            </div>
-            
-            <!-- Footer (sedikit penyesuaian padding) -->
-            <div class="bg-gray-50 px-6 sm:px-8 py-4 text-center border-t border-gray-100">
-                <p class="text-xs sm:text-sm text-gray-500"> <!-- Ukuran font lebih kecil di HP -->
-                    © 2025 | Pemerintah Dusun Kuamang Jaya.
-                </p>
-            </div>
+    <hr>
+    
+    <div id="login-section" class="menu-item">
+        <h2>1. Login/OTP</h2>
+        <input type="text" id="msisdn" placeholder="628xxxxxx">
+        <button onclick="requestOtp()">Minta OTP (/login)</button>
+        
+        <div id="otp-input" class="hidden">
+            <input type="text" id="otp-code" placeholder="6 Digit OTP">
+            <button onclick="submitOtp()">Verifikasi OTP (/submit_otp)</button>
         </div>
     </div>
 
-    <!-- === BLOK SCRIPT BARU UNTUK FORM DINAMIS === -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const kategoriSelect = document.getElementById('kategori');
-            
-            // === PERBAIKAN: Pindahkan definisi variabel ini ke atas ===
-            const laporanLabel = document.getElementById('laporan-label');
-            const laporanTextarea = document.getElementById('laporan');
-            // === AKHIR PERBAIKAN ===
-            
-            // === TAMBAHAN BARU: Ambil wrapper RT/Lokasi ===
-            const rtLokasiWrapper = document.getElementById('rt-lokasi-wrapper');
-            
-            kategoriSelect.addEventListener('change', function() {
-                const selectedValue = this.value;
+    <div id="account-section" class="menu-item">
+        <h2>2. Akun & Saldo</h2>
+        <button onclick="checkSaldo()">Cek Saldo (/saldo)</button>
+    </div>
 
-                // === TAMBAHAN BARU: Logika untuk menampilkan/menyembunyikan RT/Lokasi ===
-                if (selectedValue === 'Laporan' || selectedValue === 'Usulan') {
-                    rtLokasiWrapper.classList.remove('hidden');
-                } else {
-                    rtLokasiWrapper.classList.add('hidden');
-                }
-                // === AKHIR TAMBAHAN ===
+    <div id="package-section" class="menu-item">
+        <h2>3. Paket XUT</h2>
+        <button onclick="listPackages()">Daftar Paket XUT (/list_xut)</button>
+        <div id="packages-list"></div>
+        
+        <div id="buy-input" class="hidden">
+            <input type="number" id="package-num" placeholder="Nomor Paket (1, 2, 3)">
+            <button onclick="buyPackage()">Beli Paket (/buy_xut)</button>
+        </div>
+    </div>
 
-                // Cek jika elemen ditemukan sebelum mengubah propertinya
-                if (laporanLabel && laporanTextarea) {
-                    switch (selectedValue) {
-                        case 'Laporan':
-                            laporanLabel.textContent = 'Isi Laporan';
-                            laporanTextarea.placeholder = 'Jelaskan laporan Anda dengan detail (contoh: lokasi, kerusakan, dll)...';
-                            break;
-                        case 'Kritik/Saran':
-                            laporanLabel.textContent = 'Isi Kritik / Saran';
-                            laporanTextarea.placeholder = 'Jelaskan kritik atau saran Anda untuk perbaikan...';
-                            break;
-                        case 'Usulan':
-                            laporanLabel.textContent = 'Isi Usulan';
-                            laporanTextarea.placeholder = 'Jelaskan usulan atau ide program baru Anda...';
-                            break;
-                        default:
-                            // Jika kembali ke default (meskipun tidak mungkin karena 'disabled')
-                            laporanLabel.textContent = 'Isi Laporan / Saran';
-                            laporanTextarea.placeholder = 'Jelaskan laporan atau saran Anda dengan detail...';
-                    }
-                } else {
-                    console.error("Elemen label atau textarea tidak ditemukan!");
-                }
-            });
-
-            // === SCRIPT BARU UNTUK GOOGLE APPS SCRIPT ===
-            const form = document.getElementById('laporan-form');
-            const submitButton = document.getElementById('submit-button');
-            const formStatus = document.getElementById('form-status');
-            
-            // !!! PENTING: Ganti dengan URL Google Apps Script Anda nanti !!!
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzLWCklaLu1f-gNc4Ca8r2WXG34eYqRIHeAbxxCpCYyEe0D3JBeHv2VNKaO6OWnngbT/exec';
-
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Nonaktifkan tombol dan tampilkan loading
-                submitButton.disabled = true;
-                submitButton.textContent = 'Mengirim...';
-                formStatus.textContent = '';
-
-                const formData = new FormData(form);
-
-                fetch(scriptURL, { method: 'POST', body: formData })
-                    .then(response => {
-                        // Kita tidak lagi mengandalkan response.ok
-                        // Biarkan blok .then() ini kosong
-                        // Pesan sukses akan ditangani di .finally()
-                    })
-                    .catch(error => {
-                        // Jika terjadi error CORS (seperti sekarang),
-                        // kita akan mengabaikannya, karena kita tahu data tetap masuk.
-                        console.error('Error (diabaikan):', error.message);
-                        // Pesan sukses akan ditangani di .finally()
-                    })
-                    .finally(() => {
-                        // Blok .finally() ini akan SELALU berjalan,
-                        // baik fetch-nya 'sukses' ataupun 'gagal' (karena CORS).
-
-                        // Karena kita tahu data PASTI masuk, kita langsung tampilkan sukses
-                        formStatus.textContent = 'Laporan berhasil terkirim. Terima kasih!';
-                        formStatus.className = 'text-center text-sm font-medium text-green-600';
-                        form.reset(); // Kosongkan formulir
-                        
-                        // Sembunyikan lagi RT/Lokasi jika form di-reset
-                        // Kita perlu definisikan rtLokasiWrapper di dalam scope ini jika belum ada
-                        // (Tapi dari kode Anda, seharusnya sudah ada di scope atas)
-                        const rtLokasiWrapper = document.getElementById('rt-lokasi-wrapper');
-                        if (rtLokasiWrapper) {
-                            rtLokasiWrapper.classList.add('hidden');
-                        }
-
-                        // Aktifkan tombol kembali
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Kirim Laporan';
-                    });
-            });
-            // === AKHIR SCRIPT BARU ===
-
-        });
-    </script>
-    <!-- === AKHIR BLOK SCRIPT === -->
-
+    <script src="app.js"></script>
 </body>
 </html>
