@@ -1,0 +1,48 @@
+# Konfigurasi Backend (Wajib untuk GitHub Pages)
+backend:
+  name: github
+  repo: whykhdr/Kuamang-Jaya # Ganti dengan nama repo Anda (contoh: user/apbdes-desa-namaanda)
+  branch: main # Ganti dengan nama branch utama Anda (misalnya: main atau master)
+  base_url: https://api.netlify.com # Meskipun Anda tidak menggunakan hosting Netlify, ini diperlukan untuk otentikasi
+  auth_scope: repo
+
+# Konfigurasi Interface CMS
+media_folder: "assets/img" # Folder untuk menyimpan gambar (jika ada)
+public_folder: "/assets/img"
+
+# Definisi Collection (Tabel Data APBDes)
+collections:
+  - name: "belanja" # Nama internal koleksi
+    label: "Anggaran Belanja" # Nama yang tampil di CMS
+    folder: "data" # Lokasi penyimpanan file
+    file: "belanja.json" # Nama file yang akan diedit
+    format: "json" # Format file
+    fields:
+      - label: "Tahun Anggaran"
+        name: "tahun"
+        widget: "number"
+      - label: "Daftar Bidang Belanja"
+        name: "bidang"
+        widget: "list"
+        fields: # Struktur data untuk setiap item Bidang
+          - label: "Kode Bidang (5.XX.00.00)"
+            name: "kode"
+            widget: "string"
+          - label: "Nama Bidang"
+            name: "nama"
+            widget: "string"
+          - label: "Kegiatan"
+            name: "kegiatan"
+            widget: "list" # Ini memungkinkan menambah/menghapus/mengedit rincian kegiatan
+            fields: # Struktur data untuk setiap item Kegiatan
+              - label: "Kode Rekening (5.11.01.01)"
+                name: "kode"
+                widget: "string"
+              - label: "Uraian Kegiatan/Belanja"
+                name: "uraian"
+                widget: "string"
+              - label: "Anggaran (Rp)"
+                name: "anggaran"
+                widget: "number"
+                value_type: "int"
+                min: 0
