@@ -1,0 +1,46 @@
+{
+  "tahun_anggaran": 2024,
+  "total_pendapatan": 1500000000,
+  "rincian": [
+    {
+      "kode": "4.10.00.00",
+      "uraian": "Pendapatan Asli Desa (PADes)",
+      "anggaran": 50000000,
+      "level": 1,
+      "children": [
+        {
+          "kode": "4.11.00.00",
+          "uraian": "Hasil Usaha Desa (BUMDes)",
+          "anggaran": 30000000,
+          "level": 2
+        },
+        {
+          "kode": "4.12.00.00",
+          "uraian": "Hasil Aset",
+          "anggaran": 20000000,
+          "level": 2
+        }
+      ]
+    },
+    {
+      "kode": "4.20.00.00",
+      "uraian": "Transfer",
+      "anggaran": 1450000000,
+      "level": 1,
+      "children": [
+        {
+          "kode": "4.21.00.00",
+          "uraian": "Dana Desa (DD)",
+          "anggaran": 800000000,
+          "level": 2
+        },
+        {
+          "kode": "4.22.00.00",
+          "uraian": "Alokasi Dana Desa (ADD)",
+          "anggaran": 650000000,
+          "level": 2
+        }
+      ]
+    }
+  ]
+}
