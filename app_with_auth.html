@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APBDes Admin: Login & Kelola Anggaran</title>
+    <title>APBDes Admin: Supabase - Login & Kelola Anggaran</title>
     <!-- Memuat Tailwind CSS untuk styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #f3ff6;
         }
         .loading-spinner {
             border-top-color: #fff;
@@ -19,17 +19,12 @@
         @keyframes spinner {
             to { transform: rotate(360deg); }
         }
-        /* Animasi sederhana untuk transisi layar */
         .animate-fade-in {
             animation: fadeIn 0.5s ease-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        /* Modal Backdrop */
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -43,69 +38,31 @@
         </div>
     </div>
 
-    <!-- Custom Confirmation Modal (Menggantikan window.confirm()) -->
-    <div id="customConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
-        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="modalDialog">
-            <h3 class="text-xl font-bold text-red-600 mb-4">Konfirmasi Penghapusan</h3>
-            <p id="modalMessage" class="text-gray-700 mb-6">Apakah Anda yakin ingin menghapus kegiatan anggaran ini?</p>
-            <div class="flex justify-end space-x-3">
-                <button id="modalCancelBtn" class="py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors">Batal</button>
-                <button id="modalConfirmBtn" class="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">Hapus Sekarang</button>
-            </div>
-        </div>
-    </div>
+    <!-- Supabase SDK Import -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Firebase SDK Imports -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signInWithCustomToken, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, deleteDoc, doc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Set log level for debugging
-        setLogLevel('Debug');
-        
         // =========================================================================
-        // --- KONFIGURASI FIREBASE ---
+        // --- PENTING: GANTI DENGAN KONFIGURASI SUPABASE ANDA DI SINI ---
         
-        // Variabel dari Canvas (jika ada)
-        const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // GANTI DENGAN KONFIGURASI FIREBASE ANDA DI SINI
-        const YOUR_FIREBASE_CONFIG = {
-            // GANTI INI DENGAN DATA DARI FIREBASE CONSOLE ANDA
-            apiKey: "AIzaSyB8IFjptsvABJhSljiOVHaDSTkGegF92sg", 
-            authDomain: "kuamang-jaya.firebaseapp.com",
-            projectId: "kuamang-jaya",
-            storageBucket: "kuamang-jaya.firebasestorage.app",
-            messagingSenderId: "53537358910",
-            appId: "1:53537358910:web:c11343fe3edaefe477fd6f"
-        };
-
-        // If running in Canvas, use Canvas config. If on GitHub/Production, use your config.
-        const firebaseConfig = canvasFirebaseConfig || YOUR_FIREBASE_CONFIG;
+        // Dapatkan ini dari Dashboard Supabase Anda (Settings -> API)
+        const SUPABASE_URL = "https://your-project-ref.supabase.co"; // Contoh: https://abcdefghijklmn.supabase.co
+        const SUPABASE_ANON_KEY = "your-anon-key"; // Contoh: eyJh...
         
+        // Nama tabel di database Supabase Anda
+        const TABLE_NAME = "apbdes_anggaran";
+
         // =========================================================================
 
-        let db, auth;
-
-        // Initialize Firebase
-        if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey === "INI_KEY_ANDA") {
-            console.error("Firebase configuration is missing or incomplete. Cannot initialize Firebase.");
-            document.getElementById('app-container').innerHTML = '<div class="text-center p-10 bg-red-100 text-red-700 rounded-lg">Kesalahan: Konfigurasi Firebase tidak ditemukan. Pastikan Anda telah mengisi `YOUR_FIREBASE_CONFIG` di kode HTML ini.</div>';
+        if (SUPABASE_URL === "https://bnihtjxkuscbxezmwowk.supabase.co" || SUPABASE_ANON_KEY === "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuaWh0anhrdXNjYnhlem13b3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjY0NjMsImV4cCI6MjA4MDMwMjQ2M30.QQLtMgIiE7-ZesdX_vFtKxrpxjITZSXIkbyQqI_N-E8") {
+            document.getElementById('app-container').innerHTML = '<div class="text-center p-10 bg-red-100 text-red-700 rounded-lg">Kesalahan: Konfigurasi Supabase tidak ditemukan. Harap ganti `SUPABASE_URL` dan `SUPABASE_ANON_KEY` dengan kunci Anda.</div>';
         } else {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
+            // Inisialisasi Klien Supabase
+            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            // Set session persistence (user stays logged in after refresh)
-            setPersistence(auth, browserSessionPersistence);
+            let currentUser = null; // Variabel global untuk menyimpan informasi user
             
-            // FIREBASE COLLECTION PATH FOR APBDES DATA (Public/Shared Data)
-            const APBDES_COLLECTION_PATH = `artifacts/${appId}/public/data/apbdes_anggaran`;
-
-            // --- UTILITY FUNCTIONS ---
+            // --- FORMATTING FUNCTIONS ---
             const formatCurrency = (amount) => {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -114,57 +71,8 @@
                 }).format(amount);
             };
 
-            // --- MODAL/CONFIRMATION LOGIC ---
-            const modalEl = document.getElementById('customConfirmModal');
-            const modalDialogEl = document.getElementById('modalDialog');
-            const modalMessageEl = document.getElementById('modalMessage');
-            const modalCancelBtn = document.getElementById('modalCancelBtn');
-            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-            
-            let currentResolve = null;
-
-            const showModal = (message) => {
-                return new Promise(resolve => {
-                    currentResolve = resolve;
-                    modalMessageEl.textContent = message;
-                    modalEl.classList.remove('hidden');
-                    modalEl.classList.add('flex');
-                    // Add transition classes
-                    setTimeout(() => {
-                        modalEl.classList.remove('opacity-0');
-                        modalDialogEl.classList.remove('opacity-0', 'scale-95');
-                        modalDialogEl.classList.add('opacity-100', 'scale-100');
-                    }, 10);
-                });
-            };
-
-            const hideModal = () => {
-                // Reverse transition classes
-                modalDialogEl.classList.remove('opacity-100', 'scale-100');
-                modalDialogEl.classList.add('opacity-0', 'scale-95');
-                modalEl.classList.add('opacity-0');
-                
-                setTimeout(() => {
-                    modalEl.classList.add('hidden');
-                    modalEl.classList.remove('flex');
-                }, 300); // Wait for transition to finish
-            };
-
-            modalCancelBtn.onclick = () => {
-                if (currentResolve) currentResolve(false);
-                hideModal();
-            };
-
-            modalConfirmBtn.onclick = () => {
-                if (currentResolve) currentResolve(true);
-                hideModal();
-            };
-
-
             // --- BUDGET MANAGEMENT COMPONENT (CRUD) ---
-            const renderAnggaranManagement = (container, db, user) => {
-                const anggaranRef = collection(db, APBDES_COLLECTION_PATH);
-                
+            const renderAnggaranManagement = (container, user) => {
                 container.innerHTML = `
                     <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Kelola Data Anggaran APBDes</h2>
                     <div id="anggaranMessage" class="py-2 text-center text-sm font-medium rounded-lg mb-4 hidden" role="alert"></div>
@@ -192,7 +100,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h3 class="text-xl font-semibold mb-4 text-indigo-700">Daftar Kegiatan APBDes</h3>
                         <div id="anggaranList" class="space-y-4">
-                            <!-- Data anggaran will be inserted here by onSnapshot -->
+                            <!-- Data anggaran akan dimasukkan di sini oleh fetchAnggaran -->
                             <p class="text-center text-gray-500">Memuat data...</p>
                         </div>
                     </div>
@@ -203,38 +111,47 @@
                 const messageEl = document.getElementById('anggaranMessage');
                 const submitBtn = document.getElementById('submitAnggaranBtn');
 
-                // 1. READ (Fetching real-time data)
-                onSnapshot(anggaranRef, (snapshot) => {
-                    const anggaranData = [];
-                    snapshot.forEach(doc => {
-                        // Store document ID for Delete operation
-                        anggaranData.push({ id: doc.id, ...doc.data() });
-                    });
+                // 1. READ (Fetching real-time data using Supabase's real-time feature)
+                const fetchAnggaran = async () => {
+                    const { data, error } = await supabase
+                        .from(TABLE_NAME)
+                        .select('id, nama, jumlah, added_by_email')
+                        .order('nama', { ascending: true });
 
-                    // Sort data client-side (example: by activity name)
-                    anggaranData.sort((a, b) => a.nama.localeCompare(b.nama));
-                    
-                    if (anggaranData.length === 0) {
+                    if (error) {
+                        console.error("Error fetching data:", error);
+                        anggaranListEl.innerHTML = `<p class="text-red-500">Gagal memuat data: ${error.message}</p>`;
+                        return;
+                    }
+
+                    if (data.length === 0) {
                         anggaranListEl.innerHTML = '<p class="text-center text-gray-500 p-4 border rounded-lg">Belum ada data anggaran yang ditambahkan.</p>';
                         return;
                     }
 
-                    anggaranListEl.innerHTML = anggaranData.map(item => `
+                    anggaranListEl.innerHTML = data.map(item => `
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
                             <div class="flex-grow min-w-0 mb-2 sm:mb-0">
                                 <p class="font-semibold text-gray-800 truncate">${item.nama}</p>
                                 <p class="text-sm text-indigo-600">${formatCurrency(item.jumlah)}</p>
-                                <p class="text-xs text-gray-400">Ditambahkan oleh: ${item.addedByEmail}</p>
+                                <p class="text-xs text-gray-400">Ditambahkan oleh: ${item.added_by_email}</p>
                             </div>
-                            <button data-id="${item.id}" data-name="${item.nama}" class="delete-btn flex-shrink-0 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-xs transition-colors">
+                            <button data-id="${item.id}" class="delete-btn flex-shrink-0 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-xs transition-colors">
                                 Hapus
                             </button>
                         </div>
                     `).join('');
-                }, (error) => {
-                    console.error("Error fetching data:", error);
-                    anggaranListEl.innerHTML = `<p class="text-red-500">Gagal memuat data: ${error.message}</p>`;
-                });
+                };
+
+                // Listen for real-time changes
+                supabase
+                    .channel('public:apbdes_anggaran')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: TABLE_NAME }, () => {
+                        fetchAnggaran(); // Re-fetch data on any change
+                    })
+                    .subscribe();
+
+                fetchAnggaran(); // Initial fetch
 
                 // 2. CREATE (Adding new data)
                 formEl.addEventListener('submit', async (e) => {
@@ -244,75 +161,76 @@
                     const jumlah = parseInt(document.getElementById('jumlahAnggaran').value, 10);
                     
                     if (nama && jumlah > 0) {
-                        submitBtn.innerHTML = '<div class="loading-spinner h-4 w-4 border-2 mr-2"></div> Menyimpan...';
+                        submitBtn.innerHTML = 'Menyimpan...';
                         submitBtn.disabled = true;
                         messageEl.classList.add('hidden');
 
-                        try {
-                            await addDoc(anggaranRef, {
-                                nama: nama,
-                                jumlah: jumlah,
-                                addedBy: user.uid,
-                                addedByEmail: user.email,
-                                createdAt: new Date().toISOString()
-                            });
-                            
+                        const { error } = await supabase
+                            .from(TABLE_NAME)
+                            .insert([
+                                { 
+                                    nama: nama, 
+                                    jumlah: jumlah, 
+                                    added_by: user.id,
+                                    added_by_email: user.email 
+                                }
+                            ]);
+
+                        if (error) {
+                            console.error("Error adding data:", error);
+                            messageEl.textContent = `Gagal menambahkan data: ${error.message}`;
+                            messageEl.classList.add('bg-red-100', 'text-red-800');
+                            messageEl.classList.remove('hidden');
+                        } else {
                             formEl.reset();
                             messageEl.textContent = 'Anggaran berhasil ditambahkan!';
                             messageEl.classList.add('bg-green-100', 'text-green-800');
                             messageEl.classList.remove('hidden');
-
-                        } catch (error) {
-                            console.error("Error adding document:", error);
-                            messageEl.textContent = `Gagal menambahkan data: ${error.message}`;
-                            messageEl.classList.add('bg-red-100', 'text-red-800');
-                            messageEl.classList.remove('hidden');
-                        } finally {
-                            submitBtn.innerHTML = 'Tambah Anggaran';
-                            submitBtn.disabled = false;
-                            setTimeout(() => messageEl.classList.add('hidden'), 3000);
                         }
+                        
+                        submitBtn.innerHTML = 'Tambah Anggaran';
+                        submitBtn.disabled = false;
+                        setTimeout(() => messageEl.classList.add('hidden'), 3000);
                     }
                 });
 
-                // 3. DELETE (Deleting data - using custom modal)
+                // 3. DELETE (Deleting data)
                 anggaranListEl.addEventListener('click', async (e) => {
                     if (e.target.classList.contains('delete-btn')) {
-                        const deleteBtn = e.target;
-                        const docId = deleteBtn.getAttribute('data-id');
-                        const docName = deleteBtn.getAttribute('data-name');
+                        const docId = e.target.getAttribute('data-id');
                         
-                        // Show custom confirmation modal
-                        const confirmed = await showModal(`Apakah Anda yakin ingin menghapus kegiatan **${docName}**?`);
-
-                        if (!confirmed) {
+                        // Gunakan konfirmasi UI yang sederhana
+                        if (!confirm(`Apakah Anda yakin ingin menghapus anggaran ini?`)) {
                             return; 
                         }
 
-                        deleteBtn.innerHTML = '<div class="loading-spinner h-3 w-3 border-2 border-t-red-700"></div>';
-                        deleteBtn.disabled = true;
+                        e.target.innerHTML = 'Hapus...';
+                        e.target.disabled = true;
                         
-                        try {
-                            await deleteDoc(doc(db, APBDES_COLLECTION_PATH, docId));
-                            
-                            messageEl.textContent = `Anggaran '${docName}' berhasil dihapus!`;
-                            messageEl.classList.add('bg-green-100', 'text-green-800');
-                            messageEl.classList.remove('hidden');
-                        } catch (error) {
-                            console.error("Error deleting document:", error);
+                        const { error } = await supabase
+                            .from(TABLE_NAME)
+                            .delete()
+                            .eq('id', docId); // Filter berdasarkan ID
+
+                        if (error) {
+                            console.error("Error deleting data:", error);
                             messageEl.textContent = `Gagal menghapus data: ${error.message}`;
                             messageEl.classList.add('bg-red-100', 'text-red-800');
                             messageEl.classList.remove('hidden');
-                            deleteBtn.innerHTML = 'Hapus'; // Re-enable if error, onSnapshot handles success
-                        } finally {
-                            setTimeout(() => messageEl.classList.add('hidden'), 3000);
+                        } else {
+                            messageEl.textContent = 'Anggaran berhasil dihapus!';
+                            messageEl.classList.add('bg-green-100', 'text-green-800');
+                            messageEl.classList.remove('hidden');
                         }
+                        
+                        // Real-time listener akan memuat ulang, jadi kita hanya perlu menampilkan pesan
+                        setTimeout(() => messageEl.classList.add('hidden'), 3000);
                     }
                 });
             };
 
             // --- ADMIN DASHBOARD COMPONENT (Main Layout) ---
-            const renderDashboard = (container, user, db) => {
+            const renderDashboard = (container, user) => {
                 container.innerHTML = `
                     <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-gray-100 animate-fade-in">
                         <div class="flex justify-between items-center mb-6 border-b pb-4">
@@ -325,7 +243,7 @@
                         
                         <div class="space-y-4">
                             <h2 class="text-xl font-semibold text-gray-800 mb-4">Selamat Datang, ${user.email}</h2>
-                            <p class="text-gray-600">Anda berada di App ID: <span class="font-mono text-sm bg-gray-100 p-1 rounded">${appId}</span>. Data Anggaran disimpan di **${APBDES_COLLECTION_PATH}**.</p>
+                            <p class="text-gray-600">Anda menggunakan Supabase. Data disimpan di tabel **${TABLE_NAME}**.</p>
                             
                             <div id="mainContent" class="pt-6">
                                 <!-- Budget Management content will be loaded here -->
@@ -335,24 +253,28 @@
                 `;
 
                 document.getElementById('logoutButton').addEventListener('click', async () => {
-                    await signOut(auth);
+                    await supabase.auth.signOut();
                 });
 
                 // Load Budget Management module
-                renderAnggaranManagement(document.getElementById('mainContent'), db, user);
+                renderAnggaranManagement(document.getElementById('mainContent'), user);
             };
 
             // --- MAIN FUNCTION (Authentication Status Management) ---
             const appContainer = document.getElementById('app-container');
 
-            onAuthStateChanged(auth, (user) => {
-                // Remove spinner/loading
+            // Listen to Supabase Auth state changes
+            supabase.auth.onAuthStateChange((event, session) => {
+                const user = session?.user;
+                currentUser = user; 
+                
+                // Hapus spinner/loading
                 appContainer.innerHTML = ''; 
                 appContainer.classList.remove('flex', 'items-center', 'justify-center');
 
                 if (user) {
                     // User is logged in
-                    renderDashboard(appContainer, user, db);
+                    renderDashboard(appContainer, user);
                 } else {
                     // User is logged out or not yet authenticated
                     appContainer.classList.add('flex', 'items-center', 'justify-center');
@@ -360,21 +282,6 @@
                 }
             });
 
-            // Initial Auth with Custom Token (Only for Canvas environment if available)
-            async function initializeAuth() {
-                if (initialAuthToken) {
-                    try {
-                        // This sign in will trigger onAuthStateChanged
-                        await signInWithCustomToken(auth, initialAuthToken);
-                        console.log("Signed in with Canvas custom token.");
-                    } catch (error) {
-                        console.error("Error signing in with custom token:", error);
-                    }
-                } else {
-                    console.log("Starting with standard authentication flow.");
-                }
-            }
-            
             // --- LOGIN SCREEN COMPONENT ---
             const renderLoginScreen = (container) => {
                 container.innerHTML = `
@@ -383,7 +290,7 @@
                             <svg class="mx-auto h-12 w-12 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                             </svg>
-                            <h1 class="mt-4 text-3xl font-extrabold text-gray-900">Masuk sebagai Admin</h1>
+                            <h1 class="mt-4 text-3xl font-extrabold text-gray-900">Masuk sebagai Admin (Supabase)</h1>
                             <p class="mt-2 text-sm text-gray-500">Akses terbatas APBDes</p>
                         </div>
                         <form id="loginForm" class="space-y-6">
@@ -403,7 +310,7 @@
                             </div>
                         </form>
                         <p class="mt-6 text-center text-sm text-gray-600">
-                            Untuk demo, gunakan kredensial admin yang sudah Anda buat di konsol Firebase (Langkah 4 di panduan).
+                            Gunakan kredensial admin yang Anda buat di Supabase Console (Langkah 4 di panduan baru).
                         </p>
                     </div>
                 `;
@@ -419,24 +326,25 @@
 
                     // Reset message
                     messageArea.classList.add('hidden');
-                    messageArea.classList.remove('bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+                    messageArea.classList.remove('bg-red-100', 'text-red-800');
                     messageArea.textContent = '';
                     loginButton.disabled = true;
                     loginButton.innerHTML = '<div class="loading-spinner h-5 w-5 rounded-full border-2 border-white border-t-indigo-300"></div> Memproses...';
                     
                     try {
-                        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                        // Login successful - onAuthStateChanged will handle dashboard rendering
+                        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                        
+                        if (error) throw error;
+                        // Login successful - onAuthStateChange will handle dashboard rendering
+
                     } catch (error) {
                         console.error("Login Error:", error);
-                        // Display user-friendly error message
-                        let errorMessage = 'Login Gagal. Terjadi kesalahan tak terduga.';
-                        if (error.code === 'auth/wrong-password') {
-                            errorMessage = 'Kata sandi salah. Coba lagi.';
-                        } else if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-                            errorMessage = 'Email atau Kata Sandi salah.';
+                        // Tampilkan pesan error yang ramah pengguna
+                        let errorMessage = 'Login Gagal. Email atau Kata Sandi salah.';
+                        if (error.message.includes("Invalid login credentials")) {
+                             errorMessage = 'Email atau Kata Sandi salah. Coba lagi.';
                         } else {
-                            errorMessage = `Login Gagal. Error: ${error.code.replace('auth/', '')}`;
+                            errorMessage = `Login Gagal. Error: ${error.message}`;
                         }
 
                         messageArea.textContent = errorMessage;
@@ -449,7 +357,17 @@
                 });
             };
 
-            initializeAuth();
+            // Ensure we check the initial session state
+            (async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) {
+                    // If no session, manually render the login screen
+                    appContainer.innerHTML = '';
+                    appContainer.classList.add('flex', 'items-center', 'justify-center');
+                    renderLoginScreen(appContainer);
+                }
+            })();
+
         }
     </script>
 </body>
