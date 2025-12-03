@@ -1,0 +1,37 @@
+# Konfigurasi Backend untuk Netlify
+backend:
+  name: git-gateway # Menggunakan Git Gateway Netlify untuk otentikasi
+  repo: whykhdr/Kuamang-Jaya # NAMA REPOSitori Anda telah disematkan di sini
+  branch: main                # Pastikan ini sesuai dengan branch utama di repo Anda (biasanya 'main' atau 'master')
+
+# Konfigurasi Interface CMS
+media_folder: "assets/img" 
+public_folder: "/assets/img"
+
+# Definisikan Collection (Tabel Data APBDes)
+# Anda bisa mendefinisikan koleksi lain (misalnya 'belanja', 'pembiayaan') di bawah ini
+collections:
+  - name: "pendapatan" 
+    label: "Anggaran Pendapatan" 
+    folder: "data" 
+    file: "pendapatan.json" 
+    format: "json" 
+    fields:
+      - label: "Tahun Anggaran"
+        name: "tahun"
+        widget: "number"
+      - label: "Daftar Rincian Pendapatan"
+        name: "rincian"
+        widget: "list"
+        fields: 
+          - label: "Kode Rekening"
+            name: "kode"
+            widget: "string"
+          - label: "Uraian"
+            name: "uraian"
+            widget: "string"
+          - label: "Anggaran (Rp)"
+            name: "anggaran"
+            widget: "number"
+            value_type: "int"
+            min: 0
