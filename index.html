@@ -1,51 +1,791 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyXL Web Client</title>
-    <style>
-        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-        .menu-item { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        #output { white-space: pre-wrap; background-color: #f4f4f4; padding: 10px; border-radius: 5px; }
-        .hidden { display: none; }
-    </style>
-</head>
-<body>
+import React, { useState } from 'react';
+import { 
+  Building2, 
+  Wallet, 
+  TrendingUp, 
+  TrendingDown, 
+  Users, 
+  FileText, 
+  BarChart3, 
+  ChevronDown, 
+  ChevronUp,
+  MapPin,
+  Phone,
+  Mail,
+  Menu,
+  X,
+  ArrowRight,
+  Lock,
+  LogOut,
+  Plus,
+  Trash2,
+  AlertCircle
+} from 'lucide-react';
 
-    <h1>MyXL Web Client</h1>
-    <div id="status"></div>
-    <div id="output">Hasil/Log API akan muncul di sini...</div>
+// --- DATA AWAL (DEFAULT) ---
+const INITIAL_DATA_DESA = {
+  nama: "Desa Kuamang Jaya",
+  kecamatan: "Kecamatan Pelepat Ilir",
+  kabupaten: "Kabupaten Bungo",
+  tahun: "2026",
+  pendapatan: {
+    total: 1850000000,
+    rincian: [
+      { id: 1, nama: "Pendapatan Asli Desa (PADes)", nilai: 150000000, persen: 8.1 },
+      { id: 2, nama: "Dana Desa (DD)", nilai: 950000000, persen: 51.3 },
+      { id: 3, nama: "Alokasi Dana Desa (ADD)", nilai: 450000000, persen: 24.3 },
+      { id: 4, nama: "Bantuan Keuangan Prov/Kab", nilai: 300000000, persen: 16.2 },
+    ]
+  },
+  belanja: {
+    total: 1845000000,
+    rincian: [
+      { id: 1, nama: "Bidang Penyelenggaraan Pemerintahan", nilai: 550000000, warna: "bg-blue-500" },
+      { id: 2, nama: "Bidang Pelaksanaan Pembangunan", nilai: 800000000, warna: "bg-green-500" },
+      { id: 3, nama: "Bidang Pembinaan Kemasyarakatan", nilai: 200000000, warna: "bg-yellow-500" },
+      { id: 4, nama: "Bidang Pemberdayaan Masyarakat", nilai: 195000000, warna: "bg-purple-500" },
+      { id: 5, nama: "Bidang Penanggulangan Bencana", nilai: 100000000, warna: "bg-red-500" },
+    ]
+  },
+  pembiayaan: {
+    penerimaan: 20000000,
+    pengeluaran: 25000000,
+    netto: -5000000
+  }
+};
 
-    <hr>
+const INITIAL_BERITA = [
+  { id: 1, judul: "Musrenbangdes Penetapan RKPDes 2026", tanggal: "20 Des 2025", kategori: "Pemerintahan" },
+  { id: 2, judul: "Penyaluran BLT Dana Desa Tahap I 2026", tanggal: "15 Jan 2026", kategori: "Sosial" },
+  { id: 3, judul: "Rencana Betonisasi Jalan Dusun II", tanggal: "02 Feb 2026", kategori: "Pembangunan" }
+];
+
+// --- COMPONENTS ---
+
+const Header = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpen, isLoggedIn, dataDesa }) => (
+  <header className="bg-emerald-700 text-white sticky top-0 z-40 shadow-lg">
+    <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="flex items-center space-x-3">
+        <div className="bg-white p-2 rounded-full text-emerald-700">
+          <Building2 size={24} />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold leading-none">APBDes {dataDesa.tahun}</h1>
+          <p className="text-emerald-200 text-xs uppercase tracking-wider">{dataDesa.nama}</p>
+        </div>
+      </div>
+
+      {/* Desktop Menu */}
+      <nav className="hidden md:flex space-x-6 items-center">
+        {['Beranda', 'Pendapatan', 'Belanja', 'Transparansi', 'Kontak'].map((item) => (
+          <button
+            key={item}
+            onClick={() => setActiveTab(item)}
+            className={`text-sm font-medium transition-colors hover:text-emerald-200 ${
+              activeTab === item ? 'border-b-2 border-white pb-1' : ''
+            }`}
+          >
+            {item}
+          </button>
+        ))}
+        {isLoggedIn && (
+          <button
+            onClick={() => setActiveTab('Admin')}
+            className={`flex items-center gap-1 bg-emerald-800 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500 ${activeTab === 'Admin' ? 'bg-emerald-900 ring-2 ring-emerald-400' : ''}`}
+          >
+            <Lock size={12} /> Admin Panel
+          </button>
+        )}
+      </nav>
+
+      {/* Mobile Menu Button */}
+      <button 
+        className="md:hidden text-white"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        {isMobileMenuOpen ? <X /> : <Menu />}
+      </button>
+    </div>
+
+    {/* Mobile Dropdown */}
+    {isMobileMenuOpen && (
+      <div className="md:hidden bg-emerald-800 p-4 space-y-2 animate-fade-in border-t border-emerald-600">
+        {['Beranda', 'Pendapatan', 'Belanja', 'Transparansi', 'Kontak'].map((item) => (
+          <button
+            key={item}
+            onClick={() => {
+              setActiveTab(item);
+              setIsMobileMenuOpen(false);
+            }}
+            className={`block w-full text-left py-2 px-4 rounded ${
+              activeTab === item ? 'bg-emerald-900' : 'hover:bg-emerald-700'
+            }`}
+          >
+            {item}
+          </button>
+        ))}
+        {isLoggedIn && (
+          <button
+            onClick={() => {
+              setActiveTab('Admin');
+              setIsMobileMenuOpen(false);
+            }}
+            className="block w-full text-left py-2 px-4 rounded bg-red-900 text-red-100 hover:bg-red-800 mt-2 font-bold"
+          >
+            Admin Panel
+          </button>
+        )}
+      </div>
+    )}
+  </header>
+);
+
+const FormatRupiah = (number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(number);
+};
+
+const SummaryCard = ({ title, amount, icon: Icon, color, trend }) => (
+  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+    <div className="flex justify-between items-start mb-4">
+      <div className={`p-3 rounded-lg ${color} bg-opacity-10 text-${color.split('-')[1]}-600`}>
+        <Icon size={24} />
+      </div>
+      {trend && (
+        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+          trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+        }`}>
+          {trend === 'up' ? 'Naik' : 'Turun'} dr Thn Lalu
+        </span>
+      )}
+    </div>
+    <h3 className="text-slate-500 text-sm font-medium mb-1">{title}</h3>
+    <p className="text-2xl font-bold text-slate-800">{FormatRupiah(amount)}</p>
+  </div>
+);
+
+const ProgressBar = ({ label, value, max, color }) => {
+  const percentage = (value / max) * 100;
+  return (
+    <div className="mb-4">
+      <div className="flex justify-between mb-1">
+        <span className="text-sm font-medium text-slate-700">{label}</span>
+        <span className="text-sm font-bold text-slate-900">{FormatRupiah(value)}</span>
+      </div>
+      <div className="w-full bg-slate-200 rounded-full h-2.5">
+        <div 
+          className={`h-2.5 rounded-full ${color}`} 
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+      <p className="text-xs text-slate-500 mt-1 text-right">{percentage.toFixed(1)}% dari Total</p>
+    </div>
+  );
+};
+
+const SectionHeader = ({ title, subtitle }) => (
+  <div className="mb-8 text-center">
+    <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-2">{title}</h2>
+    <div className="w-20 h-1 bg-emerald-500 mx-auto rounded-full mb-3"></div>
+    <p className="text-slate-500 max-w-2xl mx-auto">{subtitle}</p>
+  </div>
+);
+
+// --- MODALS ---
+
+const LoginModal = ({ isOpen, onClose, onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username === 'admin' && password === 'admin123') {
+      onLogin();
+      onClose();
+      setUsername('');
+      setPassword('');
+      setError('');
+    } else {
+      setError('Username atau password salah!');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+        <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+          <X size={20} />
+        </button>
+        
+        <div className="text-center mb-6">
+          <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
+            <Lock size={32} />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-800">Login Admin</h2>
+          <p className="text-slate-500 text-sm">Masuk untuk mengelola data website.</p>
+        </div>
+
+        {error && (
+          <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg mb-4 flex items-center gap-2">
+            <AlertCircle size={16} /> {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
+            <input 
+              type="text" 
+              className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="admin"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <input 
+              type="password" 
+              className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="admin123"
+            />
+          </div>
+          <button type="submit" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-lg transition-colors">
+            Masuk
+          </button>
+        </form>
+        <p className="text-xs text-center text-slate-400 mt-4">Demo Creds: admin / admin123</p>
+      </div>
+    </div>
+  );
+};
+
+// --- CONTENT SECTIONS ---
+
+const HomeSection = ({ setActiveTab, dataDesa, beritaList }) => (
+  <div className="space-y-12">
+    {/* Hero Banner */}
+    <div className="relative bg-gradient-to-r from-emerald-600 to-teal-800 text-white rounded-3xl overflow-hidden p-8 md:p-12 text-center md:text-left shadow-xl">
+      <div className="relative z-10 max-w-2xl">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4">Transparansi Anggaran {dataDesa.tahun}</h2>
+        <p className="text-emerald-100 text-lg mb-8">
+          Wujudkan tata kelola pemerintahan {dataDesa.nama} yang transparan, akuntabel, dan partisipatif untuk kemajuan bersama.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <button 
+            onClick={() => setActiveTab('Belanja')}
+            className="bg-white text-emerald-800 px-6 py-3 rounded-lg font-bold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
+          >
+            <BarChart3 size={20} /> Lihat Anggaran
+          </button>
+          <button 
+            onClick={() => setActiveTab('Kontak')}
+            className="bg-emerald-700 border border-emerald-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2"
+          >
+            <Mail size={20} /> Kirim Aspirasi
+          </button>
+        </div>
+      </div>
+      <div className="absolute right-0 bottom-0 opacity-10">
+        <Building2 size={300} />
+      </div>
+    </div>
+
+    {/* Quick Stats */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <SummaryCard 
+        title="Total Pendapatan" 
+        amount={dataDesa.pendapatan.total} 
+        icon={TrendingUp} 
+        color="bg-emerald-500" 
+        trend="up"
+      />
+      <SummaryCard 
+        title="Total Belanja" 
+        amount={dataDesa.belanja.total} 
+        icon={Wallet} 
+        color="bg-blue-500" 
+        trend="up"
+      />
+      <SummaryCard 
+        title="Surplus / Defisit" 
+        amount={dataDesa.pendapatan.total - dataDesa.belanja.total} 
+        icon={dataDesa.pendapatan.total >= dataDesa.belanja.total ? TrendingUp : TrendingDown} 
+        color="bg-orange-500" 
+      />
+    </div>
+
+    {/* Berita Terkini */}
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold text-slate-800">Kabar Desa Terkini</h3>
+        <button className="text-emerald-600 text-sm font-semibold hover:underline flex items-center gap-1">
+          Lihat Semua <ArrowRight size={16} />
+        </button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {beritaList.length > 0 ? beritaList.map((berita) => (
+          <div key={berita.id} className="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-lg transition-all cursor-pointer group">
+            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md mb-3 inline-block">
+              {berita.kategori}
+            </span>
+            <h4 className="font-bold text-slate-800 mb-2 group-hover:text-emerald-700">{berita.judul}</h4>
+            <p className="text-slate-400 text-sm flex items-center gap-1">
+              <FileText size={14} /> {berita.tanggal}
+            </p>
+          </div>
+        )) : (
+          <div className="col-span-3 text-center py-10 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+            Belum ada berita terbaru
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+const IncomeSection = ({ dataDesa }) => (
+  <div className="animate-fade-in">
+    <SectionHeader 
+      title={`Sumber Pendapatan Desa ${dataDesa.tahun}`}
+      subtitle={`Rincian sumber dana yang masuk ke kas ${dataDesa.nama} untuk Tahun Anggaran ${dataDesa.tahun}.`}
+    />
     
-    <div id="login-section" class="menu-item">
-        <h2>1. Login/OTP</h2>
-        <input type="text" id="msisdn" placeholder="628xxxxxx">
-        <button onclick="requestOtp()">Minta OTP (/login)</button>
-        
-        <div id="otp-input" class="hidden">
-            <input type="text" id="otp-code" placeholder="6 Digit OTP">
-            <button onclick="submitOtp()">Verifikasi OTP (/submit_otp)</button>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-full">
+        <h3 className="font-bold text-lg mb-6 text-slate-700 border-b pb-2">Grafik Komposisi Pendapatan</h3>
+        <div className="space-y-6">
+          {dataDesa.pendapatan.rincian.map((item) => (
+            <ProgressBar 
+              key={item.id}
+              label={item.nama}
+              value={item.nilai}
+              max={dataDesa.pendapatan.total}
+              color="bg-emerald-500"
+            />
+          ))}
         </div>
-    </div>
+      </div>
 
-    <div id="account-section" class="menu-item">
-        <h2>2. Akun & Saldo</h2>
-        <button onclick="checkSaldo()">Cek Saldo (/saldo)</button>
-    </div>
-
-    <div id="package-section" class="menu-item">
-        <h2>3. Paket XUT</h2>
-        <button onclick="listPackages()">Daftar Paket XUT (/list_xut)</button>
-        <div id="packages-list"></div>
-        
-        <div id="buy-input" class="hidden">
-            <input type="number" id="package-num" placeholder="Nomor Paket (1, 2, 3)">
-            <button onclick="buyPackage()">Beli Paket (/buy_xut)</button>
+      <div className="bg-emerald-50 p-8 rounded-2xl h-full flex flex-col justify-center">
+        <h3 className="text-2xl font-bold text-emerald-900 mb-4">Total Pendapatan</h3>
+        <p className="text-4xl md:text-5xl font-extrabold text-emerald-600 mb-8">
+          {FormatRupiah(dataDesa.pendapatan.total)}
+        </p>
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h4 className="font-bold text-slate-800 mb-2">Informasi Penting:</h4>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Pendapatan desa tahun {dataDesa.tahun} diproyeksikan meningkat sebesar 5% dibandingkan tahun lalu, didorong oleh optimalisasi Badan Usaha Milik Desa (BUMDes) dan kenaikan Dana Desa dari Pemerintah Pusat.
+          </p>
         </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ExpenseSection = ({ dataDesa }) => (
+  <div className="animate-fade-in">
+    <SectionHeader 
+      title={`Rencana Belanja Desa ${dataDesa.tahun}`} 
+      subtitle="Prioritas penggunaan anggaran untuk pembangunan dan pemberdayaan masyarakat."
+    />
+
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-50 border-b border-slate-200">
+              <th className="p-4 font-bold text-slate-700">Kode</th>
+              <th className="p-4 font-bold text-slate-700">Bidang Belanja</th>
+              <th className="p-4 font-bold text-slate-700 text-right">Anggaran</th>
+              <th className="p-4 font-bold text-slate-700 text-center">Persentase</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataDesa.belanja.rincian.map((item, index) => (
+              <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                <td className="p-4 text-slate-500 font-mono text-sm">0{item.id}</td>
+                <td className="p-4">
+                  <div className="font-semibold text-slate-800">{item.nama}</div>
+                  <div className="text-xs text-slate-400 mt-1">Termasuk honorarium, belanja barang/jasa & modal</div>
+                </td>
+                <td className="p-4 text-right font-bold text-slate-700">
+                  {FormatRupiah(item.nilai)}
+                </td>
+                <td className="p-4 text-center">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${item.warna}`}>
+                    {((item.nilai / dataDesa.belanja.total) * 100).toFixed(1)}%
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="bg-slate-100">
+              <td colSpan="2" className="p-4 font-bold text-slate-800 text-right">TOTAL BELANJA</td>
+              <td className="p-4 font-bold text-slate-900 text-right">{FormatRupiah(dataDesa.belanja.total)}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
 
-    <script src="app.js"></script>
-</body>
-</html>
+    {/* Visualisasi Kartu */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {dataDesa.belanja.rincian.map((item) => (
+        <div key={item.id} className="bg-white p-5 rounded-xl border-l-4 border-l-transparent hover:border-l-emerald-500 shadow-sm hover:shadow-md transition-all">
+          <h4 className="font-bold text-slate-700 mb-2 h-12 flex items-center">{item.nama}</h4>
+          <p className="text-2xl font-bold text-slate-800">{FormatRupiah(item.nilai)}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const TransparencySection = ({ dataDesa }) => (
+  <div className="animate-fade-in max-w-4xl mx-auto">
+    <SectionHeader 
+      title="Dokumen Publik" 
+      subtitle="Unduh dokumen resmi APBDes sebagai bentuk transparansi publik."
+    />
+    
+    <div className="space-y-4">
+      {[
+        { title: `Peraturan Desa tentang APBDes T.A ${dataDesa.tahun}`, size: "2.4 MB", date: "28 Des 2025" },
+        { title: "Lampiran 1: Ringkasan Anggaran", size: "1.1 MB", date: "28 Des 2025" },
+        { title: "Lampiran 2: Rencana Kegiatan Pembangunan", size: "3.5 MB", date: "28 Des 2025" },
+        { title: "Laporan Realisasi Tahun Sebelumnya (2025)", size: "4.2 MB", date: "15 Jan 2026" },
+      ].map((doc, idx) => (
+        <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row justify-between items-center hover:bg-emerald-50 transition-colors group">
+          <div className="flex items-center gap-4 mb-3 sm:mb-0 w-full sm:w-auto">
+            <div className="bg-red-100 text-red-600 p-3 rounded-lg">
+              <FileText size={24} />
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-800 group-hover:text-emerald-700">{doc.title}</h4>
+              <p className="text-xs text-slate-500">Diupload: {doc.date} • Ukuran: {doc.size}</p>
+            </div>
+          </div>
+          <button className="w-full sm:w-auto bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 px-6 py-2 rounded-lg font-medium transition-colors text-sm">
+            Unduh PDF
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const ContactSection = ({ dataDesa }) => (
+  <div className="animate-fade-in max-w-5xl mx-auto">
+    <SectionHeader 
+      title="Layanan Aspirasi Warga" 
+      subtitle="Suara anda penting bagi kemajuan desa. Silakan sampaikan kritik, saran, atau pertanyaan."
+    />
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Contact Info */}
+      <div className="bg-emerald-900 text-white p-8 rounded-2xl h-full">
+        <h3 className="text-xl font-bold mb-6">Kantor Desa {dataDesa.nama}</h3>
+        <div className="space-y-6">
+          <div className="flex items-start gap-3">
+            <MapPin className="mt-1 flex-shrink-0" />
+            <p className="text-emerald-100 text-sm">Jl. Raya Sukamaju No. 45, {dataDesa.kecamatan}, {dataDesa.kabupaten}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Phone className="flex-shrink-0" />
+            <p className="text-emerald-100 text-sm">(021) 555-0123</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Mail className="flex-shrink-0" />
+            <p className="text-emerald-100 text-sm">admin@{dataDesa.nama.replace(/\s/g, "").toLowerCase()}.desa.id</p>
+          </div>
+        </div>
+        
+        <div className="mt-12">
+          <h4 className="font-bold mb-2">Jam Pelayanan:</h4>
+          <p className="text-sm text-emerald-200">Senin - Jumat: 08.00 - 15.00 WIB</p>
+        </div>
+      </div>
+
+      {/* Form */}
+      <div className="md:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+              <input type="text" className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Budi Santoso" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">NIK (Opsional)</label>
+              <input type="text" className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="16 digit angka" />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-slate-700 mb-1">Kategori</label>
+            <select className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+              <option>Usulan Pembangunan</option>
+              <option>Pengaduan Layanan</option>
+              <option>Pertanyaan Anggaran</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-slate-700 mb-1">Pesan / Aspirasi</label>
+            <textarea rows="4" className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Tuliskan pesan anda di sini..."></textarea>
+          </div>
+          <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition-colors">
+            Kirim Aspirasi
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+);
+
+// --- ADMIN DASHBOARD ---
+const AdminDashboard = ({ beritaList, onAddBerita, onDeleteBerita }) => {
+  const [newBerita, setNewBerita] = useState({ judul: '', tanggal: '', kategori: 'Pemerintahan' });
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if(newBerita.judul && newBerita.tanggal) {
+      onAddBerita({ ...newBerita, id: Date.now() });
+      setNewBerita({ judul: '', tanggal: '', kategori: 'Pemerintahan' });
+    }
+  };
+
+  return (
+    <div className="animate-fade-in space-y-8">
+      <SectionHeader 
+        title="Admin Panel" 
+        subtitle="Kelola konten dan informasi website."
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Form Tambah Berita */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <Plus size={20} className="text-emerald-600" /> Tambah Berita
+          </h3>
+          <form onSubmit={handleAdd} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Judul Berita</label>
+              <input 
+                type="text" 
+                className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                value={newBerita.judul}
+                onChange={(e) => setNewBerita({...newBerita, judul: e.target.value})}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Tanggal</label>
+                <input 
+                  type="text" 
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                  value={newBerita.tanggal}
+                  onChange={(e) => setNewBerita({...newBerita, tanggal: e.target.value})}
+                  placeholder="Contoh: 12 Mar 2026"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Kategori</label>
+                <select 
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
+                  value={newBerita.kategori}
+                  onChange={(e) => setNewBerita({...newBerita, kategori: e.target.value})}
+                >
+                  <option>Pemerintahan</option>
+                  <option>Pembangunan</option>
+                  <option>Sosial</option>
+                  <option>Pemberdayaan</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition-colors">
+              Terbitkan Berita
+            </button>
+          </form>
+        </div>
+
+        {/* List Berita */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h3 className="font-bold text-lg mb-4">Daftar Berita Aktif</h3>
+          <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+            {beritaList.map((berita) => (
+              <div key={berita.id} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div>
+                  <h4 className="font-bold text-slate-700 text-sm line-clamp-1">{berita.judul}</h4>
+                  <p className="text-xs text-slate-500">{berita.tanggal} • {berita.kategori}</p>
+                </div>
+                <button 
+                  onClick={() => onDeleteBerita(berita.id)}
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                  title="Hapus Berita"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+            {beritaList.length === 0 && (
+              <p className="text-center text-sm text-slate-400 py-4">Tidak ada berita.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Footer = ({ onLoginClick, isLoggedIn, onLogout, dataDesa }) => (
+  <footer className="bg-slate-900 text-slate-400 py-12 mt-12">
+    <div className="container mx-auto px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-slate-800 pb-8">
+        <div>
+          <h2 className="text-white text-lg font-bold mb-4 flex items-center gap-2">
+            <Building2 size={20} /> Pemdes {dataDesa.nama}
+          </h2>
+          <p className="text-sm">
+            Website resmi transparansi Anggaran Pendapatan dan Belanja Desa (APBDes). Dikelola oleh Tim Pelaksana Kegiatan Digitalisasi Desa.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-white font-bold mb-4">Tautan Cepat</h3>
+          <ul className="space-y-2 text-sm">
+            <li><a href="#" className="hover:text-emerald-400">Sistem Informasi Desa (SID)</a></li>
+            <li><a href="#" className="hover:text-emerald-400">Kementerian Desa PDTT</a></li>
+            <li><a href="#" className="hover:text-emerald-400">JDIH Kabupaten</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-white font-bold mb-4">Statistik Pengunjung</h3>
+          <div className="flex justify-between text-sm mb-2">
+            <span>Hari ini</span>
+            <span className="text-white">124</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span>Total</span>
+            <span className="text-white">15,892</span>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row justify-between items-center text-xs">
+        <p>&copy; {dataDesa.tahun} Pemerintah Desa {dataDesa.nama}. Hak Cipta Dilindungi.</p>
+        <div className="mt-4 md:mt-0">
+          {!isLoggedIn ? (
+            <button 
+              onClick={onLoginClick}
+              className="flex items-center gap-1 text-slate-600 hover:text-emerald-500 transition-colors"
+            >
+              <Lock size={12} /> Login Admin
+            </button>
+          ) : (
+            <button 
+              onClick={onLogout}
+              className="flex items-center gap-1 text-red-500 hover:text-red-400 transition-colors"
+            >
+              <LogOut size={12} /> Logout
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  </footer>
+);
+
+// --- MAIN APP COMPONENT ---
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('Beranda');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // State Data
+  const [dataDesa] = useState(INITIAL_DATA_DESA);
+  const [beritaList, setBeritaList] = useState(INITIAL_BERITA);
+
+  // State Auth
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setActiveTab('Admin'); // Redirect ke Admin Panel setelah login
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setActiveTab('Beranda');
+  };
+
+  const addBerita = (newItem) => {
+    setBeritaList([newItem, ...beritaList]);
+  };
+
+  const deleteBerita = (id) => {
+    setBeritaList(beritaList.filter(item => item.id !== id));
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      <Header 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        isLoggedIn={isLoggedIn}
+        dataDesa={dataDesa}
+      />
+
+      <main className="container mx-auto px-4 py-8 min-h-[80vh]">
+        {activeTab === 'Beranda' && <HomeSection setActiveTab={setActiveTab} dataDesa={dataDesa} beritaList={beritaList} />}
+        {activeTab === 'Pendapatan' && <IncomeSection dataDesa={dataDesa} />}
+        {activeTab === 'Belanja' && <ExpenseSection dataDesa={dataDesa} />}
+        {activeTab === 'Transparansi' && <TransparencySection dataDesa={dataDesa} />}
+        {activeTab === 'Kontak' && <ContactSection dataDesa={dataDesa} />}
+        
+        {/* Protected Admin Route */}
+        {activeTab === 'Admin' && isLoggedIn && (
+          <AdminDashboard 
+            beritaList={beritaList} 
+            onAddBerita={addBerita} 
+            onDeleteBerita={deleteBerita} 
+          />
+        )}
+        {activeTab === 'Admin' && !isLoggedIn && (
+          <div className="text-center py-20">
+            <Lock size={48} className="mx-auto text-slate-300 mb-4" />
+            <h2 className="text-xl font-bold text-slate-600">Akses Ditolak</h2>
+            <p className="text-slate-400">Silakan login terlebih dahulu untuk mengakses halaman ini.</p>
+            <button onClick={() => setShowLoginModal(true)} className="mt-4 text-emerald-600 hover:underline">Login sekarang</button>
+          </div>
+        )}
+      </main>
+
+      <Footer 
+        onLoginClick={() => setShowLoginModal(true)} 
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
+        dataDesa={dataDesa}
+      />
+
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)}
+        onLogin={handleLogin}
+      />
+    </div>
+  );
+};
+
+export default App;
