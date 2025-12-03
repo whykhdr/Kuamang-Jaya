@@ -5,17 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard APBDes (CMS)</title>
   
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-</head>
+  </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
-    // =========================================================
-    // 1. SOLUSI UNTUK ERROR 'media_library'
-    // =========================================================
-    // Mendaftarkan media library "manual" secara eksplisit
+    // Mendaftarkan media library "manual"
     CMS.registerMediaLibrary({
       name: 'manual',
       init: function() { return {} },
@@ -26,33 +21,8 @@
         }
       }
     });
-
-
-    // =========================================================
-    // 2. LOGIKA OTENTIKASI & RECOVERY TOKEN
-    // =========================================================
-    if (window.netlifyIdentity) {
-      netlifyIdentity.on("init", user => {
-        if (!user) {
-          // Setelah login berhasil, arahkan ke dashboard CMS (yang kini di root)
-          netlifyIdentity.on("login", () => {
-            document.location.href = "/";
-          });
-        }
-      });
-      
-      // LOGIKA UNTUK MEMPROSES #RECOVERY_TOKEN (Reset Password)
-      window.onload = function() {
-          if (window.location.hash) {
-              netlifyIdentity.on("init", function(user) {
-                  if (!user) {
-                      netlifyIdentity.open(); // Membuka modal untuk memproses token
-                  }
-              });
-          }
-      };
-    }
     
+    // TIDAK ADA LOGIKA IDENTITY LAGI DI SINI
   </script>
 </body>
 </html>
