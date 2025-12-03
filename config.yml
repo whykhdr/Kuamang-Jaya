@@ -1,15 +1,26 @@
-# Konfigurasi Backend untuk Netlify
+# =======================================================
+# 1. KONFIGURASI BACKEND (WAJIB)
+# =======================================================
 backend:
-  name: git-gateway # Menggunakan Git Gateway Netlify untuk otentikasi
-  repo: whykhdr/Kuamang-Jaya # NAMA REPOSitori Anda telah disematkan di sini
-  branch: main                # Pastikan ini sesuai dengan branch utama di repo Anda (biasanya 'main' atau 'master')
+  name: git-gateway
+  repo: whykhdr/Kuamang-Jaya
+  branch: main
+  
+# =======================================================
+# 2. KONFIGURASI MEDIA (WAJIB)
+# =======================================================
+media_folder: "assets/img"  # Folder di repo tempat media disimpan
+public_folder: "/assets/img" # Path relatif untuk ditampilkan di website
 
-# Konfigurasi Interface CMS
-media_folder: "assets/img" 
-public_folder: "/assets/img"
+media_library:              # PROPERTI WAJIB YANG HILANG/ERROR
+  name: "cloudinary"        # Ganti dengan "uploadcare" atau "cloudinary"
+  # Karena Anda menggunakan Netlify Identity/Git Gateway, kita bisa 
+  # menggunakan library dummy jika Anda tidak ingin mengaturnya sekarang:
+  # name: "manual" 
 
-# Definisikan Collection (Tabel Data APBDes)
-# Anda bisa mendefinisikan koleksi lain (misalnya 'belanja', 'pembiayaan') di bawah ini
+# =======================================================
+# 3. KONFIGURASI COLLECTIONS (WAJIB)
+# =======================================================
 collections:
   - name: "pendapatan" 
     label: "Anggaran Pendapatan" 
@@ -35,3 +46,7 @@ collections:
             widget: "number"
             value_type: "int"
             min: 0
+
+  # --- TAMBAHKAN KOLEKSI LAIN SEPERTI BELANJA DI SINI ---
+  # - name: "belanja"
+  #   ...
