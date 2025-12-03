@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+/* Styling tambahan untuk membedakan baris total/judul bidang */
+tbody tr:has(td > strong) {
+    background-color: #e0f7fa; /* Warna latar untuk baris Bidang */
+    font-weight: bold;
+}
