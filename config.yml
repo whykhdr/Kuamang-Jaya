@@ -1,13 +1,14 @@
 # =======================================================
-# 1. KONFIGURASI BACKEND (WAJIB)
+# 1. KONFIGURASI BACKEND (MENGGUNAKAN GITHUB OAUTH LANGSUNG)
 # =======================================================
 backend:
-  name: git-gateway
+  name: github            
   repo: whykhdr/Kuamang-Jaya
   branch: main
+  base_url: https://github.com # Ini akan membantu redirect otorisasi
   
 # =======================================================
-# 2. KONFIGURASI MEDIA (DI ROOT)
+# 2. KONFIGURASI MEDIA
 # =======================================================
 media_folder: "assets/img" 
 public_folder: "/assets/img" 
