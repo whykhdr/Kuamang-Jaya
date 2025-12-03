@@ -1,48 +1,37 @@
-# Konfigurasi Backend (Wajib untuk GitHub Pages)
+# Konfigurasi Backend untuk Netlify
 backend:
-  name: github
-  repo: whykhdr/Kuamang-Jaya # Ganti dengan nama repo Anda (contoh: user/apbdes-desa-namaanda)
-  branch: main # Ganti dengan nama branch utama Anda (misalnya: main atau master)
-  base_url: https://api.netlify.com # Meskipun Anda tidak menggunakan hosting Netlify, ini diperlukan untuk otentikasi
-  auth_scope: repo
+  name: git-gateway # Menggunakan Git Gateway Netlify untuk otentikasi
+  repo: whykhdr/Kuamang-Jaya # NAMA REPOSitori Anda telah disematkan di sini
+  branch: main                # Pastikan ini sesuai dengan branch utama di repo Anda (biasanya 'main' atau 'master')
 
 # Konfigurasi Interface CMS
-media_folder: "assets/img" # Folder untuk menyimpan gambar (jika ada)
+media_folder: "assets/img" 
 public_folder: "/assets/img"
 
-# Definisi Collection (Tabel Data APBDes)
+# Definisikan Collection (Tabel Data APBDes)
+# Anda bisa mendefinisikan koleksi lain (misalnya 'belanja', 'pembiayaan') di bawah ini
 collections:
-  - name: "belanja" # Nama internal koleksi
-    label: "Anggaran Belanja" # Nama yang tampil di CMS
-    folder: "data" # Lokasi penyimpanan file
-    file: "belanja.json" # Nama file yang akan diedit
-    format: "json" # Format file
+  - name: "pendapatan" 
+    label: "Anggaran Pendapatan" 
+    folder: "data" 
+    file: "pendapatan.json" 
+    format: "json" 
     fields:
       - label: "Tahun Anggaran"
         name: "tahun"
         widget: "number"
-      - label: "Daftar Bidang Belanja"
-        name: "bidang"
+      - label: "Daftar Rincian Pendapatan"
+        name: "rincian"
         widget: "list"
-        fields: # Struktur data untuk setiap item Bidang
-          - label: "Kode Bidang (5.XX.00.00)"
+        fields: 
+          - label: "Kode Rekening"
             name: "kode"
             widget: "string"
-          - label: "Nama Bidang"
-            name: "nama"
+          - label: "Uraian"
+            name: "uraian"
             widget: "string"
-          - label: "Kegiatan"
-            name: "kegiatan"
-            widget: "list" # Ini memungkinkan menambah/menghapus/mengedit rincian kegiatan
-            fields: # Struktur data untuk setiap item Kegiatan
-              - label: "Kode Rekening (5.11.01.01)"
-                name: "kode"
-                widget: "string"
-              - label: "Uraian Kegiatan/Belanja"
-                name: "uraian"
-                widget: "string"
-              - label: "Anggaran (Rp)"
-                name: "anggaran"
-                widget: "number"
-                value_type: "int"
-                min: 0
+          - label: "Anggaran (Rp)"
+            name: "anggaran"
+            widget: "number"
+            value_type: "int"
+            min: 0
