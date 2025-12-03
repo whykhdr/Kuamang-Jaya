@@ -7,16 +7,16 @@ backend:
   branch: main
   
 # =======================================================
-# 2. KONFIGURASI MEDIA (WAJIB UNTUK MENGHILANGKAN ERROR)
+# 2. KONFIGURASI MEDIA (DI ROOT)
 # =======================================================
 media_folder: "assets/img" 
 public_folder: "/assets/img" 
 
 media_library:
-  name: "manual" # Solusi untuk error 'media_library'
+  name: "manual" 
 
 # =======================================================
-# 3. KONFIGURASI COLLECTIONS (DATA APBDES)
+# 3. KONFIGURASI COLLECTIONS
 # =======================================================
 collections:
   - name: "pendapatan" 
@@ -31,7 +31,7 @@ collections:
       - label: "Daftar Rincian Pendapatan"
         name: "rincian"
         widget: "list"
-        summary: "{{fields.kode}} - {{fields.uraian}}" # Untuk tampilan ringkasan
+        summary: "{{fields.kode}} - {{fields.uraian}}"
         fields: 
           - label: "Kode Rekening"
             name: "kode"
@@ -45,5 +45,3 @@ collections:
             widget: "number"
             value_type: "int"
             min: 0
-
-  # Anda harus menambah collections 'belanja' dan 'pembiayaan' dengan struktur yang sama.
