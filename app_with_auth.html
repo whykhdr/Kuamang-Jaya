@@ -27,6 +27,10 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Modal Backdrop */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -36,6 +40,18 @@
         <div class="text-center p-10">
             <h2 class="text-xl font-bold text-gray-700">Memuat Aplikasi...</h2>
             <div class="loading-spinner mx-auto mt-4 h-6 w-6 rounded-full border-4 border-gray-300 border-t-indigo-600"></div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal (Menggantikan window.confirm()) -->
+    <div id="customConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop transition-opacity duration-300">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="modalDialog">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Konfirmasi Penghapusan</h3>
+            <p id="modalMessage" class="text-gray-700 mb-6">Apakah Anda yakin ingin menghapus kegiatan anggaran ini?</p>
+            <div class="flex justify-end space-x-3">
+                <button id="modalCancelBtn" class="py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors">Batal</button>
+                <button id="modalConfirmBtn" class="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">Hapus Sekarang</button>
+            </div>
         </div>
     </div>
 
@@ -49,14 +65,14 @@
         setLogLevel('Debug');
         
         // =========================================================================
-        // --- PENTING: GANTI DENGAN KONFIGURASI FIREBASE ANDA DI SINI ---
+        // --- KONFIGURASI FIREBASE ---
         
         // Variabel dari Canvas (jika ada)
         const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-        // KONFIGURASI FIREBASE ANDA (GANTI SELURUH OBJEK INI DI LANGKAH 3)
+        // GANTI DENGAN KONFIGURASI FIREBASE ANDA DI SINI
         const YOUR_FIREBASE_CONFIG = {
             // GANTI INI DENGAN DATA DARI FIREBASE CONSOLE ANDA
             apiKey: "AIzaSyB8IFjptsvABJhSljiOVHaDSTkGegF92sg", 
@@ -72,6 +88,7 @@
         
         // =========================================================================
 
+        let db, auth;
 
         // Initialize Firebase
         if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey === "INI_KEY_ANDA") {
@@ -79,17 +96,16 @@
             document.getElementById('app-container').innerHTML = '<div class="text-center p-10 bg-red-100 text-red-700 rounded-lg">Kesalahan: Konfigurasi Firebase tidak ditemukan. Pastikan Anda telah mengisi `YOUR_FIREBASE_CONFIG` di kode HTML ini.</div>';
         } else {
             const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
+            auth = getAuth(app);
+            db = getFirestore(app);
             
             // Set session persistence (user stays logged in after refresh)
             setPersistence(auth, browserSessionPersistence);
             
             // FIREBASE COLLECTION PATH FOR APBDES DATA (Public/Shared Data)
-            // MUST align with the security rules in PANDUAN_SETUP_APBDes.md
             const APBDES_COLLECTION_PATH = `artifacts/${appId}/public/data/apbdes_anggaran`;
 
-            // --- FORMATTING FUNCTIONS ---
+            // --- UTILITY FUNCTIONS ---
             const formatCurrency = (amount) => {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -97,6 +113,53 @@
                     minimumFractionDigits: 0
                 }).format(amount);
             };
+
+            // --- MODAL/CONFIRMATION LOGIC ---
+            const modalEl = document.getElementById('customConfirmModal');
+            const modalDialogEl = document.getElementById('modalDialog');
+            const modalMessageEl = document.getElementById('modalMessage');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            
+            let currentResolve = null;
+
+            const showModal = (message) => {
+                return new Promise(resolve => {
+                    currentResolve = resolve;
+                    modalMessageEl.textContent = message;
+                    modalEl.classList.remove('hidden');
+                    modalEl.classList.add('flex');
+                    // Add transition classes
+                    setTimeout(() => {
+                        modalEl.classList.remove('opacity-0');
+                        modalDialogEl.classList.remove('opacity-0', 'scale-95');
+                        modalDialogEl.classList.add('opacity-100', 'scale-100');
+                    }, 10);
+                });
+            };
+
+            const hideModal = () => {
+                // Reverse transition classes
+                modalDialogEl.classList.remove('opacity-100', 'scale-100');
+                modalDialogEl.classList.add('opacity-0', 'scale-95');
+                modalEl.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    modalEl.classList.add('hidden');
+                    modalEl.classList.remove('flex');
+                }, 300); // Wait for transition to finish
+            };
+
+            modalCancelBtn.onclick = () => {
+                if (currentResolve) currentResolve(false);
+                hideModal();
+            };
+
+            modalConfirmBtn.onclick = () => {
+                if (currentResolve) currentResolve(true);
+                hideModal();
+            };
+
 
             // --- BUDGET MANAGEMENT COMPONENT (CRUD) ---
             const renderAnggaranManagement = (container, db, user) => {
@@ -163,7 +226,7 @@
                                 <p class="text-sm text-indigo-600">${formatCurrency(item.jumlah)}</p>
                                 <p class="text-xs text-gray-400">Ditambahkan oleh: ${item.addedByEmail}</p>
                             </div>
-                            <button data-id="${item.id}" class="delete-btn flex-shrink-0 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-xs transition-colors">
+                            <button data-id="${item.id}" data-name="${item.nama}" class="delete-btn flex-shrink-0 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg text-xs transition-colors">
                                 Hapus
                             </button>
                         </div>
@@ -181,7 +244,7 @@
                     const jumlah = parseInt(document.getElementById('jumlahAnggaran').value, 10);
                     
                     if (nama && jumlah > 0) {
-                        submitBtn.innerHTML = 'Menyimpan...';
+                        submitBtn.innerHTML = '<div class="loading-spinner h-4 w-4 border-2 mr-2"></div> Menyimpan...';
                         submitBtn.disabled = true;
                         messageEl.classList.add('hidden');
 
@@ -212,32 +275,36 @@
                     }
                 });
 
-                // 3. DELETE (Deleting data)
+                // 3. DELETE (Deleting data - using custom modal)
                 anggaranListEl.addEventListener('click', async (e) => {
                     if (e.target.classList.contains('delete-btn')) {
-                        const docId = e.target.getAttribute('data-id');
+                        const deleteBtn = e.target;
+                        const docId = deleteBtn.getAttribute('data-id');
+                        const docName = deleteBtn.getAttribute('data-name');
                         
-                        // Use a simple modal confirmation UI
-                        if (!confirm(`Apakah Anda yakin ingin menghapus anggaran ini? (ID: ${docId})`)) {
+                        // Show custom confirmation modal
+                        const confirmed = await showModal(`Apakah Anda yakin ingin menghapus kegiatan **${docName}**?`);
+
+                        if (!confirmed) {
                             return; 
                         }
 
-                        e.target.innerHTML = 'Hapus...';
-                        e.target.disabled = true;
+                        deleteBtn.innerHTML = '<div class="loading-spinner h-3 w-3 border-2 border-t-red-700"></div>';
+                        deleteBtn.disabled = true;
                         
                         try {
                             await deleteDoc(doc(db, APBDES_COLLECTION_PATH, docId));
                             
-                            messageEl.textContent = 'Anggaran berhasil dihapus!';
+                            messageEl.textContent = `Anggaran '${docName}' berhasil dihapus!`;
                             messageEl.classList.add('bg-green-100', 'text-green-800');
                             messageEl.classList.remove('hidden');
                         } catch (error) {
                             console.error("Error deleting document:", error);
                             messageEl.textContent = `Gagal menghapus data: ${error.message}`;
-                            messageArea.classList.add('bg-red-100', 'text-red-800');
-                            messageArea.classList.remove('hidden');
+                            messageEl.classList.add('bg-red-100', 'text-red-800');
+                            messageEl.classList.remove('hidden');
+                            deleteBtn.innerHTML = 'Hapus'; // Re-enable if error, onSnapshot handles success
                         } finally {
-                            // onSnapshot will re-render, no need to re-enable button
                             setTimeout(() => messageEl.classList.add('hidden'), 3000);
                         }
                     }
