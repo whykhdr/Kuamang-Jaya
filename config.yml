@@ -16,7 +16,7 @@ media_library:              # PROPERTI WAJIB YANG HILANG/ERROR
   name: "cloudinary"        # Ganti dengan "uploadcare" atau "cloudinary"
   # Karena Anda menggunakan Netlify Identity/Git Gateway, kita bisa 
   # menggunakan library dummy jika Anda tidak ingin mengaturnya sekarang:
-  # name: "manual" 
+  name: "manual" 
 
 # =======================================================
 # 3. KONFIGURASI COLLECTIONS (WAJIB)
