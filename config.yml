@@ -7,19 +7,16 @@ backend:
   branch: main
   
 # =======================================================
-# 2. KONFIGURASI MEDIA (WAJIB)
+# 2. KONFIGURASI MEDIA (WAJIB UNTUK MENGHILANGKAN ERROR)
 # =======================================================
-media_folder: "assets/img"  # Folder di repo tempat media disimpan
-public_folder: "/assets/img" # Path relatif untuk ditampilkan di website
+media_folder: "assets/img" 
+public_folder: "/assets/img" 
 
-media_library:              # PROPERTI WAJIB YANG HILANG/ERROR
-  name: "manual" 
-  name: "cloudinary"        # Ganti dengan "uploadcare" atau "cloudinary"
-  # Karena Anda menggunakan Netlify Identity/Git Gateway, kita bisa 
-  # menggunakan library dummy jika Anda tidak ingin mengaturnya sekarang:
+media_library:
+  name: "manual" # Solusi untuk error 'media_library'
 
 # =======================================================
-# 3. KONFIGURASI COLLECTIONS (WAJIB)
+# 3. KONFIGURASI COLLECTIONS (DATA APBDES)
 # =======================================================
 collections:
   - name: "pendapatan" 
@@ -34,10 +31,12 @@ collections:
       - label: "Daftar Rincian Pendapatan"
         name: "rincian"
         widget: "list"
+        summary: "{{fields.kode}} - {{fields.uraian}}" # Untuk tampilan ringkasan
         fields: 
           - label: "Kode Rekening"
             name: "kode"
             widget: "string"
+            hint: "Contoh: 4.21.00.00"
           - label: "Uraian"
             name: "uraian"
             widget: "string"
@@ -47,6 +46,4 @@ collections:
             value_type: "int"
             min: 0
 
-  # --- TAMBAHKAN KOLEKSI LAIN SEPERTI BELANJA DI SINI ---
-  # - name: "belanja"
-  #   ...
+  # Anda harus menambah collections 'belanja' dan 'pembiayaan' dengan struktur yang sama.
