@@ -12,16 +12,47 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
-    // Inisialisasi widget identity di halaman CMS
+    // =========================================================
+    // 1. SOLUSI UNTUK ERROR 'media_library'
+    // =========================================================
+    // Mendaftarkan media library "manual" secara eksplisit
+    CMS.registerMediaLibrary({
+      name: 'manual',
+      init: function() { return {} },
+      show: function() { return Promise.resolve({ src: '' }); },
+      config: {
+        media_library: {
+          name: 'manual'
+        }
+      }
+    });
+
+
+    // =========================================================
+    // 2. LOGIKA OTENTIKASI & RECOVERY TOKEN
+    // =========================================================
     if (window.netlifyIdentity) {
       netlifyIdentity.on("init", user => {
         if (!user) {
+          // Setelah login berhasil, arahkan ke dashboard CMS (yang kini di root)
           netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
+            document.location.href = "/";
           });
         }
       });
+      
+      // LOGIKA UNTUK MEMPROSES #RECOVERY_TOKEN (Reset Password)
+      window.onload = function() {
+          if (window.location.hash) {
+              netlifyIdentity.on("init", function(user) {
+                  if (!user) {
+                      netlifyIdentity.open(); // Membuka modal untuk memproses token
+                  }
+              });
+          }
+      };
     }
+    
   </script>
 </body>
 </html>
