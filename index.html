@@ -10,22 +10,29 @@
     <style>
         body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; padding-bottom: 300px; }
         .money { font-family: 'Courier New', monospace; font-weight: bold; }
+        .rek-code { font-family: 'Consolas', 'Courier New', monospace; color: #d63384; font-weight: bold; font-size: 0.85rem; }
+        
         .accordion-button:not(.collapsed) { color: #0f5132; background-color: #d1e7dd; font-weight: bold; }
         .sub-bidang-title { font-size: 0.85rem; text-transform: uppercase; color: #198754; font-weight: 800; background-color: #e9f7ef; padding: 8px 10px; margin-top: 15px; border-left: 4px solid #198754; }
-        
+        .kegiatan-header { font-size: 0.8rem; font-weight: bold; color: #555; background-color: #f8f9fa; padding: 5px 10px; margin-top: 10px; border-bottom: 1px solid #ddd; }
+
         /* Edit Mode Styles */
         .btn-edit-float { position: fixed; bottom: 30px; right: 30px; z-index: 1050; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .output-area { display: none; background: #1e1e1e; color: #00ff9d; padding: 20px; border-radius: 8px; margin-top: 30px; border: 2px solid #00ff9d; }
         
-        /* Table Styles inside Accordion */
+        /* Table Styles */
         .table-rincian th { font-size: 0.75rem; background-color: #f8f9fa; }
         .table-rincian td { vertical-align: middle; font-size: 0.9rem; }
         .input-sm { font-size: 0.85rem; padding: 0.25rem 0.5rem; border: 1px solid #ced4da; border-radius: 4px; width: 100%; }
-        .input-uraian { width: 100%; min-width: 200px; }
+        
+        /* Badge */
         .badge-sumber { min-width: 45px; cursor: help; }
+        
+        /* Dashboard Cards */
         .bg-gradient-primary { background: linear-gradient(45deg, #0d6efd, #0dcaf0); }
         .bg-gradient-success { background: linear-gradient(45deg, #198754, #28a745); }
-        .bg-gradient-warning { background: linear-gradient(45deg, #ffc107, #ffdb58); }
+        .bg-gradient-info { background: linear-gradient(45deg, #0dcaf0, #39d2e6); }
+        .bg-gradient-secondary { background: linear-gradient(45deg, #6c757d, #adb5bd); }
     </style>
 </head>
 <body>
@@ -44,9 +51,10 @@
 
     <div class="container mb-5">
         <div class="row g-3 mb-4">
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Pendapatan</small><h4 class="fw-bold mb-0" id="totalPendapatan">Rp 0</h4></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-success"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Belanja</small><h4 class="fw-bold mb-0" id="totalBelanja">Rp 0</h4></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-dark bg-gradient-warning"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Selisih (SiLPA)</small><h4 class="fw-bold mb-0" id="totalSelisih">Rp 0</h4></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Pendapatan</small><h5 class="fw-bold mb-0" id="totalPendapatan">Rp 0</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-success"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Belanja</small><h5 class="fw-bold mb-0" id="totalBelanja">Rp 0</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-info"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Pembiayaan Netto</small><h5 class="fw-bold mb-0" id="totalPembiayaan">Rp 0</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-secondary" id="cardSilpa"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">SiLPA Tahun Berjalan</small><h5 class="fw-bold mb-0" id="totalSilpaAkhir">Rp 0</h5><small style="font-size:0.6rem" id="statusBalance">(Harus Rp 0)</small></div></div></div>
         </div>
 
         <div class="row">
@@ -55,7 +63,7 @@
                     <div class="card-header bg-primary text-white fw-bold">1. PENDAPATAN DUSUN</div>
                     <div class="card-body p-0 table-responsive">
                         <table class="table table-hover mb-0">
-                            <thead><tr class="table-light"><th>Uraian Pendapatan</th><th>Kode</th><th class="text-end">Jumlah (Rp)</th><th style="width:50px"></th></tr></thead>
+                            <thead><tr class="table-light"><th style="width:120px">Kode Rek</th><th>Uraian Pendapatan</th><th style="width:100px">Sumber</th><th class="text-end">Jumlah (Rp)</th><th style="width:50px"></th></tr></thead>
                             <tbody id="tabelPendapatan"></tbody>
                         </table>
                         <button onclick="tambahPendapatan()" class="btn btn-sm btn-outline-primary m-3 d-none btn-add-row"><i class="fas fa-plus"></i> Tambah Pendapatan</button>
@@ -67,10 +75,26 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-success text-white fw-bold d-flex justify-content-between align-items-center">
                         <span>2. BELANJA DUSUN (RAB)</span>
-                        <small>Otomatis Hitung (Vol x Harga)</small>
+                        <small>Permendagri No. 20/2018</small>
                     </div>
                     <div class="card-body p-2">
                         <div class="accordion" id="accordionBelanja"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-info text-white fw-bold">3. PEMBIAYAAN</div>
+                    <div class="card-body p-0 table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr class="table-light"><th style="width:120px">Kode Rek</th><th>Uraian Pembiayaan</th><th>Jenis</th><th class="text-end">Jumlah (Rp)</th><th style="width:50px"></th></tr></thead>
+                            <tbody id="tabelPembiayaan"></tbody>
+                        </table>
+                        <div class="p-2 d-none btn-add-row">
+                             <button onclick="tambahPembiayaan('PENERIMAAN')" class="btn btn-sm btn-outline-info me-2"><i class="fas fa-plus"></i> Tambah Penerimaan</button>
+                             <button onclick="tambahPembiayaan('PENGELUARAN')" class="btn btn-sm btn-outline-danger"><i class="fas fa-plus"></i> Tambah Pengeluaran</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,13 +102,7 @@
 
         <div id="outputPanel" class="output-area">
             <h5 class="fw-bold"><i class="fas fa-save me-2"></i>SIMPAN PERUBAHAN</h5>
-            <p class="small mb-2">Agar data tersimpan permanen di GitHub:</p>
-            <ol class="small ps-3 mb-3">
-                <li>Klik tombol <b>Copy Kode</b> di bawah.</li>
-                <li>Buka file <code>index.html</code> di GitHub Anda (Edit).</li>
-                <li>Scroll ke paling bawah, cari bagian <code>// --- MULAI DATABASE ---</code>.</li>
-                <li>Hapus kode lama sampai bawah, lalu <b>Paste</b> kode baru ini.</li>
-            </ol>
+            <p class="small mb-2">Copy kode ini dan timpa bagian <code>// --- MULAI DATABASE ---</code> di file GitHub:</p>
             <textarea id="codeResult" class="form-control bg-dark text-white border-secondary small" rows="8" readonly></textarea>
             <button onclick="copyCode()" class="btn btn-light btn-sm mt-2 fw-bold"><i class="fas fa-copy me-1"></i> Copy Kode</button>
         </div>
@@ -96,199 +114,192 @@
         let isEditing = false;
         const fmt = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
         
-        // --- MULAI DATABASE (DATA STRUKTUR LENGKAP) ---
+        // --- MULAI DATABASE ---
         
         let dbPendapatan = [
-            { uraian: "Dana Desa (DDS) - APBN", kode: "DDS", nilai: 900000000 },
-            { uraian: "Alokasi Dana Dusun (ADD)", kode: "ADD", nilai: 500000000 },
-            { uraian: "Bagi Hasil Pajak & Retribusi", kode: "PBH", nilai: 50000000 },
-            { uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000 },
-            { uraian: "Bantuan Keuangan Provinsi", kode: "PBP", nilai: 100000000 },
+            { rek: "4.1.2.01", uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000 },
+            { rek: "4.2.1.01", uraian: "Dana Desa (DDS) - APBN", kode: "DDS", nilai: 900000000 },
+            { rek: "4.2.2.01", uraian: "Bagi Hasil Pajak & Retribusi", kode: "PBH", nilai: 50000000 },
+            { rek: "4.2.3.01", uraian: "Alokasi Dana Dusun (ADD)", kode: "ADD", nilai: 500000000 },
+            { rek: "4.2.4.01", uraian: "Bantuan Keuangan Provinsi", kode: "PBP", nilai: 100000000 },
+            { rek: "4.3.1.01", uraian: "Pendapatan Bunga Bank", kode: "DLL", nilai: 5000000 },
+        ];
+
+        let dbPembiayaan = [
+            { rek: "6.1.1.01", uraian: "SiLPA Tahun Sebelumnya", jenis: "PENERIMAAN", nilai: 50000000 },
+            { rek: "6.2.1.01", uraian: "Penyertaan Modal BUMDes", jenis: "PENGELUARAN", nilai: 0 },
         ];
 
         let dbBelanja = [
-            // === BIDANG 1: PEMERINTAHAN ===
+            // === BIDANG 1 ===
             {
                 id: "bid1", nama: "1. BIDANG PENYELENGGARAAN PEMERINTAHAN",
                 subs: [
                     {
-                        nama: "1.1. Siltap, Tunjangan & Operasional Pemdes",
+                        nama: "1.1. Penyelenggaraan Siltap, Tunjangan & Ops Pemdes",
                         items: [
-                            { uraian: "Siltap Rio (Kepala Dusun)", vol: 12, sat: "Bln", harga: 5000000, sumber: "ADD" },
-                            { uraian: "Siltap Perangkat Dusun", vol: 12, sat: "Bln", harga: 15000000, sumber: "ADD" },
-                            { uraian: "Tunjangan BPD", vol: 1, sat: "Thn", harga: 40000000, sumber: "ADD" },
+                            // 1.1.01 - Penghasilan RIO
+                            { rek: "1.1.01", uraian: ">>> PENYEDIAAN PENGHASILAN RIO", vol: 0, sat: "", harga: 0, sumber: "" },
+                            { rek: "5.1.1.01", uraian: "Belanja Pegawai Penghasilan RIO", vol: 12, sat: "Bln", harga: 5000000, sumber: "ADD" },
+                            { rek: "5.1.1.02", uraian: "Belanja Pegawai Tunjangan RIO", vol: 12, sat: "Bln", harga: 500000, sumber: "ADD" },
+                            
+                            // 1.1.02 - Penghasilan Perangkat
+                            { rek: "1.1.02", uraian: ">>> PENYEDIAAN PENGHASILAN PERANGKAT", vol: 0, sat: "", harga: 0, sumber: "" },
+                            { rek: "5.1.2.01", uraian: "Siltap Sekdus", vol: 12, sat: "Bln", harga: 2224420, sumber: "ADD" },
+                            { rek: "5.1.2.02", uraian: "Tunjangan Sekretaris Dusun", vol: 12, sat: "Bln", harga: 200000, sumber: "ADD" },
+                            
+                            { rek: "5.1.2.01", uraian: "Siltap Kasi Pemerintahan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kasi Pelayanan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kasi Kesejahteraan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            
+                            { rek: "5.1.2.01", uraian: "Siltap Kaur Keuangan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kaur Perencanaan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kaur Tata Usaha & Umum", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            
+                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 1)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 2)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 3)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 4)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
+                            
+                            { rek: "5.1.2.03", uraian: "Tunjangan Kinerja Perangkat Desa (Kaur)", vol: 12, sat: "Bln", harga: 100000, sumber: "ADD" },
+
+                            // 1.1.03 - Jaminan Sosial
+                            { rek: "1.1.03", uraian: ">>> JAMINAN SOSIAL", vol: 0, sat: "", harga: 0, sumber: "" },
+                            { rek: "5.1.3.01", uraian: "Jaminan Kesehatan Kades & Perangkat", vol: 1, sat: "Thn", harga: 5000000, sumber: "ADD" },
+                            { rek: "5.1.3.02", uraian: "Jaminan Ketenagakerjaan", vol: 1, sat: "Thn", harga: 3000000, sumber: "ADD" },
                         ]
                     },
                     {
                         nama: "1.2. Penyediaan Sarana Prasarana Pemerintahan",
                         items: [
-                            { uraian: "Operasional Kantor (ATK/Listrik)", vol: 1, sat: "Thn", harga: 20000000, sumber: "PBH" },
-                            { uraian: "Pemeliharaan Gedung Kantor", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PAD" },
+                            { rek: "5.2.1.01", uraian: "Belanja ATK Kantor", vol: 1, sat: "Thn", harga: 5000000, sumber: "PBH" },
+                            { rek: "5.2.1.03", uraian: "Belanja Listrik & Internet", vol: 12, sat: "Bln", harga: 1500000, sumber: "PBH" },
+                            { rek: "5.3.1.01", uraian: "Belanja Modal Gedung Kantor", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PAD" },
                         ]
                     },
                     {
                         nama: "1.3. Administrasi Kependudukan & Arsip",
                         items: [
-                            { uraian: "Pendataan SDGS / Profil Desa", vol: 1, sat: "Pkt", harga: 10000000, sumber: "DDS" },
+                            { rek: "5.2.2.05", uraian: "Pendataan SDGS / Profil Desa", vol: 1, sat: "Pkt", harga: 10000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "1.4. Tata Praja Pemerintahan & Perencanaan",
                         items: [
-                            { uraian: "Musyawarah Dusun (Musdus)", vol: 2, sat: "Kali", harga: 2500000, sumber: "ADD" },
+                            { rek: "5.2.2.01", uraian: "Makan Minum Rapat (Musdus)", vol: 2, sat: "Kali", harga: 2500000, sumber: "ADD" },
                         ]
-                    },
-                    {
-                        nama: "1.5. Pertanahan",
-                        items: [] 
                     }
                 ]
             },
-            // === BIDANG 2: PEMBANGUNAN ===
+            // === BIDANG 2 ===
             {
                 id: "bid2", nama: "2. BIDANG PELAKSANAAN PEMBANGUNAN",
                 subs: [
                     {
                         nama: "2.1. Pendidikan",
                         items: [
-                            { uraian: "Insentif Guru PAUD/TK", vol: 12, sat: "Bln", harga: 3000000, sumber: "DDS" },
-                            { uraian: "Rehabilitasi Gedung PAUD", vol: 0, sat: "Pkt", harga: 0, sumber: "DDS" },
+                            { rek: "5.2.5.01", uraian: "Insentif Guru PAUD/TK", vol: 12, sat: "Bln", harga: 3000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "2.2. Kesehatan",
                         items: [
-                            { uraian: "Penyelenggaraan Posyandu (PMT)", vol: 1, sat: "Thn", harga: 30000000, sumber: "DDS" },
-                            { uraian: "Pencegahan Stunting", vol: 1, sat: "Pkt", harga: 50000000, sumber: "DDS" },
+                            { rek: "5.2.1.06", uraian: "Belanja PMT Posyandu", vol: 1, sat: "Thn", harga: 30000000, sumber: "DDS" },
+                            { rek: "5.2.2.08", uraian: "Pencegahan Stunting", vol: 1, sat: "Pkt", harga: 50000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "2.3. Pekerjaan Umum & Penataan Ruang",
                         items: [
-                            { uraian: "Pembangunan Jalan Usaha Tani", vol: 1, sat: "Pkt", harga: 200000000, sumber: "DDS" },
-                            { uraian: "Pembangunan Jembatan", vol: 0, sat: "Unit", harga: 0, sumber: "DDS" },
+                            { rek: "5.3.3.01", uraian: "Pembangunan Jalan Usaha Tani", vol: 1, sat: "Pkt", harga: 200000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "2.4. Kawasan Permukiman",
                         items: [
-                            { uraian: "Drainase Lingkungan", vol: 200, sat: "Meter", harga: 150000, sumber: "DDS" },
-                            { uraian: "Lampu Jalan (PJU)", vol: 10, sat: "Titik", harga: 1500000, sumber: "PBH" },
+                            { rek: "5.3.4.01", uraian: "Drainase Lingkungan", vol: 200, sat: "Meter", harga: 150000, sumber: "DDS" },
+                            { rek: "5.3.2.01", uraian: "Lampu Jalan (PJU)", vol: 10, sat: "Titik", harga: 1500000, sumber: "PBH" },
                         ]
-                    },
-                    {
-                        nama: "2.5. Kehutanan & Lingkungan Hidup",
-                        items: []
-                    },
-                    {
-                        nama: "2.6. Perhubungan & Komunikasi",
-                        items: []
-                    },
-                    {
-                        nama: "2.7. Energi & SDM",
-                        items: []
-                    },
-                    {
-                        nama: "2.8. Pariwisata",
-                        items: []
                     }
                 ]
             },
-            // === BIDANG 3: PEMBINAAN ===
+            // === BIDANG 3 ===
             {
                 id: "bid3", nama: "3. BIDANG PEMBINAAN KEMASYARAKATAN",
                 subs: [
                     {
                         nama: "3.1. Ketentraman & Ketertiban Umum",
                         items: [
-                            { uraian: "Insentif Linmas", vol: 10, sat: "Org", harga: 300000, sumber: "ADD" },
-                            { uraian: "Poskamling", vol: 1, sat: "Unit", harga: 15000000, sumber: "DDS" },
+                            { rek: "5.2.1.01", uraian: "Insentif Linmas", vol: 10, sat: "Org", harga: 300000, sumber: "ADD" },
+                            { rek: "5.3.1.01", uraian: "Bangun Poskamling", vol: 1, sat: "Unit", harga: 15000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "3.2. Kebudayaan & Keagamaan",
                         items: [
-                            { uraian: "Kegiatan PHBI/PHBN", vol: 1, sat: "Thn", harga: 20000000, sumber: "ADD" },
+                            { rek: "5.2.2.01", uraian: "Kegiatan PHBI/PHBN", vol: 1, sat: "Thn", harga: 20000000, sumber: "ADD" },
                         ]
                     },
                     {
                         nama: "3.3. Kepemudaan & Olahraga",
                         items: [
-                            { uraian: "Pembinaan Karang Taruna", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PBH" },
+                            { rek: "5.2.7.01", uraian: "Pembinaan Karang Taruna", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PBH" },
                         ]
                     },
                     {
                         nama: "3.4. Kelembagaan Masyarakat",
                         items: [
-                            { uraian: "Pembinaan PKK/LPM", vol: 1, sat: "Thn", harga: 10000000, sumber: "ADD" },
+                            { rek: "5.2.7.01", uraian: "Pembinaan PKK/LPM", vol: 1, sat: "Thn", harga: 10000000, sumber: "ADD" },
                         ]
                     }
                 ]
             },
-            // === BIDANG 4: PEMBERDAYAAN ===
+            // === BIDANG 4 ===
             {
                 id: "bid4", nama: "4. BIDANG PEMBERDAYAAN MASYARAKAT",
                 subs: [
                     {
-                        nama: "4.1. Kelautan & Perikanan",
-                        items: []
-                    },
-                    {
                         nama: "4.2. Pertanian & Peternakan",
                         items: [
-                            { uraian: "Ketahanan Pangan (Bibit/Ternak)", vol: 1, sat: "Pkt", harga: 100000000, sumber: "DDS" },
-                            { uraian: "Pelatihan Kelompok Tani", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
+                            { rek: "5.2.1.06", uraian: "Ketahanan Pangan (Bibit/Ternak)", vol: 1, sat: "Pkt", harga: 100000000, sumber: "DDS" },
+                            { rek: "5.2.2.01", uraian: "Pelatihan Kelompok Tani", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
                         ]
                     },
                     {
                         nama: "4.3. Peningkatan Kapasitas Aparatur",
                         items: [
-                            { uraian: "Bimtek Siskeudes", vol: 2, sat: "Org", harga: 5000000, sumber: "DDS" },
+                            { rek: "5.2.4.01", uraian: "Bimtek Siskeudes", vol: 2, sat: "Org", harga: 5000000, sumber: "DDS" },
                         ]
-                    },
-                    {
-                        nama: "4.4. Pemberdayaan Perempuan & Anak",
-                        items: []
                     },
                     {
                         nama: "4.5. Koperasi & UMKM",
                         items: [
-                            { uraian: "Pelatihan Manajemen UMKM", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
+                            { rek: "5.2.4.01", uraian: "Pelatihan Manajemen UMKM", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
                         ]
-                    },
-                    {
-                        nama: "4.6. Dukungan Penanaman Modal",
-                        items: []
-                    },
-                    {
-                        nama: "4.7. Perdagangan & Perindustrian",
-                        items: []
                     }
                 ]
             },
-            // === BIDANG 5: BENCANA ===
+            // === BIDANG 5 ===
             {
                 id: "bid5", nama: "5. BIDANG PENANGGULANGAN BENCANA",
                 subs: [
                     {
                         nama: "5.1. Penanggulangan Bencana",
                         items: [
-                            { uraian: "Dana Taktis Bencana Alam", vol: 1, sat: "Pkt", harga: 50000000, sumber: "PBP" },
+                            { rek: "5.4.1.01", uraian: "Dana Taktis Bencana Alam", vol: 1, sat: "Pkt", harga: 50000000, sumber: "PBP" },
                         ]
-                    },
-                    {
-                        nama: "5.2. Keadaan Darurat",
-                        items: []
                     },
                     {
                         nama: "5.3. Keadaan Mendesak",
                         items: [
-                            { uraian: "BLT Dana Desa (Miskin Ekstrem)", vol: 12, sat: "Bln", harga: 9000000, sumber: "DDS" },
+                            { rek: "5.4.1.01", uraian: "BLT Dana Desa (Miskin Ekstrem)", vol: 12, sat: "Bln", harga: 9000000, sumber: "DDS" },
                         ]
                     }
                 ]
             }
         ];
+        
+        // --- SELESAI DATABASE ---
 
         // --- FUNGSI RENDER (MENAMPILKAN DATA) ---
         function render() {
@@ -299,6 +310,7 @@
                 totPend += parseInt(d.nilai);
                 if(isEditing) {
                     htmlPend += `<tr>
+                        <td><input type="text" class="input-sm text-center fw-bold" value="${d.rek}" onchange="updPend(${i}, 'rek', this.value)"></td>
                         <td><input type="text" class="input-sm" value="${d.uraian}" onchange="updPend(${i}, 'uraian', this.value)"></td>
                         <td><select class="input-sm" onchange="updPend(${i}, 'kode', this.value)">
                             <option value="DDS" ${d.kode=='DDS'?'selected':''}>DDS</option>
@@ -306,13 +318,19 @@
                             <option value="PBH" ${d.kode=='PBH'?'selected':''}>PBH</option>
                             <option value="PAD" ${d.kode=='PAD'?'selected':''}>PAD</option>
                             <option value="PBP" ${d.kode=='PBP'?'selected':''}>PBP</option>
+                            <option value="DLL" ${d.kode=='DLL'?'selected':''}>DLL</option>
                         </select></td>
                         <td><input type="number" class="input-sm text-end" value="${d.nilai}" onchange="updPend(${i}, 'nilai', this.value)"></td>
                         <td><button class="btn btn-sm btn-danger py-0" onclick="delPend(${i})"><i class="fas fa-times"></i></button></td>
                     </tr>`;
                 } else {
                     let badge = d.kode=='DDS'?'bg-primary':d.kode=='ADD'?'bg-success':d.kode=='PAD'?'bg-warning text-dark':'bg-secondary';
-                    htmlPend += `<tr><td>${d.uraian}</td><td><span class="badge ${badge}">${d.kode}</span></td><td class="money text-end">${fmt(d.nilai)}</td><td></td></tr>`;
+                    htmlPend += `<tr>
+                        <td class="rek-code">${d.rek}</td>
+                        <td>${d.uraian}</td>
+                        <td><span class="badge ${badge}">${d.kode}</span></td>
+                        <td class="money text-end">${fmt(d.nilai)}</td><td></td>
+                    </tr>`;
                 }
             });
             document.getElementById('tabelPendapatan').innerHTML = htmlPend;
@@ -327,80 +345,143 @@
                 let totBid = 0;
 
                 bid.subs.forEach((sub, idxSub) => {
-                    subHtml += `<div class="sub-bidang-title d-flex justify-content-between align-items-center">
-                        <span>${sub.nama}</span>
-                        ${isEditing ? `<button class="btn btn-sm btn-light py-0 text-success fw-bold border-success" onclick="addKegiatan(${idxBid}, ${idxSub})" style="font-size:0.7rem">+ Kegiatan</button>` : ''}
-                    </div>`;
-                    
-                    if(sub.items.length > 0) {
-                        subHtml += `<div class="table-responsive"><table class="table table-sm table-borderless table-rincian mb-0">`;
-                        if(isEditing) {
-                             subHtml += `<thead class="text-muted" style="font-size:0.7rem"><tr><th>Uraian</th><th class="text-center">Vol</th><th class="text-center">Sat</th><th class="text-end">Harga</th><th>Sumber</th><th class="text-end">Total</th><th></th></tr></thead>`;
-                        }
-                        subHtml += `<tbody>`;
+                    if (sub.items.length > 0 || isEditing) {
+                        subHtml += `<div class="sub-bidang-title d-flex justify-content-between align-items-center">
+                            <span>${sub.nama}</span>
+                            ${isEditing ? `<button class="btn btn-sm btn-light py-0 text-success fw-bold border-success" onclick="addKegiatan(${idxBid}, ${idxSub})" style="font-size:0.7rem">+ Kegiatan</button>` : ''}
+                        </div>`;
                         
-                        sub.items.forEach((item, idxItem) => {
-                            let subTotal = item.vol * item.harga;
-                            totBid += subTotal;
-                            totBel += subTotal;
+                        if(sub.items.length > 0) {
+                            subHtml += `<div class="table-responsive"><table class="table table-sm table-borderless table-rincian mb-0">`;
+                            if(isEditing) subHtml += `<thead class="text-muted" style="font-size:0.7rem"><tr><th style="width:90px">Kode Rek</th><th>Uraian</th><th class="text-center">Vol</th><th class="text-center">Sat</th><th class="text-end">Harga</th><th>Sumber</th><th class="text-end">Total</th><th></th></tr></thead>`;
+                            subHtml += `<tbody>`;
+                            
+                            sub.items.forEach((item, idxItem) => {
+                                let subTotal = item.vol * item.harga;
+                                totBid += subTotal;
+                                totBel += subTotal;
 
-                            if(isEditing) {
-                                subHtml += `<tr>
-                                    <td><input type="text" class="input-sm" value="${item.uraian}" onchange="updBel(${idxBid},${idxSub},${idxItem},'uraian',this.value)"></td>
-                                    <td><input type="number" class="input-sm text-center" value="${item.vol}" onchange="updBel(${idxBid},${idxSub},${idxItem},'vol',this.value)"></td>
-                                    <td><input type="text" class="input-sm text-center" value="${item.sat}" onchange="updBel(${idxBid},${idxSub},${idxItem},'sat',this.value)"></td>
-                                    <td><input type="number" class="input-sm text-end" value="${item.harga}" onchange="updBel(${idxBid},${idxSub},${idxItem},'harga',this.value)"></td>
-                                    <td><select class="input-sm text-center" style="font-size:0.75rem" onchange="updBel(${idxBid},${idxSub},${idxItem},'sumber',this.value)">
-                                        <option value="DDS" ${item.sumber=='DDS'?'selected':''}>DDS</option>
-                                        <option value="ADD" ${item.sumber=='ADD'?'selected':''}>ADD</option>
-                                        <option value="PBH" ${item.sumber=='PBH'?'selected':''}>PBH</option>
-                                        <option value="PAD" ${item.sumber=='PAD'?'selected':''}>PAD</option>
-                                        <option value="PBP" ${item.sumber=='PBP'?'selected':''}>PBP</option>
-                                    </select></td>
-                                    <td class="text-end money small pt-2">${fmt(subTotal)}</td>
-                                    <td><button class="btn btn-sm btn-danger py-0" onclick="delBel(${idxBid},${idxSub},${idxItem})"><i class="fas fa-times"></i></button></td>
-                                </tr>`;
-                            } else {
-                                let badge = item.sumber=='DDS'?'bg-primary':item.sumber=='ADD'?'bg-success':item.sumber=='PAD'?'bg-warning text-dark':'bg-secondary';
-                                subHtml += `<tr>
-                                    <td>${item.uraian}</td>
-                                    <td class="text-center">${item.vol}</td>
-                                    <td class="text-center small text-muted">${item.sat}</td>
-                                    <td class="text-end small text-muted">${fmt(item.harga)}</td>
-                                    <td class="text-center"><span class="badge ${badge} badge-sumber" style="font-size:0.65rem">${item.sumber}</span></td>
-                                    <td class="text-end money fw-bold">${fmt(subTotal)}</td>
-                                </tr>`;
-                            }
-                        });
-                        subHtml += `</tbody></table></div>`;
-                    } else {
-                        subHtml += `<div class="text-muted small fst-italic ps-3 py-1">Belum ada kegiatan di sub bidang ini.</div>`;
+                                // Deteksi jika ini adalah header kegiatan (biasanya vol=0)
+                                let isHeader = item.uraian.startsWith(">>>");
+                                let rowClass = isHeader ? "table-active fw-bold text-success" : "";
+                                let displayUraian = isHeader ? item.uraian.replace(">>> ", "") : item.uraian;
+
+                                if(isEditing) {
+                                    subHtml += `<tr>
+                                        <td><input type="text" class="input-sm text-center fw-bold" value="${item.rek}" onchange="updBel(${idxBid},${idxSub},${idxItem},'rek',this.value)"></td>
+                                        <td><input type="text" class="input-sm" value="${item.uraian}" onchange="updBel(${idxBid},${idxSub},${idxItem},'uraian',this.value)"></td>
+                                        <td><input type="number" class="input-sm text-center" value="${item.vol}" onchange="updBel(${idxBid},${idxSub},${idxItem},'vol',this.value)"></td>
+                                        <td><input type="text" class="input-sm text-center" value="${item.sat}" onchange="updBel(${idxBid},${idxSub},${idxItem},'sat',this.value)"></td>
+                                        <td><input type="number" class="input-sm text-end" value="${item.harga}" onchange="updBel(${idxBid},${idxSub},${idxItem},'harga',this.value)"></td>
+                                        <td><select class="input-sm text-center" style="font-size:0.75rem" onchange="updBel(${idxBid},${idxSub},${idxItem},'sumber',this.value)">
+                                            <option value="" ${item.sumber==''?'selected':''}>-</option>
+                                            <option value="DDS" ${item.sumber=='DDS'?'selected':''}>DDS</option>
+                                            <option value="ADD" ${item.sumber=='ADD'?'selected':''}>ADD</option>
+                                            <option value="PBH" ${item.sumber=='PBH'?'selected':''}>PBH</option>
+                                            <option value="PAD" ${item.sumber=='PAD'?'selected':''}>PAD</option>
+                                            <option value="PBP" ${item.sumber=='PBP'?'selected':''}>PBP</option>
+                                        </select></td>
+                                        <td class="text-end money small pt-2">${fmt(subTotal)}</td>
+                                        <td><button class="btn btn-sm btn-danger py-0" onclick="delBel(${idxBid},${idxSub},${idxItem})"><i class="fas fa-times"></i></button></td>
+                                    </tr>`;
+                                } else {
+                                    if(isHeader) {
+                                        // Tampilan baris header kegiatan (1.1.01, 1.1.02 dst)
+                                        subHtml += `<tr class="table-light"><td class="rek-code">${item.rek}</td><td colspan="6" class="fw-bold text-dark"><i class="fas fa-folder-open me-2 text-warning"></i>${displayUraian}</td></tr>`;
+                                    } else {
+                                        // Tampilan item belanja normal
+                                        let badge = item.sumber=='DDS'?'bg-primary':item.sumber=='ADD'?'bg-success':item.sumber=='PAD'?'bg-warning text-dark':'bg-secondary';
+                                        subHtml += `<tr>
+                                            <td class="rek-code text-muted ps-4">${item.rek}</td>
+                                            <td class="ps-4">${item.uraian}</td>
+                                            <td class="text-center">${item.vol}</td>
+                                            <td class="text-center small text-muted">${item.sat}</td>
+                                            <td class="text-end small text-muted">${fmt(item.harga)}</td>
+                                            <td class="text-center"><span class="badge ${badge} badge-sumber" style="font-size:0.65rem">${item.sumber}</span></td>
+                                            <td class="text-end money fw-bold">${fmt(subTotal)}</td>
+                                        </tr>`;
+                                    }
+                                }
+                            });
+                            subHtml += `</tbody></table></div>`;
+                        } else {
+                            subHtml += `<div class="text-muted small fst-italic ps-3 py-1">Belum ada kegiatan.</div>`;
+                        }
                     }
                 });
 
-                htmlBel += `
-                <div class="accordion-item mb-2 border">
-                    <h2 class="accordion-header" id="h${idxBid}">
-                        <button class="accordion-button ${idxBid !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#c${idxBid}">
-                            <div class="d-flex justify-content-between w-100 me-3">
-                                <span>${bid.nama}</span>
-                                <span>${fmt(totBid)}</span>
+                if(totBid > 0 || isEditing) {
+                    htmlBel += `
+                    <div class="accordion-item mb-2 border">
+                        <h2 class="accordion-header" id="h${idxBid}">
+                            <button class="accordion-button ${idxBid !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#c${idxBid}">
+                                <div class="d-flex justify-content-between w-100 me-3">
+                                    <span>${bid.nama}</span>
+                                    <span>${fmt(totBid)}</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="c${idxBid}" class="accordion-collapse collapse ${idxBid === 0 ? 'show' : ''}" data-bs-parent="#accordionBelanja">
+                            <div class="accordion-body bg-white pt-0 px-2">
+                                ${subHtml}
                             </div>
-                        </button>
-                    </h2>
-                    <div id="c${idxBid}" class="accordion-collapse collapse ${idxBid === 0 ? 'show' : ''}" data-bs-parent="#accordionBelanja">
-                        <div class="accordion-body bg-white pt-0 px-2">
-                            ${subHtml}
                         </div>
-                    </div>
-                </div>`;
+                    </div>`;
+                }
             });
 
             document.getElementById('accordionBelanja').innerHTML = htmlBel;
             document.getElementById('totalBelanja').innerText = fmt(totBel);
-            document.getElementById('totalSelisih').innerText = fmt(totPend - totBel);
+            
+            // 3. Render Pembiayaan (SiLPA)
+            let htmlPem = "";
+            let totPenerimaan = 0;
+            let totPengeluaran = 0;
+            
+            dbPembiayaan.forEach((p, i) => {
+                let val = parseInt(p.nilai);
+                if(p.jenis === 'PENERIMAAN') totPenerimaan += val;
+                if(p.jenis === 'PENGELUARAN') totPengeluaran += val;
 
-            // Tampilkan/Sembunyikan Elemen Edit
+                if(isEditing) {
+                    htmlPem += `<tr>
+                        <td><input type="text" class="input-sm text-center fw-bold" value="${p.rek}" onchange="updPem(${i}, 'rek', this.value)"></td>
+                        <td><input type="text" class="input-sm" value="${p.uraian}" onchange="updPem(${i}, 'uraian', this.value)"></td>
+                        <td><select class="input-sm" onchange="updPem(${i}, 'jenis', this.value)">
+                            <option value="PENERIMAAN" ${p.jenis=='PENERIMAAN'?'selected':''}>PENERIMAAN</option>
+                            <option value="PENGELUARAN" ${p.jenis=='PENGELUARAN'?'selected':''}>PENGELUARAN</option>
+                        </select></td>
+                        <td><input type="number" class="input-sm text-end" value="${p.nilai}" onchange="updPem(${i}, 'nilai', this.value)"></td>
+                        <td><button class="btn btn-sm btn-danger py-0" onclick="delPem(${i})"><i class="fas fa-times"></i></button></td>
+                    </tr>`;
+                } else {
+                    let color = p.jenis === 'PENERIMAAN' ? 'text-success' : 'text-danger';
+                    htmlPem += `<tr><td class="rek-code">${p.rek}</td><td>${p.uraian}</td><td class="small fw-bold ${color}">${p.jenis}</td><td class="money text-end">${fmt(p.nilai)}</td><td></td></tr>`;
+                }
+            });
+            document.getElementById('tabelPembiayaan').innerHTML = htmlPem;
+            
+            // 4. Hitung TOTAL AKHIR
+            let pembiayaanNetto = totPenerimaan - totPengeluaran;
+            let surplusDefisit = totPend - totBel;
+            let silpaAkhir = surplusDefisit + pembiayaanNetto;
+
+            document.getElementById('totalPembiayaan').innerText = fmt(pembiayaanNetto);
+            document.getElementById('totalSilpaAkhir').innerText = fmt(silpaAkhir);
+            
+            // Indikator Balance
+            let cardSilpa = document.getElementById('cardSilpa');
+            if(silpaAkhir === 0) {
+                cardSilpa.classList.remove('bg-danger', 'bg-warning', 'bg-secondary');
+                cardSilpa.classList.add('bg-success');
+                document.getElementById('statusBalance').innerText = "(ANGGARAN SEIMBANG)";
+            } else {
+                cardSilpa.classList.remove('bg-success', 'bg-secondary');
+                cardSilpa.classList.add('bg-danger');
+                document.getElementById('statusBalance').innerText = silpaAkhir > 0 ? "(SURPLUS - Uang Sisa)" : "(DEFISIT - Uang Kurang)";
+            }
+
+            // UI Mode Management
             let editElements = document.querySelectorAll('.btn-add-row');
             editElements.forEach(el => isEditing ? el.classList.remove('d-none') : el.classList.add('d-none'));
             
@@ -418,7 +499,7 @@
             }
         }
 
-        // --- CRUD FUNCTIONS (LOGIKA EDIT) ---
+        // --- ACTIONS ---
         function toggleEditMode() {
             isEditing = !isEditing;
             let btn = document.getElementById('btnEdit');
@@ -432,45 +513,31 @@
             render();
         }
 
-        // Pendapatan Actions
-        function updPend(idx, field, val) {
-            if(field === 'nilai') val = parseInt(val) || 0;
-            dbPendapatan[idx][field] = val;
-            render();
-        }
-        function tambahPendapatan() {
-            dbPendapatan.push({ uraian: "Pendapatan Baru...", kode: "PAD", nilai: 0 });
-            render();
-        }
-        function delPend(idx) {
-            if(confirm('Hapus pendapatan ini?')) {
-                dbPendapatan.splice(idx, 1);
-                render();
-            }
-        }
+        // Pendapatan
+        function updPend(idx, field, val) { dbPendapatan[idx][field] = field==='nilai'?parseInt(val)||0:val; render(); }
+        function tambahPendapatan() { dbPendapatan.push({ rek: "4.x.x.xx", uraian: "Pendapatan Baru...", kode: "PAD", nilai: 0 }); render(); }
+        function delPend(idx) { if(confirm('Hapus?')) { dbPendapatan.splice(idx, 1); render(); } }
 
-        // Belanja Actions
-        function updBel(idxBid, idxSub, idxItem, field, val) {
-            if(field === 'vol' || field === 'harga') val = parseInt(val) || 0;
-            dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = val;
-            render();
+        // Belanja
+        function updBel(idxBid, idxSub, idxItem, field, val) { 
+            dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = (field==='vol'||field==='harga') ? parseInt(val)||0 : val; 
+            render(); 
         }
-        function addKegiatan(idxBid, idxSub) {
-            dbBelanja[idxBid].subs[idxSub].items.push({ uraian: "Kegiatan Baru...", vol: 1, sat: "Ls", harga: 0, sumber: "DDS" });
-            render();
-        }
-        function delBel(idxBid, idxSub, idxItem) {
-            if(confirm('Hapus kegiatan ini?')) {
-                dbBelanja[idxBid].subs[idxSub].items.splice(idxItem, 1);
-                render();
-            }
-        }
+        function addKegiatan(idxBid, idxSub) { dbBelanja[idxBid].subs[idxSub].items.push({ rek: "5.x.x.xx", uraian: "Kegiatan Baru...", vol: 1, sat: "Ls", harga: 0, sumber: "DDS" }); render(); }
+        function delBel(idxBid, idxSub, idxItem) { if(confirm('Hapus?')) { dbBelanja[idxBid].subs[idxSub].items.splice(idxItem, 1); render(); } }
+
+        // Pembiayaan
+        function updPem(idx, field, val) { dbPembiayaan[idx][field] = field==='nilai'?parseInt(val)||0:val; render(); }
+        function tambahPembiayaan(jenis) { dbPembiayaan.push({ rek: "6.x.x.xx", uraian: "Item Pembiayaan...", jenis: jenis, nilai: 0 }); render(); }
+        function delPem(idx) { if(confirm('Hapus?')) { dbPembiayaan.splice(idx, 1); render(); } }
 
         // --- CODE GENERATOR ---
         function generateCode() {
             let scriptRaw = `
-        // --- MULAI DATABASE (DATA STRUKTUR LENGKAP) ---
+        // --- MULAI DATABASE ---
         let dbPendapatan = ${JSON.stringify(dbPendapatan, null, 4)};
+
+        let dbPembiayaan = ${JSON.stringify(dbPembiayaan, null, 4)};
 
         let dbBelanja = ${JSON.stringify(dbBelanja, null, 4)};
         // --- SELESAI DATABASE ---
