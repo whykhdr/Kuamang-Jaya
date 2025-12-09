@@ -38,7 +38,7 @@
 <body>
 
     <button onclick="toggleEditMode()" id="btnEdit" class="btn btn-warning btn-lg rounded-pill btn-edit-float">
-        <i class="fas fa-pencil-alt me-2"></i>Mode Edit Data
+        <i class="fas fa-lock me-2"></i>Mode Edit Data
     </button>
 
     <div class="bg-white shadow-sm py-4 mb-4 border-bottom border-success border-4">
@@ -102,7 +102,7 @@
 
         <div id="outputPanel" class="output-area">
             <h5 class="fw-bold"><i class="fas fa-save me-2"></i>SIMPAN PERUBAHAN</h5>
-            <p class="small mb-2">Copy kode ini dan timpa bagian <code>// --- MULAI DATABASE ---</code> di file GitHub:</p>
+            <p class="small mb-2">Copy kode ini dan timpa bagian <code>// --- MULAI DATABASE ---</code> di file GitHub/Hosting:</p>
             <textarea id="codeResult" class="form-control bg-dark text-white border-secondary small" rows="8" readonly></textarea>
             <button onclick="copyCode()" class="btn btn-light btn-sm mt-2 fw-bold"><i class="fas fa-copy me-1"></i> Copy Kode</button>
         </div>
@@ -110,7 +110,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- KONFIGURASI DAN HELPER ---
+        // --- CONFIG ---
+        // GANTI PASSWORD ADMIN DI SINI:
+        const PASSWORD_ADMIN = "kuamang2026"; 
+
+        // --- HELPER ---
         let isEditing = false;
         
         // FORMATTER UANG (IDR dengan 2 desimal)
@@ -124,182 +128,174 @@
         // --- MULAI DATABASE ---
         
         let dbPendapatan = [
-            { rek: "4.1.2.01", uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000.50 },
-            { rek: "4.2.1.01", uraian: "Dana Desa (DDS) - APBN", kode: "DDS", nilai: 900000000 },
-            { rek: "4.2.2.01", uraian: "Bagi Hasil Pajak & Retribusi", kode: "PBH", nilai: 50000000 },
-            { rek: "4.2.3.01", uraian: "Alokasi Dana Dusun (ADD)", kode: "ADD", nilai: 500000000 },
-            { rek: "4.2.4.01", uraian: "Bantuan Keuangan Provinsi", kode: "PBP", nilai: 100000000 },
-            { rek: "4.3.1.01", uraian: "Pendapatan Bunga Bank", kode: "DLL", nilai: 5000000 },
+            { "rek": "4.1.2.01", "uraian": "Pendapatan Asli Dusun (PAD)", "kode": "PAD", "nilai": 52000000 },
+            { "rek": "4.2.1.01", "uraian": "Dana Desa (DDS)", "kode": "DDS", "nilai": 755616000 },
+            { "rek": "4.2.2.01", "uraian": "Bagi Hasil Pajak & Retribusi", "kode": "PBH", "nilai": 47385000 },
+            { "rek": "4.2.3.01", "uraian": "Alokasi Dana Dusun (ADD)", "kode": "ADD", "nilai": 473226000 },
+            { "rek": "4.2.4.01", "uraian": "Bantuan Keuangan Provinsi 50%", "kode": "PBP", "nilai": 50000000 },
+            { "rek": "4.3.1.01", "uraian": "Pendapatan Bunga Bank ( Agustus s/d Desember)", "kode": "DLL", "nilai": 223685.57 },
+            { "rek": "4.2.4.01", "uraian": "Bantuan Keuangan Provinsi 40% Tunda Bayar 2025", "kode": "PBP", "nilai": 40000000 }
         ];
 
         let dbPembiayaan = [
-            { rek: "6.1.1.01", uraian: "SiLPA Tahun Sebelumnya", jenis: "PENERIMAAN", nilai: 50000000.67 },
-            { rek: "6.2.1.01", uraian: "Penyertaan Modal BUMDes", jenis: "PENGELUARAN", nilai: 0 },
+            { "rek": "6.1.1.01", "uraian": "SiLPA Tahun Sebelumnya", "jenis": "PENERIMAAN", "nilai": 30678800 },
+            { "rek": "6.2.1.01", "uraian": "Penyertaan Modal BUMDes", "jenis": "PENGELUARAN", "nilai": 0 }
         ];
 
         let dbBelanja = [
-            // === BIDANG 1 ===
             {
-                id: "bid1", nama: "1. BIDANG PENYELENGGARAAN PEMERINTAHAN",
-                subs: [
+                "id": "bid1",
+                "nama": "1. BIDANG PENYELENGGARAAN PEMERINTAHAN",
+                "subs": [
                     {
-                        nama: "1.1. Penyelenggaraan Siltap, Tunjangan & Ops Pemdes",
-                        items: [
-                            // 1.1.01 - Penghasilan RIO
-                            { rek: "1.1.01", uraian: ">>> PENYEDIAAN PENGHASILAN RIO", vol: 0, sat: "", harga: 0, sumber: "" },
-                            { rek: "5.1.1.01", uraian: "Belanja Pegawai Penghasilan RIO", vol: 12, sat: "Bln", harga: 5000000, sumber: "ADD" },
-                            { rek: "5.1.1.02", uraian: "Belanja Pegawai Tunjangan RIO", vol: 12, sat: "Bln", harga: 500000, sumber: "ADD" },
-                            
-                            // 1.1.02 - Penghasilan Perangkat
-                            { rek: "1.1.02", uraian: ">>> PENYEDIAAN PENGHASILAN PERANGKAT", vol: 0, sat: "", harga: 0, sumber: "" },
-                            { rek: "5.1.2.01", uraian: "Siltap Sekdus", vol: 12, sat: "Bln", harga: 2224420, sumber: "ADD" },
-                            { rek: "5.1.2.02", uraian: "Tunjangan Sekretaris Dusun", vol: 12, sat: "Bln", harga: 200000, sumber: "ADD" },
-                            
-                            { rek: "5.1.2.01", uraian: "Siltap Kasi Pemerintahan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kasi Pelayanan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kasi Kesejahteraan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            
-                            { rek: "5.1.2.01", uraian: "Siltap Kaur Keuangan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kaur Perencanaan", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kaur Tata Usaha & Umum", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            
-                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 1)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 2)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 3)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            { rek: "5.1.2.01", uraian: "Siltap Kepala Kampung (Dsn 4)", vol: 12, sat: "Bln", harga: 2022200, sumber: "ADD" },
-                            
-                            { rek: "5.1.2.03", uraian: "Tunjangan Kinerja Perangkat Desa (Kaur)", vol: 12, sat: "Bln", harga: 100000, sumber: "ADD" },
-
-                            // 1.1.03 - Jaminan Sosial
-                            { rek: "1.1.03", uraian: ">>> JAMINAN SOSIAL", vol: 0, sat: "", harga: 0, sumber: "" },
-                            { rek: "5.1.3.01", uraian: "Jaminan Kesehatan Kades & Perangkat", vol: 1, sat: "Thn", harga: 5000000, sumber: "ADD" },
-                            { rek: "5.1.3.02", uraian: "Jaminan Ketenagakerjaan", vol: 1, sat: "Thn", harga: 3000000, sumber: "ADD" },
+                        "nama": "1.1. Penyelenggaraan Siltap, Tunjangan & Ops Pemdes",
+                        "items": [
+                            { "rek": "1.1.01", "uraian": ">>> Penyediaan Penghasilan Tetap dan Tunjangan Kepala Desa", "vol": 0, "sat": "", "harga": 0, "sumber": "" },
+                            { "rek": "5.1.1.01", "uraian": "Belanja Pegawai Penghasilan RIO", "vol": 12, "sat": "Bln", "harga": 5000000, "sumber": "ADD" },
+                            { "rek": "5.1.1.02", "uraian": "Belanja Pegawai Tunjangan RIO", "vol": 12, "sat": "Bln", "harga": 500000, "sumber": "ADD" },
+                            { "rek": "1.1.02", "uraian": ">>> PENYEDIAAN PENGHASILAN PERANGKAT", "vol": 0, "sat": "", "harga": 0, "sumber": "" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Sekdus", "vol": 12, "sat": "Bln", "harga": 2224420, "sumber": "ADD" },
+                            { "rek": "5.1.2.02", "uraian": "Tunjangan Sekretaris Dusun", "vol": 12, "sat": "Bln", "harga": 200000, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kasi Pemerintahan", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kasi Pelayanan", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kasi Kesejahteraan", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kaur Keuangan", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kaur Perencanaan", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kaur Tata Usaha & Umum", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kepala Kampung (Dsn 1)", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kepala Kampung (Dsn 2)", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kepala Kampung (Dsn 3)", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.01", "uraian": "Siltap Kepala Kampung (Dsn 4)", "vol": 12, "sat": "Bln", "harga": 2022200, "sumber": "ADD" },
+                            { "rek": "5.1.2.03", "uraian": "Tunjangan Kinerja Perangkat Desa (Kaur)", "vol": 12, "sat": "Bln", "harga": 100000, "sumber": "ADD" },
+                            { "rek": "1.1.03", "uraian": ">>> JAMINAN SOSIAL", "vol": 0, "sat": "", "harga": 0, "sumber": "" },
+                            { "rek": "5.1.3.01", "uraian": "Jaminan Kesehatan Kades & Perangkat", "vol": 1, "sat": "Thn", "harga": 5000000, "sumber": "ADD" },
+                            { "rek": "5.1.3.02", "uraian": "Jaminan Ketenagakerjaan", "vol": 1, "sat": "Thn", "harga": 3000000, "sumber": "ADD" }
                         ]
                     },
                     {
-                        nama: "1.2. Penyediaan Sarana Prasarana Pemerintahan",
-                        items: [
-                            { rek: "5.2.1.01", uraian: "Belanja ATK Kantor", vol: 1, sat: "Thn", harga: 5000000, sumber: "PBH" },
-                            { rek: "5.2.1.03", uraian: "Belanja Listrik & Internet", vol: 12, sat: "Bln", harga: 1500000, sumber: "PBH" },
-                            { rek: "5.3.1.01", uraian: "Belanja Modal Gedung Kantor", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PAD" },
+                        "nama": "1.2. Penyediaan Sarana Prasarana Pemerintahan",
+                        "items": [
+                            { "rek": "5.2.1.01", "uraian": "Belanja ATK Kantor", "vol": 1, "sat": "Thn", "harga": 5000000, "sumber": "PBH" },
+                            { "rek": "5.2.1.03", "uraian": "Belanja Listrik & Internet", "vol": 12, "sat": "Bln", "harga": 1500000, "sumber": "PBH" },
+                            { "rek": "5.3.1.01", "uraian": "Belanja Modal Gedung Kantor", "vol": 1, "sat": "Pkt", "harga": 10000000, "sumber": "PAD" }
                         ]
                     },
                     {
-                        nama: "1.3. Administrasi Kependudukan & Arsip",
-                        items: [
-                            { rek: "5.2.2.05", uraian: "Pendataan SDGS / Profil Desa", vol: 1, sat: "Pkt", harga: 10000000, sumber: "DDS" },
+                        "nama": "1.3. Administrasi Kependudukan & Arsip",
+                        "items": [
+                            { "rek": "5.2.2.05", "uraian": "Pendataan SDGS / Profil Desa", "vol": 1, "sat": "Pkt", "harga": 10000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "1.4. Tata Praja Pemerintahan & Perencanaan",
-                        items: [
-                            { rek: "5.2.2.01", uraian: "Makan Minum Rapat (Musdus)", vol: 2, sat: "Kali", harga: 2500000, sumber: "ADD" },
+                        "nama": "1.4. Tata Praja Pemerintahan & Perencanaan",
+                        "items": [
+                            { "rek": "5.2.2.01", "uraian": "Makan Minum Rapat (Musdus)", "vol": 2, "sat": "Kali", "harga": 2500000, "sumber": "ADD" }
                         ]
                     }
                 ]
             },
-            // === BIDANG 2 ===
             {
-                id: "bid2", nama: "2. BIDANG PELAKSANAAN PEMBANGUNAN",
-                subs: [
+                "id": "bid2",
+                "nama": "2. BIDANG PELAKSANAAN PEMBANGUNAN",
+                "subs": [
                     {
-                        nama: "2.1. Pendidikan",
-                        items: [
-                            { rek: "5.2.5.01", uraian: "Insentif Guru PAUD/TK", vol: 12, sat: "Bln", harga: 3000000, sumber: "DDS" },
+                        "nama": "2.1. Pendidikan",
+                        "items": [
+                            { "rek": "5.2.5.01", "uraian": "Insentif Guru PAUD/TK", "vol": 12, "sat": "Bln", "harga": 3000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "2.2. Kesehatan",
-                        items: [
-                            { rek: "5.2.1.06", uraian: "Belanja PMT Posyandu", vol: 1, sat: "Thn", harga: 30000000, sumber: "DDS" },
-                            { rek: "5.2.2.08", uraian: "Pencegahan Stunting", vol: 1, sat: "Pkt", harga: 50000000, sumber: "DDS" },
+                        "nama": "2.2. Kesehatan",
+                        "items": [
+                            { "rek": "5.2.1.06", "uraian": "Belanja PMT Posyandu", "vol": 1, "sat": "Thn", "harga": 30000000, "sumber": "DDS" },
+                            { "rek": "5.2.2.08", "uraian": "Pencegahan Stunting", "vol": 1, "sat": "Pkt", "harga": 50000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "2.3. Pekerjaan Umum & Penataan Ruang",
-                        items: [
-                            { rek: "5.3.3.01", uraian: "Pembangunan Jalan Usaha Tani", vol: 1, sat: "Pkt", harga: 200000000, sumber: "DDS" },
+                        "nama": "2.3. Pekerjaan Umum & Penataan Ruang",
+                        "items": [
+                            { "rek": "5.3.3.01", "uraian": "Pembangunan Jalan Usaha Tani", "vol": 1, "sat": "Pkt", "harga": 200000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "2.4. Kawasan Permukiman",
-                        items: [
-                            { rek: "5.3.4.01", uraian: "Drainase Lingkungan", vol: 200, sat: "Meter", harga: 150000, sumber: "DDS" },
-                            { rek: "5.3.2.01", uraian: "Lampu Jalan (PJU)", vol: 10, sat: "Titik", harga: 1500000, sumber: "PBH" },
+                        "nama": "2.4. Kawasan Permukiman",
+                        "items": [
+                            { "rek": "5.3.4.01", "uraian": "Drainase Lingkungan", "vol": 200, "sat": "Meter", "harga": 150000, "sumber": "DDS" },
+                            { "rek": "5.3.2.01", "uraian": "Lampu Jalan (PJU)", "vol": 10, "sat": "Titik", "harga": 1500000, "sumber": "PBH" }
                         ]
                     }
                 ]
             },
-            // === BIDANG 3 ===
             {
-                id: "bid3", nama: "3. BIDANG PEMBINAAN KEMASYARAKATAN",
-                subs: [
+                "id": "bid3",
+                "nama": "3. BIDANG PEMBINAAN KEMASYARAKATAN",
+                "subs": [
                     {
-                        nama: "3.1. Ketentraman & Ketertiban Umum",
-                        items: [
-                            { rek: "5.2.1.01", uraian: "Insentif Linmas", vol: 10, sat: "Org", harga: 300000, sumber: "ADD" },
-                            { rek: "5.3.1.01", uraian: "Bangun Poskamling", vol: 1, sat: "Unit", harga: 15000000, sumber: "DDS" },
+                        "nama": "3.1. Ketentraman & Ketertiban Umum",
+                        "items": [
+                            { "rek": "5.2.1.01", "uraian": "Insentif Linmas", "vol": 10, "sat": "Org", "harga": 300000, "sumber": "ADD" },
+                            { "rek": "5.3.1.01", "uraian": "Bangun Poskamling", "vol": 1, "sat": "Unit", "harga": 15000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "3.2. Kebudayaan & Keagamaan",
-                        items: [
-                            { rek: "5.2.2.01", uraian: "Kegiatan PHBI/PHBN", vol: 1, sat: "Thn", harga: 20000000, sumber: "ADD" },
+                        "nama": "3.2. Kebudayaan & Keagamaan",
+                        "items": [
+                            { "rek": "5.2.2.01", "uraian": "Kegiatan PHBI/PHBN", "vol": 1, "sat": "Thn", "harga": 20000000, "sumber": "ADD" }
                         ]
                     },
                     {
-                        nama: "3.3. Kepemudaan & Olahraga",
-                        items: [
-                            { rek: "5.2.7.01", uraian: "Pembinaan Karang Taruna", vol: 1, sat: "Pkt", harga: 10000000, sumber: "PBH" },
+                        "nama": "3.3. Kepemudaan & Olahraga",
+                        "items": [
+                            { "rek": "5.2.7.01", "uraian": "Pembinaan Karang Taruna", "vol": 1, "sat": "Pkt", "harga": 10000000, "sumber": "PBH" }
                         ]
                     },
                     {
-                        nama: "3.4. Kelembagaan Masyarakat",
-                        items: [
-                            { rek: "5.2.7.01", uraian: "Pembinaan PKK/LPM", vol: 1, sat: "Thn", harga: 10000000, sumber: "ADD" },
+                        "nama": "3.4. Kelembagaan Masyarakat",
+                        "items": [
+                            { "rek": "5.2.7.01", "uraian": "Pembinaan PKK/LPM", "vol": 1, "sat": "Thn", "harga": 10000000, "sumber": "ADD" }
                         ]
                     }
                 ]
             },
-            // === BIDANG 4 ===
             {
-                id: "bid4", nama: "4. BIDANG PEMBERDAYAAN MASYARAKAT",
-                subs: [
+                "id": "bid4",
+                "nama": "4. BIDANG PEMBERDAYAAN MASYARAKAT",
+                "subs": [
                     {
-                        nama: "4.2. Pertanian & Peternakan",
-                        items: [
-                            { rek: "5.2.1.06", uraian: "Ketahanan Pangan (Bibit/Ternak)", vol: 1, sat: "Pkt", harga: 100000000, sumber: "DDS" },
-                            { rek: "5.2.2.01", uraian: "Pelatihan Kelompok Tani", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
+                        "nama": "4.2. Pertanian & Peternakan",
+                        "items": [
+                            { "rek": "5.2.1.06", "uraian": "Ketahanan Pangan (Bibit/Ternak)", "vol": 1, "sat": "Pkt", "harga": 100000000, "sumber": "DDS" },
+                            { "rek": "5.2.2.01", "uraian": "Pelatihan Kelompok Tani", "vol": 1, "sat": "Keg", "harga": 10000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "4.3. Peningkatan Kapasitas Aparatur",
-                        items: [
-                            { rek: "5.2.4.01", uraian: "Bimtek Siskeudes", vol: 2, sat: "Org", harga: 5000000, sumber: "DDS" },
+                        "nama": "4.3. Peningkatan Kapasitas Aparatur",
+                        "items": [
+                            { "rek": "5.2.4.01", "uraian": "Bimtek Siskeudes", "vol": 2, "sat": "Org", "harga": 5000000, "sumber": "DDS" }
                         ]
                     },
                     {
-                        nama: "4.5. Koperasi & UMKM",
-                        items: [
-                            { rek: "5.2.4.01", uraian: "Pelatihan Manajemen UMKM", vol: 1, sat: "Keg", harga: 10000000, sumber: "DDS" },
+                        "nama": "4.5. Koperasi & UMKM",
+                        "items": [
+                            { "rek": "5.2.4.01", "uraian": "Pelatihan Manajemen UMKM", "vol": 1, "sat": "Keg", "harga": 10000000, "sumber": "DDS" }
                         ]
                     }
                 ]
             },
-            // === BIDANG 5 ===
             {
-                id: "bid5", nama: "5. BIDANG PENANGGULANGAN BENCANA",
-                subs: [
+                "id": "bid5",
+                "nama": "5. BIDANG PENANGGULANGAN BENCANA",
+                "subs": [
                     {
-                        nama: "5.1. Penanggulangan Bencana",
-                        items: [
-                            { rek: "5.4.1.01", uraian: "Dana Taktis Bencana Alam", vol: 1, sat: "Pkt", harga: 50000000, sumber: "PBP" },
+                        "nama": "5.1. Penanggulangan Bencana",
+                        "items": [
+                            { "rek": "5.4.1.01", "uraian": "Dana Taktis Bencana Alam", "vol": 1, "sat": "Pkt", "harga": 50000000, "sumber": "PBP" }
                         ]
                     },
                     {
-                        nama: "5.3. Keadaan Mendesak",
-                        items: [
-                            { rek: "5.4.1.01", uraian: "BLT Dana Desa (Miskin Ekstrem)", vol: 12, sat: "Bln", harga: 9000000, sumber: "DDS" },
+                        "nama": "5.3. Keadaan Mendesak",
+                        "items": [
+                            { "rek": "5.4.1.01", "uraian": "BLT Dana Desa (Miskin Ekstrem)", "vol": 12, "sat": "Bln", "harga": 9000000, "sumber": "DDS" }
                         ]
                     }
                 ]
@@ -314,7 +310,7 @@
             let htmlPend = "";
             let totPend = 0;
             dbPendapatan.forEach((d, i) => {
-                totPend += parseFloat(d.nilai); // Gunakan parseFloat
+                totPend += parseFloat(d.nilai); 
                 if(isEditing) {
                     htmlPend += `<tr>
                         <td><input type="text" class="input-sm text-center fw-bold" value="${d.rek}" onchange="updPend(${i}, 'rek', this.value)"></td>
@@ -514,13 +510,20 @@
 
         // --- ACTIONS ---
         function toggleEditMode() {
+            if (!isEditing) {
+                let pass = prompt("Masukkan Password Admin:");
+                if (pass !== PASSWORD_ADMIN) { 
+                    alert("Password Salah!");
+                    return;
+                }
+            }
             isEditing = !isEditing;
             let btn = document.getElementById('btnEdit');
             if(isEditing) {
                 btn.innerHTML = '<i class="fas fa-check me-2"></i>Selesai Edit';
                 btn.classList.replace('btn-warning', 'btn-success');
             } else {
-                btn.innerHTML = '<i class="fas fa-pencil-alt me-2"></i>Mode Edit Data';
+                btn.innerHTML = '<i class="fas fa-lock me-2"></i>Mode Edit Data';
                 btn.classList.replace('btn-success', 'btn-warning');
             }
             render();
