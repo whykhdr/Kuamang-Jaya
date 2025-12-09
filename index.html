@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APBDus 2026 - Dusun Kuamang Jaya</title>
+    <title>APBDes 2026 - Desa Kuamang Jaya</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -11,9 +11,33 @@
         body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
         .card-header-custom { background-color: #198754; color: white; font-weight: bold; }
         .money { font-family: 'Courier New', monospace; font-weight: bold; text-align: right; }
-        .accordion-button:not(.collapsed) { background-color: #d1e7dd; color: #0f5132; font-weight: bold; }
-        .rincian-item { border-bottom: 1px dashed #ddd; padding: 8px 0; display: flex; justify-content: space-between; }
+        
+        /* Styling Accordion */
+        .accordion-button:not(.collapsed) {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            font-weight: bold;
+        }
+        .sub-bidang-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #198754; /* Warna hijau desa */
+            font-weight: 800;
+            border-bottom: 2px solid #a3cfbb;
+            padding-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        .rincian-item {
+            border-bottom: 1px dashed #e0e0e0;
+            padding: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
         .rincian-item:last-child { border-bottom: none; }
+        
+        /* Gradients */
         .bg-gradient-success { background: linear-gradient(45deg, #198754, #28a745); }
         .bg-gradient-warning { background: linear-gradient(45deg, #ffc107, #ffdb58); }
         .bg-gradient-primary { background: linear-gradient(45deg, #0d6efd, #0dcaf0); }
@@ -23,8 +47,8 @@
 
     <div class="bg-white shadow-sm py-4 mb-4 border-bottom border-success border-4">
         <div class="container text-center">
-            <h2 class="fw-bold text-success mb-0"><i class="fas fa-chart-pie me-2"></i>TRANSPARANSI APBDus 2026</h2>
-            <p class="text-muted">Pemerintah Dusun Kuamang Jaya, Kab. Bungo, Jambi</p>
+            <h2 class="fw-bold text-success mb-0"><i class="fas fa-book-open me-2"></i>APBDes TA. 2026</h2>
+            <p class="text-muted">Pemerintah Desa Kuamang Jaya, Kab. Bungo, Jambi</p>
         </div>
     </div>
 
@@ -33,115 +57,202 @@
         <div class="row g-4 mb-4">
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary">
-                    <div class="card-body">
-                        <h6 class="text-uppercase opacity-75">Estimasi Pendapatan</h6>
-                        <h3 class="fw-bold" id="total-pendapatan">Rp 0</h3>
-                        <div class="mt-2 text-white-50 small"><i class="fas fa-arrow-up"></i> Sumber: DD, ADD, PAD</div>
+                    <div class="card-body text-center">
+                        <h6 class="opacity-75">PENDAPATAN</h6>
+                        <h3 class="fw-bold">Rp 1.850.000.000</h3>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm text-white bg-gradient-success">
-                    <div class="card-body">
-                        <h6 class="text-uppercase opacity-75">Rencana Belanja</h6>
-                        <h3 class="fw-bold" id="total-belanja">Rp 0</h3>
-                        <div class="mt-2 text-white-50 small"><i class="fas fa-shopping-cart"></i> Termasuk Pembangunan</div>
+                    <div class="card-body text-center">
+                        <h6 class="opacity-75">BELANJA</h6>
+                        <h3 class="fw-bold">Rp 1.900.000.000</h3>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm text-dark bg-gradient-warning">
-                    <div class="card-body">
-                        <h6 class="text-uppercase opacity-75">Pembiayaan (SiLPA)</h6>
-                        <h3 class="fw-bold" id="total-pembiayaan">Rp 0</h3>
-                        <div class="mt-2 text-dark-50 small"><i class="fas fa-wallet"></i> Penutup Defisit</div>
+                    <div class="card-body text-center">
+                        <h6 class="opacity-75">PEMBIAYAAN (SiLPA)</h6>
+                        <h3 class="fw-bold">Rp 50.000.000</h3>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-5 mb-4">
+            <div class="col-lg-4 mb-4">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header card-header-custom"><i class="fas fa-hand-holding-usd me-2"></i> SUMBER PENDAPATAN</div>
+                    <div class="card-header card-header-custom">SUMBER PENDAPATAN</div>
                     <div class="card-body p-0">
-                        <table class="table table-striped mb-0">
-                            <tbody id="tabel-pendapatan-body">
-                                </tbody>
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                <tr><td class="ps-3">Dana Desa (DD)</td><td class="money pe-3">900.000.000</td></tr>
+                                <tr><td class="ps-3">Alokasi Dana Desa (ADD)</td><td class="money pe-3">500.000.000</td></tr>
+                                <tr><td class="ps-3">Bagi Hasil Pajak/Retribusi</td><td class="money pe-3">50.000.000</td></tr>
+                                <tr><td class="ps-3">Pendapatan Asli Desa</td><td class="money pe-3">350.000.000</td></tr>
+                                <tr><td class="ps-3">Bantuan Prov/Kab</td><td class="money pe-3">50.000.000</td></tr>
+                                <tr class="table-secondary fw-bold"><td class="ps-3">TOTAL</td><td class="money pe-3">1.850.000.000</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-danger text-white fw-bold"><i class="fas fa-list-ul me-2"></i> RINCIAN BELANJA PER BIDANG</div>
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-danger text-white fw-bold">
+                        <i class="fas fa-list-alt me-2"></i> RINCIAN BELANJA PER SUB BIDANG
+                    </div>
                     <div class="card-body">
                         <div class="accordion" id="accordionBelanja">
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="h1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c1">
+                                        1. Bidang Penyelenggaraan Pemerintahan
+                                        <span class="ms-auto badge bg-secondary">Rp 600.000.000</span>
+                                    </button>
+                                </h2>
+                                <div id="c1" class="accordion-collapse collapse show" data-bs-parent="#accordionBelanja">
+                                    <div class="accordion-body bg-light">
+                                        
+                                        <div class="sub-bidang-title">1.1. Siltap & Tunjangan</div>
+                                        <div class="rincian-item ps-2"><span>Siltap Kades & Perangkat</span> <b>Rp 320.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Tunjangan BPD</span> <b>Rp 40.000.000</b></div>
+
+                                        <div class="sub-bidang-title">1.2. Operasional Pemerintahan</div>
+                                        <div class="rincian-item ps-2"><span>ATK, Listrik, Internet, Benda Pos</span> <b>Rp 50.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Operasional BPD (Rapat/ATK)</span> <b>Rp 10.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Operasional RT/RW</span> <b>Rp 80.000.000</b></div>
+
+                                        <div class="sub-bidang-title">1.3. Sarana & Prasarana Pemerintah</div>
+                                        <div class="rincian-item ps-2"><span>Pemeliharaan Gedung Kantor</span> <b>Rp 50.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Pengadaan Laptop/Komputer</span> <b>Rp 20.000.000</b></div>
+
+                                        <div class="sub-bidang-title">1.4. Administrasi Kependudukan</div>
+                                        <div class="rincian-item ps-2"><span>Pendataan Profil Desa/SDGS</span> <b>Rp 30.000.000</b></div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="h2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c2">
+                                        2. Bidang Pelaksanaan Pembangunan
+                                        <span class="ms-auto badge bg-secondary">Rp 800.000.000</span>
+                                    </button>
+                                </h2>
+                                <div id="c2" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
+                                    <div class="accordion-body bg-light">
+                                        
+                                        <div class="sub-bidang-title">2.1. Sub Bidang Pendidikan</div>
+                                        <div class="rincian-item ps-2"><span>Insentif Guru PAUD/TK/TPA</span> <b>Rp 40.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Pemeliharaan Gedung PAUD</span> <b>Rp 20.000.000</b></div>
+
+                                        <div class="sub-bidang-title">2.2. Sub Bidang Kesehatan</div>
+                                        <div class="rincian-item ps-2"><span>Penyelenggaraan Posyandu (PMT)</span> <b>Rp 60.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Pencegahan Stunting (RDS)</span> <b>Rp 50.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Ambulance Desa / Siaga Kes</span> <b>Rp 10.000.000</b></div>
+
+                                        <div class="sub-bidang-title">2.3. PU & Penataan Ruang</div>
+                                        <div class="rincian-item ps-2"><span>Pembangunan Jalan Usaha Tani</span> <b>Rp 300.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Pembangunan Jembatan Desa</span> <b>Rp 100.000.000</b></div>
+
+                                        <div class="sub-bidang-title">2.4. Kawasan Pemukiman</div>
+                                        <div class="rincian-item ps-2"><span>Drainase Lingkungan</span> <b>Rp 120.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>PJU (Lampu Jalan)</span> <b>Rp 80.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Sanitasi Lingkungan</span> <b>Rp 20.000.000</b></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="h3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c3">
+                                        3. Bidang Pembinaan Kemasyarakatan
+                                        <span class="ms-auto badge bg-secondary">Rp 150.000.000</span>
+                                    </button>
+                                </h2>
+                                <div id="c3" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
+                                    <div class="accordion-body bg-light">
+                                        
+                                        <div class="sub-bidang-title">3.1. Ketentraman & Ketertiban</div>
+                                        <div class="rincian-item ps-2"><span>Pengadaan Poskamling</span> <b>Rp 20.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Honor & Pelatihan Linmas</span> <b>Rp 30.000.000</b></div>
+
+                                        <div class="sub-bidang-title">3.2. Kebudayaan & Keagamaan</div>
+                                        <div class="rincian-item ps-2"><span>Peringatan PHBI & PHBN</span> <b>Rp 40.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Sedekah Bumi / Adat Desa</span> <b>Rp 20.000.000</b></div>
+
+                                        <div class="sub-bidang-title">3.3. Kepemudaan & Olahraga</div>
+                                        <div class="rincian-item ps-2"><span>Pembinaan Karang Taruna</span> <b>Rp 20.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Sarana Olahraga (Bola/Voli)</span> <b>Rp 10.000.000</b></div>
+
+                                        <div class="sub-bidang-title">3.4. Lembaga Kemasyarakatan</div>
+                                        <div class="rincian-item ps-2"><span>Pembinaan LPM & PKK</span> <b>Rp 10.000.000</b></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="h4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c4">
+                                        4. Bidang Pemberdayaan Masyarakat
+                                        <span class="ms-auto badge bg-secondary">Rp 200.000.000</span>
+                                    </button>
+                                </h2>
+                                <div id="c4" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
+                                    <div class="accordion-body bg-light">
+                                        
+                                        <div class="sub-bidang-title">4.1. Pertanian & Peternakan</div>
+                                        <div class="rincian-item ps-2"><span class="fw-bold text-success"><i class="fas fa-leaf"></i> Ketahanan Pangan (Bibit/Hewan)</span> <b>Rp 140.000.000</b></div>
+                                        <div class="rincian-item ps-2"><span>Pelatihan Kelompok Tani</span> <b>Rp 10.000.000</b></div>
+
+                                        <div class="sub-bidang-title">4.2. Peningkatan Kapasitas Aparatur</div>
+                                        <div class="rincian-item ps-2"><span>Pelatihan Siskeudes/Sipades</span> <b>Rp 20.000.000</b></div>
+
+                                        <div class="sub-bidang-title">4.3. Pemberdayaan Perempuan & Anak</div>
+                                        <div class="rincian-item ps-2"><span>Pelatihan Keterampilan (Masak/Jahit)</span> <b>Rp 20.000.000</b></div>
+
+                                        <div class="sub-bidang-title">4.4. Koperasi & UMKM</div>
+                                        <div class="rincian-item ps-2"><span>Pelatihan Manajemen UMKM</span> <b>Rp 10.000.000</b></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="h5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c5">
+                                        5. Bidang Penanggulangan Bencana
+                                        <span class="ms-auto badge bg-secondary">Rp 150.000.000</span>
+                                    </button>
+                                </h2>
+                                <div id="c5" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
+                                    <div class="accordion-body bg-light">
+                                        
+                                        <div class="sub-bidang-title">5.1. Keadaan Mendesak</div>
+                                        <div class="rincian-item ps-2"><span class="text-danger fw-bold">BLT Dana Desa (Miskin Ekstrem)</span> <b>Rp 100.000.000</b></div>
+
+                                        <div class="sub-bidang-title">5.2. Penanggulangan Bencana</div>
+                                        <div class="rincian-item ps-2"><span>Dana Taktis Bencana Alam</span> <b>Rp 50.000.000</b></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="text-center mt-5 text-muted small">
-            <p>&copy; 2026 Pemerintah Dusun Kuamang Jaya.<br>Data dikelola melalui Data.js</p>
+        
+        <div class="text-center mt-5 text-muted small pb-4">
+            <p>&copy; 2026 Pemerintah Desa Kuamang Jaya.<br>
+            Website Transparansi Anggaran.</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script src="data.js"></script> 
-
-    <script>
-        // FUNGSI FORMAT RUPIAH
-        const formatRupiah = (angka) => {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-        };
-
-        // 1. ISI RINGKASAN ATAS
-        document.getElementById('total-pendapatan').innerText = formatRupiah(dataAPBDus.ringkasan.pendapatan);
-        document.getElementById('total-belanja').innerText = formatRupiah(dataAPBDus.ringkasan.belanja);
-        document.getElementById('total-pembiayaan').innerText = formatRupiah(dataAPBDus.ringkasan.pembiayaan);
-
-        // 2. ISI TABEL PENDAPATAN
-        const tabelBody = document.getElementById('tabel-pendapatan-body');
-        let totalPendapatanHitung = 0;
-        
-        dataAPBDus.sumberPendapatan.forEach(item => {
-            let row = `<tr><td class="ps-3">${item.nama}</td><td class="money pe-3">${formatRupiah(item.jumlah)}</td></tr>`;
-            tabelBody.innerHTML += row;
-            totalPendapatanHitung += item.jumlah;
-        });
-        // Baris Total Pendapatan
-        tabelBody.innerHTML += `<tr class="table-dark fw-bold"><td class="ps-3">TOTAL PENDAPATAN</td><td class="money pe-3">${formatRupiah(totalPendapatanHitung)}</td></tr>`;
-
-        // 3. ISI ACCORDION BELANJA
-        const accordionContainer = document.getElementById('accordionBelanja');
-        
-        dataAPBDus.belanja.forEach((bidang, index) => {
-            let rincianHTML = '';
-            bidang.rincian.forEach(kegiatan => {
-                rincianHTML += `<div class="rincian-item"><span>${kegiatan.kegiatan}</span> <b>${formatRupiah(kegiatan.biaya)}</b></div>`;
-            });
-
-            let accordionItem = `
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading${index}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
-                            ${bidang.bidang}
-                            <span class="ms-auto badge bg-secondary">${formatRupiah(bidang.total)}</span>
-                        </button>
-                    </h2>
-                    <div id="collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
-                        <div class="accordion-body bg-light">
-                            ${rincianHTML}
-                        </div>
-                    </div>
-                </div>
-            `;
-            accordionContainer.innerHTML += accordionItem;
-        });
-    </script>
 </body>
 </html>
