@@ -51,10 +51,10 @@
 
     <div class="container mb-5">
         <div class="row g-3 mb-4">
-            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Pendapatan</small><h5 class="fw-bold mb-0" id="totalPendapatan">Rp 0</h5></div></div></div>
-            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-success"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Belanja</small><h5 class="fw-bold mb-0" id="totalBelanja">Rp 0</h5></div></div></div>
-            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-info"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Pembiayaan Netto</small><h5 class="fw-bold mb-0" id="totalPembiayaan">Rp 0</h5></div></div></div>
-            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-secondary" id="cardSilpa"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">SiLPA Tahun Berjalan</small><h5 class="fw-bold mb-0" id="totalSilpaAkhir">Rp 0</h5><small style="font-size:0.6rem" id="statusBalance">(Harus Rp 0)</small></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Pendapatan</small><h5 class="fw-bold mb-0" id="totalPendapatan">Rp 0,00</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-success"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Total Belanja</small><h5 class="fw-bold mb-0" id="totalBelanja">Rp 0,00</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-info"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">Pembiayaan Netto</small><h5 class="fw-bold mb-0" id="totalPembiayaan">Rp 0,00</h5></div></div></div>
+            <div class="col-md-3"><div class="card h-100 border-0 shadow-sm text-white bg-secondary" id="cardSilpa"><div class="card-body text-center py-2"><small class="text-uppercase opacity-75">SiLPA Tahun Berjalan</small><h5 class="fw-bold mb-0" id="totalSilpaAkhir">Rp 0,00</h5><small style="font-size:0.6rem" id="statusBalance">(Harus Rp 0)</small></div></div></div>
         </div>
 
         <div class="row">
@@ -112,12 +112,19 @@
     <script>
         // --- KONFIGURASI DAN HELPER ---
         let isEditing = false;
-        const fmt = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
+        
+        // FORMATTER UANG (IDR dengan 2 desimal)
+        const fmt = (n) => new Intl.NumberFormat('id-ID', { 
+            style: 'currency', 
+            currency: 'IDR', 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+        }).format(n);
         
         // --- MULAI DATABASE ---
         
         let dbPendapatan = [
-            { rek: "4.1.2.01", uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000 },
+            { rek: "4.1.2.01", uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000.50 },
             { rek: "4.2.1.01", uraian: "Dana Desa (DDS) - APBN", kode: "DDS", nilai: 900000000 },
             { rek: "4.2.2.01", uraian: "Bagi Hasil Pajak & Retribusi", kode: "PBH", nilai: 50000000 },
             { rek: "4.2.3.01", uraian: "Alokasi Dana Dusun (ADD)", kode: "ADD", nilai: 500000000 },
@@ -126,7 +133,7 @@
         ];
 
         let dbPembiayaan = [
-            { rek: "6.1.1.01", uraian: "SiLPA Tahun Sebelumnya", jenis: "PENERIMAAN", nilai: 50000000 },
+            { rek: "6.1.1.01", uraian: "SiLPA Tahun Sebelumnya", jenis: "PENERIMAAN", nilai: 50000000.67 },
             { rek: "6.2.1.01", uraian: "Penyertaan Modal BUMDes", jenis: "PENGELUARAN", nilai: 0 },
         ];
 
@@ -307,7 +314,7 @@
             let htmlPend = "";
             let totPend = 0;
             dbPendapatan.forEach((d, i) => {
-                totPend += parseInt(d.nilai);
+                totPend += parseFloat(d.nilai); // Gunakan parseFloat
                 if(isEditing) {
                     htmlPend += `<tr>
                         <td><input type="text" class="input-sm text-center fw-bold" value="${d.rek}" onchange="updPend(${i}, 'rek', this.value)"></td>
@@ -320,7 +327,7 @@
                             <option value="PBP" ${d.kode=='PBP'?'selected':''}>PBP</option>
                             <option value="DLL" ${d.kode=='DLL'?'selected':''}>DLL</option>
                         </select></td>
-                        <td><input type="number" class="input-sm text-end" value="${d.nilai}" onchange="updPend(${i}, 'nilai', this.value)"></td>
+                        <td><input type="number" step="0.01" class="input-sm text-end" value="${d.nilai}" onchange="updPend(${i}, 'nilai', this.value)"></td>
                         <td><button class="btn btn-sm btn-danger py-0" onclick="delPend(${i})"><i class="fas fa-times"></i></button></td>
                     </tr>`;
                 } else {
@@ -362,7 +369,7 @@
                             subHtml += `<tbody>`;
                             
                             sub.items.forEach((item, idxItem) => {
-                                let subTotal = item.vol * item.harga;
+                                let subTotal = parseFloat(item.vol) * parseFloat(item.harga);
                                 totBid += subTotal;
                                 totBel += subTotal;
 
@@ -373,9 +380,9 @@
                                     subHtml += `<tr>
                                         <td><input type="text" class="input-sm text-center fw-bold" value="${item.rek}" onchange="updBel(${idxBid},${idxSub},${idxItem},'rek',this.value)"></td>
                                         <td><input type="text" class="input-sm" value="${item.uraian}" onchange="updBel(${idxBid},${idxSub},${idxItem},'uraian',this.value)"></td>
-                                        <td><input type="number" class="input-sm text-center" value="${item.vol}" onchange="updBel(${idxBid},${idxSub},${idxItem},'vol',this.value)"></td>
+                                        <td><input type="number" step="0.01" class="input-sm text-center" value="${item.vol}" onchange="updBel(${idxBid},${idxSub},${idxItem},'vol',this.value)"></td>
                                         <td><input type="text" class="input-sm text-center" value="${item.sat}" onchange="updBel(${idxBid},${idxSub},${idxItem},'sat',this.value)"></td>
-                                        <td><input type="number" class="input-sm text-end" value="${item.harga}" onchange="updBel(${idxBid},${idxSub},${idxItem},'harga',this.value)"></td>
+                                        <td><input type="number" step="0.01" class="input-sm text-end" value="${item.harga}" onchange="updBel(${idxBid},${idxSub},${idxItem},'harga',this.value)"></td>
                                         <td><select class="input-sm text-center" style="font-size:0.75rem" onchange="updBel(${idxBid},${idxSub},${idxItem},'sumber',this.value)">
                                             <option value="" ${item.sumber==''?'selected':''}>-</option>
                                             <option value="DDS" ${item.sumber=='DDS'?'selected':''}>DDS</option>
@@ -445,7 +452,7 @@
             let totPengeluaran = 0;
             
             dbPembiayaan.forEach((p, i) => {
-                let val = parseInt(p.nilai);
+                let val = parseFloat(p.nilai); // Use parseFloat
                 if(p.jenis === 'PENERIMAAN') totPenerimaan += val;
                 if(p.jenis === 'PENGELUARAN') totPengeluaran += val;
 
@@ -457,7 +464,7 @@
                             <option value="PENERIMAAN" ${p.jenis=='PENERIMAAN'?'selected':''}>PENERIMAAN</option>
                             <option value="PENGELUARAN" ${p.jenis=='PENGELUARAN'?'selected':''}>PENGELUARAN</option>
                         </select></td>
-                        <td><input type="number" class="input-sm text-end" value="${p.nilai}" onchange="updPem(${i}, 'nilai', this.value)"></td>
+                        <td><input type="number" step="0.01" class="input-sm text-end" value="${p.nilai}" onchange="updPem(${i}, 'nilai', this.value)"></td>
                         <td><button class="btn btn-sm btn-danger py-0" onclick="delPem(${i})"><i class="fas fa-times"></i></button></td>
                     </tr>`;
                 } else {
@@ -477,7 +484,7 @@
             
             // Indikator Balance
             let cardSilpa = document.getElementById('cardSilpa');
-            if(silpaAkhir === 0) {
+            if(Math.abs(silpaAkhir) < 0.01) { // Toleransi desimal sangat kecil
                 cardSilpa.classList.remove('bg-danger', 'bg-warning', 'bg-secondary');
                 cardSilpa.classList.add('bg-success');
                 document.getElementById('statusBalance').innerText = "(ANGGARAN SEIMBANG)";
@@ -520,7 +527,7 @@
         }
 
         // Pendapatan
-        function updPend(idx, field, val) { dbPendapatan[idx][field] = field==='nilai'?parseInt(val)||0:val; render(); }
+        function updPend(idx, field, val) { dbPendapatan[idx][field] = field==='nilai'?parseFloat(val)||0:val; render(); }
         function tambahPendapatan() { dbPendapatan.push({ rek: "4.x.x.xx", uraian: "Pendapatan Baru...", kode: "PAD", nilai: 0 }); render(); }
         function delPend(idx) { if(confirm('Hapus?')) { dbPendapatan.splice(idx, 1); render(); } }
 
@@ -531,14 +538,14 @@
 
         // Belanja - KEGIATAN ACTIONS
         function updBel(idxBid, idxSub, idxItem, field, val) { 
-            dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = (field==='vol'||field==='harga') ? parseInt(val)||0 : val; 
+            dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = (field==='vol'||field==='harga') ? parseFloat(val)||0 : val; 
             render(); 
         }
         function addKegiatan(idxBid, idxSub) { dbBelanja[idxBid].subs[idxSub].items.push({ rek: "5.x.x.xx", uraian: "Kegiatan Baru...", vol: 1, sat: "Ls", harga: 0, sumber: "DDS" }); render(); }
         function delBel(idxBid, idxSub, idxItem) { if(confirm('Hapus?')) { dbBelanja[idxBid].subs[idxSub].items.splice(idxItem, 1); render(); } }
 
         // Pembiayaan
-        function updPem(idx, field, val) { dbPembiayaan[idx][field] = field==='nilai'?parseInt(val)||0:val; render(); }
+        function updPem(idx, field, val) { dbPembiayaan[idx][field] = field==='nilai'?parseFloat(val)||0:val; render(); }
         function tambahPembiayaan(jenis) { dbPembiayaan.push({ rek: "6.x.x.xx", uraian: "Item Pembiayaan...", jenis: jenis, nilai: 0 }); render(); }
         function delPem(idx) { if(confirm('Hapus?')) { dbPembiayaan.splice(idx, 1); render(); } }
 
