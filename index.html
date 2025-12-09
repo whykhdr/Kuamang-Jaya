@@ -19,14 +19,17 @@
             font-weight: bold;
         }
         .sub-bidang-title {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             color: #198754;
             font-weight: 800;
             border-bottom: 2px solid #a3cfbb;
             padding-bottom: 5px;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            background-color: #e9f7ef;
+            padding-left: 10px;
+            padding-top: 5px;
         }
         .rincian-item {
             border-bottom: 1px dashed #e0e0e0;
@@ -34,9 +37,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+        }
+        .rincian-item:hover {
+            background-color: #f8f9fa;
         }
         .rincian-item:last-child { border-bottom: none; }
+        
+        /* Indentasi untuk anak rincian */
+        .item-detail {
+            color: #555;
+            font-size: 0.9rem;
+        }
         
         /* Label Sumber Dana Custom */
         .badge-sumber { font-size: 0.65rem; width: 45px; display: inline-block; text-align: center; margin-right: 8px; vertical-align: middle; }
@@ -115,7 +127,7 @@
             <div class="col-lg-8 mb-4">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-danger text-white fw-bold">
-                        <i class="fas fa-list-alt me-2"></i> RINCIAN BELANJA & SUMBER DANA
+                        <i class="fas fa-list-alt me-2"></i> RINCIAN BELANJA DETAIL
                     </div>
                     <div class="card-body">
                         <div class="accordion" id="accordionBelanja">
@@ -128,23 +140,37 @@
                                     </button>
                                 </h2>
                                 <div id="c1" class="accordion-collapse collapse show" data-bs-parent="#accordionBelanja">
-                                    <div class="accordion-body bg-light">
+                                    <div class="accordion-body bg-light pt-0">
                                         
-                                        <div class="sub-bidang-title">1.1. Siltap & Tunjangan</div>
-                                        <div class="rincian-item ps-2"><span>Siltap Rio & Perangkat</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">320.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Tunjangan BPD</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">40.000.000</b></div></div>
+                                        <div class="sub-bidang-title">1.1. Siltap & Tunjangan Aparatur</div>
+                                        
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Rio (Kepala Dusun)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">60.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Sekretaris Dusun (Sekdus)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">42.000.000</b></div></div>
+                                        
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kaur Keuangan</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kaur Perencanaan</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kaur Tata Usaha & Umum</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kasi Pemerintahan</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kasi Kesejahteraan</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kasi Pelayanan</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        
+                                        <div class="rincian-item ps-3"><span class="item-detail">Siltap Kepala Kampung (3 Org)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">38.000.000</b></div></div>
+                                        
+                                        <div class="rincian-item ps-3 fw-bold border-top mt-2 pt-2"><span>Tunjangan BPD (Ketua & Anggota)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">40.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">1.2. Operasional Pemerintahan</div>
-                                        <div class="rincian-item ps-2"><span>ATK, Listrik, Internet</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">50.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Operasional BPD</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">10.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Operasional RT/RW</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">80.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Belanja Listrik & Air</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Belanja Langganan Internet/Wifi</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">15.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Belanja ATK & Benda Pos</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">25.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Honor & Operasional RT/RW</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">80.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">1.3. Sarana & Prasarana</div>
-                                        <div class="rincian-item ps-2"><span>Pemeliharaan Kantor</span> <div><span class="badge bg-warning text-dark badge-sumber">PAD</span><b class="money">50.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Pengadaan Laptop</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Rehab Ringan Kantor Dusun</span> <div><span class="badge bg-warning text-dark badge-sumber">PAD</span><b class="money">50.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Belanja Laptop (2 Unit)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">20.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">1.4. Administrasi Kependudukan</div>
-                                        <div class="rincian-item ps-2"><span>Pendataan SDGS</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Honor Tim Pendata SDGS</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">30.000.000</b></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -157,25 +183,26 @@
                                     </button>
                                 </h2>
                                 <div id="c2" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
-                                    <div class="accordion-body bg-light">
+                                    <div class="accordion-body bg-light pt-0">
                                         
                                         <div class="sub-bidang-title">2.1. Sub Bidang Pendidikan</div>
-                                        <div class="rincian-item ps-2"><span>Insentif Guru PAUD/TK</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">40.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Rehab Gedung PAUD</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Insentif Guru PAUD/TK (4 Org)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">40.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Rehab Gedung PAUD Melati</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">20.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">2.2. Sub Bidang Kesehatan</div>
-                                        <div class="rincian-item ps-2"><span>PMT Posyandu</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">60.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Pencegahan Stunting</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">50.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Ambulance Dusun</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Belanja PMT Balita & Lansia</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">60.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Rembuk Stunting & RDS</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">50.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Operasional Ambulance Dusun</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">10.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">2.3. PU & Penataan Ruang</div>
-                                        <div class="rincian-item ps-2"><span>Jalan Usaha Tani</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">300.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Jembatan Dusun</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">100.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Jalan Usaha Tani (RT 01)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">150.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Jalan Usaha Tani (RT 05)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">150.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Jembatan Gantung (Dusun 2)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">100.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">2.4. Kawasan Pemukiman</div>
-                                        <div class="rincian-item ps-2"><span>Drainase Lingkungan</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">120.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>PJU (Lampu Jalan)</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">80.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Sanitasi Lingkungan</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pembangunan Drainase (200m)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">120.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pengadaan Lampu Jalan (PJU)</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">80.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pembuatan MCK Umum</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -188,22 +215,20 @@
                                     </button>
                                 </h2>
                                 <div id="c3" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
-                                    <div class="accordion-body bg-light">
+                                    <div class="accordion-body bg-light pt-0">
                                         
                                         <div class="sub-bidang-title">3.1. Ketentraman & Ketertiban</div>
-                                        <div class="rincian-item ps-2"><span>Poskamling</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Honor Linmas</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pembangunan Poskamling (RT 03)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Insentif Anggota Linmas</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">30.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">3.2. Kebudayaan & Keagamaan</div>
-                                        <div class="rincian-item ps-2"><span>Peringatan PHBI</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">40.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Adat Dusun</span> <div><span class="badge bg-warning text-dark badge-sumber">PAD</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Kegiatan Maulid & Isra Miraj</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Kegiatan HUT RI (Agustusan)</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Sedekah Bumi / Adat Dusun</span> <div><span class="badge bg-warning text-dark badge-sumber">PAD</span><b class="money">20.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">3.3. Kepemudaan & Olahraga</div>
-                                        <div class="rincian-item ps-2"><span>Karang Taruna</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">20.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Sarana Olahraga</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
-
-                                        <div class="sub-bidang-title">3.4. Lembaga Kemasyarakatan</div>
-                                        <div class="rincian-item ps-2"><span>Pembinaan LPM/PKK</span> <div><span class="badge bg-success badge-sumber">ADD</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Operasional Karang Taruna</span> <div><span class="badge bg-info text-dark badge-sumber">PBH</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Beli Bola & Net Voli</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -216,18 +241,20 @@
                                     </button>
                                 </h2>
                                 <div id="c4" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
-                                    <div class="accordion-body bg-light">
+                                    <div class="accordion-body bg-light pt-0">
                                         
                                         <div class="sub-bidang-title">4.1. Pertanian & Peternakan</div>
-                                        <div class="rincian-item ps-2"><span class="text-success fw-bold"><i class="fas fa-leaf"></i> Ketahanan Pangan</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">140.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Pelatihan Tani</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="text-success fw-bold item-detail"><i class="fas fa-leaf"></i> Pengadaan Bibit Sawit/Pinang</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">70.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="text-success fw-bold item-detail"><i class="fas fa-leaf"></i> Pengadaan Ternak Kambing</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">70.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pelatihan Kelompok Tani</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">4.2. Peningkatan Kapasitas</div>
-                                        <div class="rincian-item ps-2"><span>Pelatihan Siskeudes</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
-                                        <div class="rincian-item ps-2"><span>Pelatihan Perempuan</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Bimtek Siskeudes (Kaur Keu)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Bimtek Aset Desa (Kaur Umum)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pelatihan Menjahit (PKK)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">20.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">4.3. Koperasi & UMKM</div>
-                                        <div class="rincian-item ps-2"><span>Manajemen UMKM</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Pelatihan Manajemen UMKM</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -240,13 +267,14 @@
                                     </button>
                                 </h2>
                                 <div id="c5" class="accordion-collapse collapse" data-bs-parent="#accordionBelanja">
-                                    <div class="accordion-body bg-light">
+                                    <div class="accordion-body bg-light pt-0">
                                         
                                         <div class="sub-bidang-title">5.1. Keadaan Mendesak</div>
-                                        <div class="rincian-item ps-2"><span class="text-danger fw-bold">BLT Dana Dusun</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">100.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="text-danger fw-bold item-detail">BLT Dana Dusun (25 KPM)</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">90.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Operasional Penyaluran BLT</span> <div><span class="badge bg-primary badge-sumber">DDS</span><b class="money">10.000.000</b></div></div>
 
                                         <div class="sub-bidang-title">5.2. Penanggulangan Bencana</div>
-                                        <div class="rincian-item ps-2"><span>Dana Taktis Bencana</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">50.000.000</b></div></div>
+                                        <div class="rincian-item ps-3"><span class="item-detail">Dana Taktis Bencana Alam</span> <div><span class="badge bg-secondary badge-sumber">PBP</span><b class="money">50.000.000</b></div></div>
                                     </div>
                                 </div>
                             </div>
