@@ -14,7 +14,7 @@
         
         .accordion-button:not(.collapsed) { color: #0f5132; background-color: #d1e7dd; font-weight: bold; }
         .sub-bidang-title { font-size: 0.85rem; text-transform: uppercase; color: #198754; font-weight: 800; background-color: #e9f7ef; padding: 8px 10px; margin-top: 15px; border-left: 4px solid #198754; }
-        .kegiatan-header { font-size: 0.8rem; font-weight: bold; color: #555; background-color: #f8f9fa; padding: 5px 10px; margin-top: 10px; border-bottom: 1px solid #ddd; }
+        .input-sub-title { font-weight: bold; color: #198754; background-color: #fff; border: 1px solid #198754; }
 
         /* Edit Mode Styles */
         .btn-edit-float { position: fixed; bottom: 30px; right: 30px; z-index: 1050; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
@@ -346,10 +346,15 @@
 
                 bid.subs.forEach((sub, idxSub) => {
                     if (sub.items.length > 0 || isEditing) {
-                        subHtml += `<div class="sub-bidang-title d-flex justify-content-between align-items-center">
-                            <span>${sub.nama}</span>
-                            ${isEditing ? `<button class="btn btn-sm btn-light py-0 text-success fw-bold border-success" onclick="addKegiatan(${idxBid}, ${idxSub})" style="font-size:0.7rem">+ Kegiatan</button>` : ''}
-                        </div>`;
+                        subHtml += `<div class="sub-bidang-title d-flex justify-content-between align-items-center">`;
+                        
+                        if(isEditing) {
+                            subHtml += `<input type="text" class="form-control form-control-sm input-sub-title me-2" value="${sub.nama}" onchange="updSubNama(${idxBid}, ${idxSub}, this.value)">`;
+                            subHtml += `<div class="d-flex"><button class="btn btn-sm btn-danger py-0 me-1" onclick="delSub(${idxBid}, ${idxSub})"><i class="fas fa-trash"></i></button><button class="btn btn-sm btn-light py-0 text-success fw-bold border-success" onclick="addKegiatan(${idxBid}, ${idxSub})" style="font-size:0.7rem">+ Keg</button></div>`;
+                        } else {
+                            subHtml += `<span>${sub.nama}</span>`;
+                        }
+                        subHtml += `</div>`;
                         
                         if(sub.items.length > 0) {
                             subHtml += `<div class="table-responsive"><table class="table table-sm table-borderless table-rincian mb-0">`;
@@ -361,9 +366,7 @@
                                 totBid += subTotal;
                                 totBel += subTotal;
 
-                                // Deteksi jika ini adalah header kegiatan (biasanya vol=0)
                                 let isHeader = item.uraian.startsWith(">>>");
-                                let rowClass = isHeader ? "table-active fw-bold text-success" : "";
                                 let displayUraian = isHeader ? item.uraian.replace(">>> ", "") : item.uraian;
 
                                 if(isEditing) {
@@ -386,10 +389,8 @@
                                     </tr>`;
                                 } else {
                                     if(isHeader) {
-                                        // Tampilan baris header kegiatan (1.1.01, 1.1.02 dst)
                                         subHtml += `<tr class="table-light"><td class="rek-code">${item.rek}</td><td colspan="6" class="fw-bold text-dark"><i class="fas fa-folder-open me-2 text-warning"></i>${displayUraian}</td></tr>`;
                                     } else {
-                                        // Tampilan item belanja normal
                                         let badge = item.sumber=='DDS'?'bg-primary':item.sumber=='ADD'?'bg-success':item.sumber=='PAD'?'bg-warning text-dark':'bg-secondary';
                                         subHtml += `<tr>
                                             <td class="rek-code text-muted ps-4">${item.rek}</td>
@@ -409,6 +410,11 @@
                         }
                     }
                 });
+                
+                // Tombol Tambah Sub Bidang (Hanya di Edit Mode)
+                if(isEditing) {
+                    subHtml += `<div class="d-grid gap-2 mt-2 px-2 pb-2"><button class="btn btn-sm btn-outline-success border-2 fw-bold" onclick="addSubBidang(${idxBid})"><i class="fas fa-plus-circle me-1"></i> Tambah Sub Bidang Baru</button></div>`;
+                }
 
                 if(totBid > 0 || isEditing) {
                     htmlBel += `
@@ -518,7 +524,12 @@
         function tambahPendapatan() { dbPendapatan.push({ rek: "4.x.x.xx", uraian: "Pendapatan Baru...", kode: "PAD", nilai: 0 }); render(); }
         function delPend(idx) { if(confirm('Hapus?')) { dbPendapatan.splice(idx, 1); render(); } }
 
-        // Belanja
+        // Belanja - SUB BIDANG ACTIONS
+        function updSubNama(idxBid, idxSub, val) { dbBelanja[idxBid].subs[idxSub].nama = val; render(); }
+        function addSubBidang(idxBid) { dbBelanja[idxBid].subs.push({ nama: "SUB BIDANG BARU...", items: [] }); render(); }
+        function delSub(idxBid, idxSub) { if(confirm('Hapus Sub Bidang ini beserta seluruh isinya?')) { dbBelanja[idxBid].subs.splice(idxSub, 1); render(); } }
+
+        // Belanja - KEGIATAN ACTIONS
         function updBel(idxBid, idxSub, idxItem, field, val) { 
             dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = (field==='vol'||field==='harga') ? parseInt(val)||0 : val; 
             render(); 
