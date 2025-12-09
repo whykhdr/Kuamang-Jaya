@@ -3,280 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APBDus 2026 - Kuamang Jaya</title>
+    <title>Sistem APBDus 2026 - Kuamang Jaya</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; padding-bottom: 200px; }
-        .card-header-custom { background-color: #198754; color: white; font-weight: bold; }
+        body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; padding-bottom: 300px; }
         .money { font-family: 'Courier New', monospace; font-weight: bold; }
         .accordion-button:not(.collapsed) { color: #0f5132; background-color: #d1e7dd; font-weight: bold; }
-        .sub-bidang-title { font-size: 0.9rem; text-transform: uppercase; color: #198754; font-weight: 800; border-bottom: 2px solid #a3cfbb; padding: 5px 0 5px 10px; margin: 20px 0 10px 0; background-color: #e9f7ef; }
-        .rincian-item { border-bottom: 1px dashed #e0e0e0; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .badge-sumber { font-size: 0.65rem; width: 45px; display: inline-block; text-align: center; margin-right: 8px; cursor: pointer; }
+        .sub-bidang-title { font-size: 0.85rem; text-transform: uppercase; color: #198754; font-weight: 800; background-color: #e9f7ef; padding: 8px 10px; margin-top: 15px; border-left: 4px solid #198754; }
         
         /* Edit Mode Styles */
-        .form-control-sm { border: 1px solid #198754; background-color: #f8fffb; color: #000; font-weight: bold; }
-        .btn-edit { position: fixed; bottom: 20px; right: 20px; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .output-area { display: none; background: #2d2d2d; color: #76ff03; padding: 20px; border-radius: 10px; margin-top: 30px; font-family: monospace; }
-        .editing-active .rincian-item { background-color: #fffde7; padding: 10px; border: 1px solid #ddd; margin-bottom: 5px; }
+        .btn-edit-float { position: fixed; bottom: 30px; right: 30px; z-index: 1050; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .output-area { display: none; background: #1e1e1e; color: #00ff9d; padding: 20px; border-radius: 8px; margin-top: 30px; border: 2px solid #00ff9d; }
+        
+        /* Table Styles inside Accordion */
+        .table-rincian th { font-size: 0.75rem; background-color: #f8f9fa; }
+        .table-rincian td { vertical-align: middle; font-size: 0.9rem; }
+        .input-sm { font-size: 0.85rem; padding: 0.25rem 0.5rem; border: 1px solid #ced4da; border-radius: 4px; width: 100%; }
+        .input-uraian { width: 100%; min-width: 200px; }
+        .input-vol { width: 60px; text-align: center; }
+        .input-sat { width: 80px; text-align: center; }
+        .input-harga { width: 120px; text-align: right; }
+        .input-sumber { width: 80px; }
+        
+        .badge-sumber { min-width: 45px; cursor: help; }
+        .bg-gradient-primary { background: linear-gradient(45deg, #0d6efd, #0dcaf0); }
+        .bg-gradient-success { background: linear-gradient(45deg, #198754, #28a745); }
+        .bg-gradient-warning { background: linear-gradient(45deg, #ffc107, #ffdb58); }
     </style>
 </head>
 <body>
 
-    <button onclick="toggleEditMode()" id="btnEdit" class="btn btn-warning btn-lg rounded-pill btn-edit">
-        <i class="fas fa-pencil-alt me-2"></i>Edit Data
+    <button onclick="toggleEditMode()" id="btnEdit" class="btn btn-warning btn-lg rounded-pill btn-edit-float">
+        <i class="fas fa-pencil-alt me-2"></i>Mode Edit Data
     </button>
 
     <div class="bg-white shadow-sm py-4 mb-4 border-bottom border-success border-4">
         <div class="container text-center">
-            <h2 class="fw-bold text-success mb-0"><i class="fas fa-book-open me-2"></i>APBDus TA. 2026</h2>
-            <p class="text-muted">Pemerintah Dusun Kuamang Jaya</p>
+            <h2 class="fw-bold text-success mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>APBDus TA. 2026</h2>
+            <p class="text-muted mb-0">Pemerintah Dusun Kuamang Jaya</p>
+            <span class="badge bg-secondary" id="modeBadge">Mode Lihat (View Only)</span>
         </div>
     </div>
 
     <div class="container mb-5">
-        <div class="row g-4 mb-4">
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-primary"><div class="card-body text-center"><h6 class="opacity-75">TOTAL PENDAPATAN</h6><h3 class="fw-bold" id="totalPendapatan">Rp 0</h3></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-success"><div class="card-body text-center"><h6 class="opacity-75">TOTAL BELANJA</h6><h3 class="fw-bold" id="totalBelanja">Rp 0</h3></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-dark bg-warning"><div class="card-body text-center"><h6 class="opacity-75">SURPLUS / (DEFISIT)</h6><h3 class="fw-bold" id="totalSelisih">Rp 0</h3></div></div></div>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-primary"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Pendapatan</small><h4 class="fw-bold mb-0" id="totalPendapatan">Rp 0</h4></div></div></div>
+            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-white bg-gradient-success"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Belanja</small><h4 class="fw-bold mb-0" id="totalBelanja">Rp 0</h4></div></div></div>
+            <div class="col-md-4"><div class="card h-100 border-0 shadow-sm text-dark bg-gradient-warning"><div class="card-body text-center py-3"><small class="text-uppercase opacity-75">Selisih (SiLPA)</small><h4 class="fw-bold mb-0" id="totalSelisih">Rp 0</h4></div></div></div>
         </div>
 
         <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header card-header-custom">SUMBER PENDAPATAN</div>
-                    <div class="card-body p-0">
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white fw-bold">1. PENDAPATAN DUSUN</div>
+                    <div class="card-body p-0 table-responsive">
                         <table class="table table-hover mb-0">
+                            <thead><tr class="table-light"><th>Uraian Pendapatan</th><th>Kode</th><th class="text-end">Jumlah (Rp)</th><th style="width:50px"></th></tr></thead>
                             <tbody id="tabelPendapatan"></tbody>
                         </table>
+                        <button onclick="tambahPendapatan()" class="btn btn-sm btn-outline-primary m-3 d-none btn-add-row"><i class="fas fa-plus"></i> Tambah Pendapatan</button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-8 mb-4">
+            <div class="col-lg-12 mb-4">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-danger text-white fw-bold d-flex justify-content-between">
-                        <span><i class="fas fa-list-alt me-2"></i> RINCIAN BELANJA</span>
-                        <small id="statusMode" class="text-white opacity-75 fst-italic">Mode Lihat</small>
+                    <div class="card-header bg-success text-white fw-bold d-flex justify-content-between align-items-center">
+                        <span>2. BELANJA DUSUN (RAB)</span>
+                        <small>Otomatis Hitung (Vol x Harga)</small>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="accordion" id="accordionBelanja"></div>
-                        <div class="d-grid gap-2 mt-3">
-                            <button onclick="tambahSubBidang()" id="btnAddSub" class="btn btn-outline-success d-none"><i class="fas fa-plus"></i> Tambah Kegiatan Baru (Dummy)</button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="outputPanel" class="output-area">
-            <h4><i class="fas fa-code"></i> Kode Data Baru</h4>
-            <p class="text-white small">Copy semua kode di bawah ini, lalu timpa bagian <code>&lt;script&gt;...&lt;/script&gt;</code> di file GitHub Anda.</p>
-            <textarea id="codeResult" class="form-control bg-dark text-white border-secondary" rows="10" style="font-family: monospace; font-size: 0.8rem;"></textarea>
-            <button onclick="copyCode()" class="btn btn-light btn-sm mt-2">Copy Kode</button>
+            <h5 class="fw-bold"><i class="fas fa-save me-2"></i>SIMPAN PERUBAHAN</h5>
+            <p class="small mb-2">Agar data tersimpan permanen di GitHub:</p>
+            <ol class="small ps-3 mb-3">
+                <li>Klik tombol <b>Copy Kode</b> di bawah.</li>
+                <li>Buka file <code>index.html</code> di GitHub Anda (Edit).</li>
+                <li>Scroll ke paling bawah, cari bagian <code>// --- MULAI DATABASE ---</code>.</li>
+                <li>Hapus kode lama sampai bawah, lalu <b>Paste</b> kode baru ini.</li>
+            </ol>
+            <textarea id="codeResult" class="form-control bg-dark text-white border-secondary small" rows="8" readonly></textarea>
+            <button onclick="copyCode()" class="btn btn-light btn-sm mt-2 fw-bold"><i class="fas fa-copy me-1"></i> Copy Kode</button>
         </div>
-
-        <div class="text-center mt-5 text-muted small pb-4"><p>&copy; 2026 Pemerintah Dusun Kuamang Jaya.</p></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script id="dataScript">
-        // --- DATA AWAL (DATABASE SEMENTARA) ---
-        let dataPendapatan = [
-            { uraian: "Dana Desa (DDS)",     kode: "DDS", nominal: 900000000 },
-            { uraian: "Alokasi Dana Dusun",  kode: "ADD", nominal: 500000000 },
-            { uraian: "Bagi Hasil Pajak",    kode: "PBH", nominal: 50000000 },
-            { uraian: "Pendapatan Asli",     kode: "PAD", nominal: 350000000 },
-            { uraian: "Bantuan Provinsi",    kode: "PBP", nominal: 50000000 },
+    <script>
+        // --- KONFIGURASI DAN HELPER ---
+        let isEditing = false;
+        const fmt = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
+        
+        // --- STRUKTUR DATA UTAMA (DATABASE) ---
+        // Ini adalah data yang akan berubah saat Anda edit
+        
+        let dbPendapatan = [
+            { uraian: "Dana Desa (DDS) - APBN", kode: "DDS", nilai: 900000000 },
+            { uraian: "Alokasi Dana Dusun (ADD)", kode: "ADD", nilai: 500000000 },
+            { uraian: "Bagi Hasil Pajak & Retribusi", kode: "PBH", nilai: 50000000 },
+            { uraian: "Pendapatan Asli Dusun (PAD)", kode: "PAD", nilai: 20000000 },
+            { uraian: "Bantuan Keuangan Provinsi", kode: "PBP", nilai: 100000000 },
         ];
 
-        let dataBelanja = [
+        let dbBelanja = [
             {
-                bidang: "1. Bidang Penyelenggaraan Pemerintahan",
-                subBidang: [
+                id: "bid1", nama: "1. BIDANG PENYELENGGARAAN PEMERINTAHAN",
+                subs: [
                     {
-                        namaSub: "1.1. Siltap & Tunjangan",
-                        kegiatan: [
-                            { nama: "Siltap Rio & Perangkat",  sumber: "ADD", nilai: 320000000 },
-                            { nama: "Tunjangan BPD",           sumber: "ADD", nilai: 40000000 },
+                        nama: "1.1. Siltap, Tunjangan & Operasional Pemdes",
+                        items: [
+                            { uraian: "Siltap Rio (Kades)", vol: 12, sat: "Bln", harga: 5000000, sumber: "ADD" },
+                            { uraian: "Siltap Sekdus", vol: 12, sat: "Bln", harga: 3500000, sumber: "ADD" },
+                            { uraian: "Tunjangan BPD", vol: 1, sat: "Thn", harga: 40000000, sumber: "ADD" },
                         ]
                     },
                     {
-                        namaSub: "1.2. Operasional Pemerintahan",
-                        kegiatan: [
-                            { nama: "ATK, Listrik, Internet",  sumber: "PBH", nilai: 50000000 },
-                            { nama: "Operasional RT/RW",       sumber: "ADD", nilai: 80000000 },
+                        nama: "1.2. Sarana Prasarana Kantor",
+                        items: [
+                            { uraian: "Belanja ATK", vol: 1, sat: "Thn", harga: 15000000, sumber: "PBH" },
+                            { uraian: "Listrik & Internet", vol: 12, sat: "Bln", harga: 1000000, sumber: "PBH" },
                         ]
                     }
                 ]
             },
             {
-                bidang: "2. Bidang Pembangunan",
-                subBidang: [
+                id: "bid2", nama: "2. BIDANG PELAKSANAAN PEMBANGUNAN",
+                subs: [
                     {
-                        namaSub: "2.3. Pekerjaan Umum",
-                        kegiatan: [
-                            { nama: "Jalan Usaha Tani",      sumber: "DDS", nilai: 300000000 },
+                        nama: "2.3. Pekerjaan Umum & Penataan Ruang",
+                        items: [
+                            { uraian: "Jalan Usaha Tani (Sirtu)", vol: 500, sat: "Mtr", harga: 250000, sumber: "DDS" },
+                            { uraian: "Sewa Alat Berat", vol: 50, sat: "Jam", harga: 500000, sumber: "DDS" },
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "bid3", nama: "3. BIDANG PEMBINAAN KEMASYARAKATAN",
+                subs: [
+                    {
+                        nama: "3.2. Kebudayaan & Agama",
+                        items: [
+                            { uraian: "HUT RI", vol: 1, sat: "Keg", harga: 20000000, sumber: "ADD" },
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "bid4", nama: "4. BIDANG PEMBERDAYAAN MASYARAKAT",
+                subs: [
+                    {
+                        nama: "4.1. Pertanian & Peternakan",
+                        items: [
+                            { uraian: "Bibit Sawit", vol: 1000, sat: "Btg", harga: 45000, sumber: "DDS" },
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "bid5", nama: "5. BIDANG PENANGGULANGAN BENCANA",
+                subs: [
+                    {
+                        nama: "5.1. Keadaan Mendesak",
+                        items: [
+                            { uraian: "BLT Dana Desa (Max 25%)", vol: 12, sat: "Bln", harga: 7500000, sumber: "DDS" },
                         ]
                     }
                 ]
             }
         ];
 
-        // --- SYSTEM ---
-        let isEditing = false;
-        const fmt = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
-
+        // --- FUNGSI RENDER (MENAMPILKAN DATA) ---
         function render() {
             // 1. Render Pendapatan
             let htmlPend = "";
             let totPend = 0;
-            dataPendapatan.forEach((d, i) => {
-                totPend += parseInt(d.nominal);
-                if (isEditing) {
+            dbPendapatan.forEach((d, i) => {
+                totPend += parseInt(d.nilai);
+                if(isEditing) {
                     htmlPend += `<tr>
-                        <td class="p-1"><input type="text" class="form-control form-control-sm" value="${d.uraian}" onchange="updatePendapatan(${i}, 'uraian', this.value)"></td>
-                        <td class="p-1"><input type="number" class="form-control form-control-sm text-end" value="${d.nominal}" onchange="updatePendapatan(${i}, 'nominal', this.value)"></td>
+                        <td><input type="text" class="input-sm" value="${d.uraian}" onchange="updPend(${i}, 'uraian', this.value)"></td>
+                        <td><select class="input-sm" onchange="updPend(${i}, 'kode', this.value)">
+                            <option value="DDS" ${d.kode=='DDS'?'selected':''}>DDS</option>
+                            <option value="ADD" ${d.kode=='ADD'?'selected':''}>ADD</option>
+                            <option value="PBH" ${d.kode=='PBH'?'selected':''}>PBH</option>
+                            <option value="PAD" ${d.kode=='PAD'?'selected':''}>PAD</option>
+                            <option value="PBP" ${d.kode=='PBP'?'selected':''}>PBP</option>
+                        </select></td>
+                        <td><input type="number" class="input-sm text-end" value="${d.nilai}" onchange="updPend(${i}, 'nilai', this.value)"></td>
+                        <td><button class="btn btn-sm btn-danger py-0" onclick="delPend(${i})"><i class="fas fa-times"></i></button></td>
                     </tr>`;
                 } else {
-                    let wb = d.kode === 'DDS' ? 'bg-primary' : d.kode === 'ADD' ? 'bg-success' : d.kode === 'PAD' ? 'bg-warning text-dark' : 'bg-secondary';
-                    htmlPend += `<tr><td class="ps-3 small">${d.uraian} <span class="badge ${wb} ms-1" style="font-size:0.6rem">${d.kode}</span></td><td class="money pe-3 text-end small">${fmt(d.nominal)}</td></tr>`;
+                    let badge = d.kode=='DDS'?'bg-primary':d.kode=='ADD'?'bg-success':d.kode=='PAD'?'bg-warning text-dark':'bg-secondary';
+                    htmlPend += `<tr><td>${d.uraian}</td><td><span class="badge ${badge}">${d.kode}</span></td><td class="money text-end">${fmt(d.nilai)}</td><td></td></tr>`;
                 }
             });
-            htmlPend += `<tr class="table-secondary fw-bold"><td class="ps-3">TOTAL</td><td class="money pe-3 text-end">${fmt(totPend)}</td></tr>`;
             document.getElementById('tabelPendapatan').innerHTML = htmlPend;
             document.getElementById('totalPendapatan').innerText = fmt(totPend);
 
             // 2. Render Belanja
             let htmlBel = "";
             let totBel = 0;
-            dataBelanja.forEach((bid, idxBid) => {
-                let totalBidang = 0;
-                let subHtml = "";
-                
-                bid.subBidang.forEach((sub, idxSub) => {
-                    if(isEditing) {
-                        subHtml += `<div class="mt-3"><input type="text" class="form-control form-control-sm fw-bold text-success mb-2" value="${sub.namaSub}" onchange="updateNamaSub(${idxBid}, ${idxSub}, this.value)"></div>`;
-                    } else {
-                        subHtml += `<div class="sub-bidang-title">${sub.namaSub}</div>`;
-                    }
 
-                    sub.kegiatan.forEach((keg, idxKeg) => {
-                        totalBidang += parseInt(keg.nilai);
-                        totBel += parseInt(keg.nilai);
-                        
+            dbBelanja.forEach((bid, idxBid) => {
+                let subHtml = "";
+                let totBid = 0;
+
+                bid.subs.forEach((sub, idxSub) => {
+                    subHtml += `<div class="sub-bidang-title d-flex justify-content-between">
+                        <span>${sub.nama}</span>
+                        ${isEditing ? `<button class="btn btn-sm btn-outline-success py-0" onclick="addKegiatan(${idxBid}, ${idxSub})" style="font-size:0.7rem">+ Tambah Kegiatan</button>` : ''}
+                    </div>`;
+                    
+                    subHtml += `<div class="table-responsive"><table class="table table-sm table-borderless table-rincian mb-0">`;
+                    if(sub.items.length > 0) {
+                        subHtml += `<thead><tr>
+                            <th style="width:35%">Uraian</th>
+                            <th class="text-center">Vol</th>
+                            <th class="text-center">Sat</th>
+                            <th class="text-end">Harga</th>
+                            <th class="text-center">Sumber</th>
+                            <th class="text-end">Total</th>
+                            ${isEditing ? '<th style="width:30px"></th>' : ''}
+                        </tr></thead><tbody>`;
+                    }
+                    
+                    sub.items.forEach((item, idxItem) => {
+                        let subTotal = item.vol * item.harga;
+                        totBid += subTotal;
+                        totBel += subTotal;
+
                         if(isEditing) {
-                            subHtml += `
-                            <div class="rincian-item">
-                                <div class="row g-1 w-100">
-                                    <div class="col-6"><input type="text" class="form-control form-control-sm" value="${keg.nama}" onchange="updateKegiatan(${idxBid}, ${idxSub}, ${idxKeg}, 'nama', this.value)"></div>
-                                    <div class="col-2"><select class="form-select form-select-sm" onchange="updateKegiatan(${idxBid}, ${idxSub}, ${idxKeg}, 'sumber', this.value)">
-                                        <option value="DDS" ${keg.sumber=='DDS'?'selected':''}>DDS</option>
-                                        <option value="ADD" ${keg.sumber=='ADD'?'selected':''}>ADD</option>
-                                        <option value="PBH" ${keg.sumber=='PBH'?'selected':''}>PBH</option>
-                                        <option value="PAD" ${keg.sumber=='PAD'?'selected':''}>PAD</option>
-                                        <option value="PBP" ${keg.sumber=='PBP'?'selected':''}>PBP</option>
-                                    </select></div>
-                                    <div class="col-4"><input type="number" class="form-control form-control-sm text-end" value="${keg.nilai}" onchange="updateKegiatan(${idxBid}, ${idxSub}, ${idxKeg}, 'nilai', this.value)"></div>
-                                </div>
-                            </div>`;
+                            subHtml += `<tr>
+                                <td><input type="text" class="input-sm" value="${item.uraian}" onchange="updBel(${idxBid},${idxSub},${idxItem},'uraian',this.value)"></td>
+                                <td><input type="number" class="input-sm text-center" value="${item.vol}" onchange="updBel(${idxBid},${idxSub},${idxItem},'vol',this.value)"></td>
+                                <td><input type="text" class="input-sm text-center" value="${item.sat}" onchange="updBel(${idxBid},${idxSub},${idxItem},'sat',this.value)"></td>
+                                <td><input type="number" class="input-sm text-end" value="${item.harga}" onchange="updBel(${idxBid},${idxSub},${idxItem},'harga',this.value)"></td>
+                                <td><select class="input-sm text-center" style="font-size:0.75rem" onchange="updBel(${idxBid},${idxSub},${idxItem},'sumber',this.value)">
+                                    <option value="DDS" ${item.sumber=='DDS'?'selected':''}>DDS</option>
+                                    <option value="ADD" ${item.sumber=='ADD'?'selected':''}>ADD</option>
+                                    <option value="PBH" ${item.sumber=='PBH'?'selected':''}>PBH</option>
+                                    <option value="PAD" ${item.sumber=='PAD'?'selected':''}>PAD</option>
+                                    <option value="PBP" ${item.sumber=='PBP'?'selected':''}>PBP</option>
+                                </select></td>
+                                <td class="text-end money small pt-2">${fmt(subTotal)}</td>
+                                <td><button class="btn btn-sm btn-danger py-0" onclick="delBel(${idxBid},${idxSub},${idxItem})"><i class="fas fa-times"></i></button></td>
+                            </tr>`;
                         } else {
-                            let wb = keg.sumber === 'DDS' ? 'bg-primary' : keg.sumber === 'ADD' ? 'bg-success' : keg.sumber === 'PBH' ? 'bg-info text-dark' : keg.sumber === 'PAD' ? 'bg-warning text-dark' : 'bg-secondary';
-                            subHtml += `<div class="rincian-item ps-3"><span class="item-detail">${keg.nama}</span><div><span class="badge ${wb} badge-sumber">${keg.sumber}</span><b class="money">${fmt(keg.nilai)}</b></div></div>`;
+                            let badge = item.sumber=='DDS'?'bg-primary':item.sumber=='ADD'?'bg-success':item.sumber=='PAD'?'bg-warning text-dark':'bg-secondary';
+                            subHtml += `<tr>
+                                <td>${item.uraian}</td>
+                                <td class="text-center">${item.vol}</td>
+                                <td class="text-center small text-muted">${item.sat}</td>
+                                <td class="text-end small text-muted">${fmt(item.harga)}</td>
+                                <td class="text-center"><span class="badge ${badge} badge-sumber" style="font-size:0.65rem">${item.sumber}</span></td>
+                                <td class="text-end money fw-bold">${fmt(subTotal)}</td>
+                            </tr>`;
                         }
                     });
+                    subHtml += `</tbody></table></div>`;
                 });
 
                 htmlBel += `
-                <div class="accordion-item">
+                <div class="accordion-item mb-2 border">
                     <h2 class="accordion-header" id="h${idxBid}">
                         <button class="accordion-button ${idxBid !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#c${idxBid}">
-                            ${bid.bidang}
-                            <span class="ms-auto badge bg-secondary">${fmt(totalBidang)}</span>
+                            <div class="d-flex justify-content-between w-100 me-3">
+                                <span>${bid.nama}</span>
+                                <span>${fmt(totBid)}</span>
+                            </div>
                         </button>
                     </h2>
                     <div id="c${idxBid}" class="accordion-collapse collapse ${idxBid === 0 ? 'show' : ''}" data-bs-parent="#accordionBelanja">
-                        <div class="accordion-body bg-light pt-0">${subHtml}</div>
+                        <div class="accordion-body bg-white pt-0 px-2">
+                            ${subHtml}
+                        </div>
                     </div>
                 </div>`;
             });
-            
+
             document.getElementById('accordionBelanja').innerHTML = htmlBel;
             document.getElementById('totalBelanja').innerText = fmt(totBel);
             document.getElementById('totalSelisih').innerText = fmt(totPend - totBel);
 
-            // Tampilkan Panel Code jika sedang edit
+            // Tampilkan/Sembunyikan Elemen Edit
+            let editElements = document.querySelectorAll('.btn-add-row');
+            editElements.forEach(el => isEditing ? el.classList.remove('d-none') : el.classList.add('d-none'));
+            
             if(isEditing) {
-                generateCode();
                 document.getElementById('outputPanel').style.display = 'block';
-                document.getElementById('btnAddSub').classList.remove('d-none');
-                document.getElementById('statusMode').innerText = "Mode Edit Aktif";
-                document.body.classList.add('editing-active');
+                document.getElementById('modeBadge').innerText = "Mode Edit (Aktif)";
+                document.getElementById('modeBadge').classList.replace('bg-secondary', 'bg-warning');
+                document.getElementById('modeBadge').classList.add('text-dark');
+                generateCode();
             } else {
                 document.getElementById('outputPanel').style.display = 'none';
-                document.getElementById('btnAddSub').classList.add('d-none');
-                document.getElementById('statusMode').innerText = "Mode Lihat";
-                document.body.classList.remove('editing-active');
+                document.getElementById('modeBadge').innerText = "Mode Lihat (View Only)";
+                document.getElementById('modeBadge').classList.replace('bg-warning', 'bg-secondary');
+                document.getElementById('modeBadge').classList.remove('text-dark');
             }
         }
 
-        // --- UPDATE FUNCTIONS ---
-        function updatePendapatan(idx, field, val) {
-            if(field === 'nominal') val = parseInt(val);
-            dataPendapatan[idx][field] = val;
-            render();
-        }
-        function updateNamaSub(idxBid, idxSub, val) {
-            dataBelanja[idxBid].subBidang[idxSub].namaSub = val;
-            render(); // Tidak perlu re-generate code di sini agar tidak berat, generate saat render
-        }
-        function updateKegiatan(idxBid, idxSub, idxKeg, field, val) {
-            if(field === 'nilai') val = parseInt(val);
-            dataBelanja[idxBid].subBidang[idxSub].kegiatan[idxKeg][field] = val;
-            render();
-        }
-        function tambahSubBidang() {
-            // Menambah data dummy ke Bidang 2 (Pembangunan) sebagai contoh
-            dataBelanja[1].subBidang[0].kegiatan.push({ nama: "Kegiatan Baru", sumber: "DDS", nilai: 0 });
-            render();
-        }
-
+        // --- CRUD FUNCTIONS (LOGIKA EDIT) ---
         function toggleEditMode() {
             isEditing = !isEditing;
-            const btn = document.getElementById('btnEdit');
+            let btn = document.getElementById('btnEdit');
             if(isEditing) {
-                btn.innerHTML = '<i class="fas fa-save me-2"></i>Selesai Edit';
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Selesai Edit';
                 btn.classList.replace('btn-warning', 'btn-success');
             } else {
-                btn.innerHTML = '<i class="fas fa-pencil-alt me-2"></i>Edit Data';
+                btn.innerHTML = '<i class="fas fa-pencil-alt me-2"></i>Mode Edit Data';
                 btn.classList.replace('btn-success', 'btn-warning');
             }
             render();
         }
 
-        function generateCode() {
-            // Fungsi untuk menghasilkan string JSON dari data saat ini
-            let scriptContent = `
-        // --- DATA AWAL (DATABASE SEMENTARA) ---
-        let dataPendapatan = ${JSON.stringify(dataPendapatan, null, 4)};
+        // Pendapatan Actions
+        function updPend(idx, field, val) {
+            if(field === 'nilai') val = parseInt(val) || 0;
+            dbPendapatan[idx][field] = val;
+            render();
+        }
+        function tambahPendapatan() {
+            dbPendapatan.push({ uraian: "Pendapatan Baru...", kode: "PAD", nilai: 0 });
+            render();
+        }
+        function delPend(idx) {
+            if(confirm('Hapus pendapatan ini?')) {
+                dbPendapatan.splice(idx, 1);
+                render();
+            }
+        }
 
-        let dataBelanja = ${JSON.stringify(dataBelanja, null, 4)};
+        // Belanja Actions
+        function updBel(idxBid, idxSub, idxItem, field, val) {
+            if(field === 'vol' || field === 'harga') val = parseInt(val) || 0;
+            dbBelanja[idxBid].subs[idxSub].items[idxItem][field] = val;
+            render();
+        }
+        function addKegiatan(idxBid, idxSub) {
+            dbBelanja[idxBid].subs[idxSub].items.push({ uraian: "Kegiatan Baru...", vol: 1, sat: "Ls", harga: 0, sumber: "DDS" });
+            render();
+        }
+        function delBel(idxBid, idxSub, idxItem) {
+            if(confirm('Hapus kegiatan ini?')) {
+                dbBelanja[idxBid].subs[idxSub].items.splice(idxItem, 1);
+                render();
+            }
+        }
+
+        // --- CODE GENERATOR ---
+        function generateCode() {
+            let scriptRaw = `
+        // --- MULAI DATABASE (PASTE KODE DISINI) ---
+        let dbPendapatan = ${JSON.stringify(dbPendapatan, null, 4)};
+
+        let dbBelanja = ${JSON.stringify(dbBelanja, null, 4)};
+        // --- SELESAI DATABASE ---
             `;
-            document.getElementById('codeResult').value = scriptContent;
+            document.getElementById('codeResult').value = scriptRaw;
         }
 
         function copyCode() {
-            const copyText = document.getElementById("codeResult");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); 
-            navigator.clipboard.writeText(copyText.value);
-            alert("Kode berhasil disalin! Silakan paste ke file index.html di GitHub pada bagian script.");
+            let el = document.getElementById("codeResult");
+            el.select();
+            navigator.clipboard.writeText(el.value);
+            alert("Kode berhasil disalin! Paste ke file index.html di GitHub.");
         }
 
-        // Initial Render
+        // Start
         render();
     </script>
 </body>
