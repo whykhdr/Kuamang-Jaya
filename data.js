@@ -1,4 +1,4 @@
-const dataAPBDes = {
+const dataAPBDus = {
     // BAGIAN 1: RINGKASAN ATAS
     // Masukkan angka murni tanpa titik/koma (contoh: 1000000)
     ringkasan: {
